@@ -48,23 +48,15 @@ class DropListener implements DropTargetListener
     }
 
     @Override
-    public void dragEnter(DropTargetDragEvent event)
-    {
-    }
+    public void dragEnter(DropTargetDragEvent event){}
 
     @Override
-    public void dragExit(DropTargetEvent event)
-    {
-    }
+    public void dragExit(DropTargetEvent event){}
 
     @Override
-    public void dragOver(DropTargetDragEvent event)
-    {
-    }
+    public void dragOver(DropTargetDragEvent event){}
 
     @Override
-    public void dropActionChanged(DropTargetDragEvent event)
-    {
-    }
+    public void dropActionChanged(DropTargetDragEvent event){}
 
 }

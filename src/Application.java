@@ -4,6 +4,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/*per inviare
+  git add --all   //aggiunge i files
+
+  git commit -m "messaggio di commit"  //li salva in locale
+
+  git push  //li carica online
+
+  git pull //per ricevere
+*/
 public class Application extends JFrame {
 
 	private static final long serialVersionUID = 1L;
