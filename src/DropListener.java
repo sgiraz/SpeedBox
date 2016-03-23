@@ -11,6 +11,14 @@ import java.util.List;
 class DropListener implements DropTargetListener
 {
 
+	private SendBox sendBox;
+
+	public DropListener(SendBox sendBox)
+	{
+		this.sendBox = sendBox;
+		
+	}
+	
 	@Override
 	public void drop(DropTargetDropEvent event)
 	{
@@ -34,7 +42,7 @@ class DropListener implements DropTargetListener
 						{
 							if(file instanceof File)
 							{ 
-								System.out.println("Drop: " + ((File)file).getPath());
+								sendBox.drop((File)file);
 							}
 							else 
 								System.out.println("This is not a file"); 
