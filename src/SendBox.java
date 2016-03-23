@@ -25,7 +25,6 @@ public class SendBox {
 		listener = new DropListener(); // Create the drag and drop listener
 	}
 	
-	
 	private void setup() {
 
 		p.setLayout(new GridBagLayout());

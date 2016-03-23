@@ -42,7 +42,7 @@ public class Server implements Runnable {
 						writer.println("accept_request");
 					}
 					
-					
+					// receiving data
 					
 					
 				}
