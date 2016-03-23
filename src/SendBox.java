@@ -46,6 +46,7 @@ public class SendBox {
 	public static void main(String[] args) {
 		SendBox sendBox = new SendBox();
 		sendBox.setup();
+		new Server(16000);
 	}
 	
 	/*

@@ -48,7 +48,6 @@ class DropListener implements DropTargetListener
 				e.printStackTrace();
 			}
 		}
-
 		event.dropComplete(true);
 	}
 
