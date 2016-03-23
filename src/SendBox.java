@@ -26,6 +26,7 @@ public class SendBox {
 	private JFrame f;
 	private DropListener listener;
 	private Client client;
+	private Server server;
 	
 	
 
@@ -35,6 +36,7 @@ public class SendBox {
 		lb = new JLabel("Drop your file here");
 		listener = new DropListener(this);
 		client = new Client();
+		server = new Server(myPort);
 	}
 	 
 
@@ -59,7 +61,7 @@ public class SendBox {
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);	
 	}
-
+ 
 	
 	/*
 	 * private void getData(){
