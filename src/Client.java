@@ -16,7 +16,6 @@ public class Client implements Runnable {
 	private int port;
 	boolean sending = false;
 	byte bytes[] = new byte[1024*32];
-	Thread t;
 	
 	private final int ERROR = -1;
 	public boolean SendFile(String path, String ip, int port)
@@ -28,9 +27,7 @@ public class Client implements Runnable {
 		this.port = port;
 		this.path = path;
 		sending = true;
-		
-		t = new Thread(this, "Send file thread");
-		t.start();
+		new Thread(this, "Client send file thread").start();;
 		
 		return true;
 	}
@@ -66,7 +63,7 @@ public class Client implements Runnable {
 					// TODO: ADD sendingFile TO THE SENDING FILES LIST
 					
 					
-					System.out.println("CLIENT: file exists, sending");
+					System.out.println("CLIENT: file exists, sending..");
 					try(FileInputStream fs = new FileInputStream(file)){
 						// send for dimension
 						output.writeLong(file.length());
@@ -83,9 +80,9 @@ public class Client implements Runnable {
 				else
 					output.writeLong(ERROR);
 			}
-			else if (command.equals("reject_request"))
+			else if (command.equals("refused_request"))
 			{
-				System.out.println("CLIENT: File Rejected");
+				System.out.println("CLIENT: File Refused");
 				
 			}
 			else

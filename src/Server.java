@@ -18,17 +18,18 @@ import java.nio.file.Paths;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-/*
- * Il client invia al server il nome di un file (di testo), preso dalla riga di comando.
- * Il server risponde spedendo al client il contenuto, riga per riga, di tale file.
- * Sono gestite le situazioni particolari (file not found, etc.)
- */ 
+/**
+ * @author Simonegirardi
+ * This Server start listeninig  for clients request to send file, 
+ * if the user accept the request, Server send a message to Client and it prepare to receive the file
+ * else the Server send a message to refuse request.
+ */
 public class Server implements Runnable {
 	private int portNumber;
 
 	public Server(int portNumber){
 		this.portNumber = portNumber;
-		new Thread(this, "Server Thread").start();
+		new Thread(this, "Server receive file Thread").start();
 	}
 
 	public void startServer() {
@@ -60,7 +61,7 @@ public class Server implements Runnable {
 						receiveData(input, fileName);
 					}
 					else{
-						writer.write("reject_request");
+						writer.write("refused_request");
 						writer.newLine();
 						writer.flush();
 					}
@@ -78,10 +79,16 @@ public class Server implements Runnable {
 		} 
 	}
 
+	/**
+	 * Receive data from client ad save it on a file in local machine
+	 * @param reader : a DataImputStream reader
+	 * @param fileName: name of file to receive with its extension
+	 * @throws IOException
+	 */
 	private void receiveData(DataInputStream reader, String fileName) throws IOException {
 		Path path = Paths.get("/Users/Simonegirardi/Desktop/"+ fileName);
 		int count;
-		byte[] bytes = new byte[1024*32]; //this is my personal buffer (10KB)
+		byte[] bytes = new byte[1024*32]; // my personal buffer (32KB)
 		long size = reader.readLong();
 		int received = 0;
 		if(size >= 0){
@@ -100,6 +107,11 @@ public class Server implements Runnable {
 			System.out.println("Error: returned -1, impossible to receive" + fileName);	
 	}
 
+	/**
+	 * A Dialog window that ask confirm for accept to receive file  
+	 * @param fileName: name of file to receive
+	 * @return true only if the user say yes
+	 */
 	private boolean checkResponse(String fileName) {
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		int response = JOptionPane.showConfirmDialog(null, "Do you want to receive " + fileName + "?", "Confirm",
