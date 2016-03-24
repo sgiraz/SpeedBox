@@ -1,5 +1,4 @@
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -8,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client implements Runnable {
@@ -17,7 +15,7 @@ public class Client implements Runnable {
 	private String path;
 	private int port;
 	boolean sending = false;
-	byte bytes[] = new byte[1024*16];
+	byte bytes[] = new byte[1024*32];
 	Thread t;
 	
 	private final int ERROR = -1;
@@ -54,6 +52,8 @@ public class Client implements Runnable {
 			
 			System.out.println("CLIENT: Waiting for response..");
 			String command = reader.readLine();
+
+			System.out.println("CLIENT: command: " + command);
 			if(command.equals("accept_request"))
 			{
 				System.out.println("CLIENT: Accepted... sending file");
@@ -66,13 +66,15 @@ public class Client implements Runnable {
 					System.out.println("CLIENT: file exists, sending");
 					try(FileInputStream fs = new FileInputStream(file)){
 						// send for dimension
-						output.writeLong(file.length());
-
+						long len = file.length();
+						output.writeLong(len);
 						System.out.println("CLIENT: length" + file.length());
-						
+						int sent = 0;
 						// send data
 						while((pos = fs.read(bytes)) > 0 ){
 							output.write(bytes,0,pos); 
+							System.out.println("CLIENT: sending " + pos + " bytes... " + sent/(float)len * 100);
+							sent += pos;
 						}
 					}
 					
@@ -80,6 +82,16 @@ public class Client implements Runnable {
 				else
 					output.writeLong(ERROR);
 			}
+			else if (command.equals("reject_request"))
+			{
+				System.out.println("CLIENT: File Rejected");
+				
+			}
+			else
+			{
+				System.out.println("other command " + command);
+			}
+						
 			
 		} catch (IOException e) {
 			System.out.println("CLIENT: Impossible to connect");			

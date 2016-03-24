@@ -47,7 +47,7 @@ public class SendBox {
 
 	public void drop(File file) {
 		System.out.println("Drop: " + file.getPath());
-		client.SendFile(file.getName(), otherIP, otherPort);
+		client.SendFile(file.getPath(), otherIP, otherPort);
 	}
 
 	private void setup() {
