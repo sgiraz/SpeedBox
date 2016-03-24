@@ -1,9 +1,6 @@
 import java.awt.GridBagLayout;
 import java.awt.dnd.DropTarget;
 import java.io.File;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -59,25 +56,11 @@ public class SendBox {
 		// Connect the label with a drag and drop listener
 		new DropTarget(f, listener);
 		
-		//cardLayout.show(f, "uno");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(300, 300);
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);	
 	}
- 
-	
-	/*
-	 * private void getData(){
-		  try {
-			ip = InetAddress.getLocalHost();
-			System.out.println("Current IP address : " + ip.getHostAddress());
-
-		  } catch (UnknownHostException e) {
-			e.printStackTrace();
-		  }
-	} 
-	 */
 	
 
 

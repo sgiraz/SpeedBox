@@ -3,11 +3,12 @@ import static java.nio.file.StandardOpenOption.CREATE;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -36,7 +37,7 @@ public class Server implements Runnable {
 			try(ServerSocket serverSocket = new ServerSocket(portNumber);
 					Socket clientSocket = serverSocket.accept();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-					PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 					DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
 
 				System.out.println("SERVER: create" + clientSocket);
@@ -50,11 +51,20 @@ public class Server implements Runnable {
 					System.out.println("SERVER: Sending confirm...");
 					String fileName = reader.readLine();
 					if(checkResponse(fileName)){
-						writer.println("accept_request");
+						System.out.println("check response successed!");
+						writer.write("accept_request");
+						writer.newLine();
+						writer.flush();
 
 						// receiving data
 						receiveData(input, fileName);
 					}
+					else{
+						writer.write("reject_request");
+						writer.newLine();
+						writer.flush();
+					}
+						
 
 				}
 				else
@@ -71,7 +81,7 @@ public class Server implements Runnable {
 	private void receiveData(DataInputStream reader, String fileName) throws IOException {
 		Path path = Paths.get("/Users/Simonegirardi/Desktop/"+ fileName);
 		int count;
-		byte[] bytes = new byte[1024]; //this is my personal buffer (10KB)
+		byte[] bytes = new byte[1024*32]; //this is my personal buffer (10KB)
 		long size = reader.readLong();
 		int received = 0;
 		if(size >= 0){
@@ -84,7 +94,7 @@ public class Server implements Runnable {
 				System.out.println("Data saved in: " + path);
 			} catch (IOException x) {
 				System.err.println(x);
-			}
+			}	
 		}
 		else
 			System.out.println("Error: returned -1, impossible to receive" + fileName);	
@@ -95,6 +105,7 @@ public class Server implements Runnable {
 		int response = JOptionPane.showConfirmDialog(null, "Do you want to receive " + fileName + "?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (response == JOptionPane.YES_OPTION) {
+			System.out.println("choose yes");
 			return true;
 		}
 		return false;
