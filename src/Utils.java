@@ -1,6 +1,13 @@
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/*
+git add --all   //aggiunge i files
+git commit -m "messaggio di commit"  //li salva in locale
+git push  //li carica online
+git pull //per ricevere
+*/
+
 public class Utils {
 
 	public static String pathGetFilename(String path)
