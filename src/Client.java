@@ -57,24 +57,25 @@ public class Client implements Runnable {
 			if(command.equals("accept_request"))
 			{
 				System.out.println("CLIENT: Accepted... sending file");
-				
+				 
 				// send file
-				System.out.println("File request: " + path);
 				File file = new File(path);
-				int pos;
 				if(file.exists()){
+					
+					SendingFile sendingFile = new SendingFile(file);
+					// TODO: ADD sendingFile TO THE SENDING FILES LIST
+					
+					
 					System.out.println("CLIENT: file exists, sending");
 					try(FileInputStream fs = new FileInputStream(file)){
 						// send for dimension
-						long len = file.length();
-						output.writeLong(len);
-						System.out.println("CLIENT: length" + file.length());
-						int sent = 0;
-						// send data
-						while((pos = fs.read(bytes)) > 0 ){
-							output.write(bytes,0,pos); 
-							System.out.println("CLIENT: sending " + pos + " bytes... " + sent/(float)len * 100);
-							sent += pos;
+						output.writeLong(file.length());
+						System.out.println("CLIENT: file length: " + file.length());
+						
+						int sent;
+						while((sent = fs.read(bytes)) > 0 ){
+							output.write(bytes,0,sent); 
+							sendingFile.update(sent);
 						}
 					}
 					

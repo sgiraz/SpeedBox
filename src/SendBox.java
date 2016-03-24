@@ -19,7 +19,7 @@ public class SendBox {
 	public static int myPort = 16000;
 	public static int otherPort = 16000;
 	
-	// lista di file in ricezione
+	// list of sending files
 	// http://stackoverflow.com/questions/14615888/list-of-jpanels-that-eventually-uses-a-scrollbar
 	
 	private JPanel p;
