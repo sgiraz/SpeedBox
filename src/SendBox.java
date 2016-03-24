@@ -1,5 +1,6 @@
 import java.awt.GridBagLayout;
 import java.awt.dnd.DropTarget;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -13,20 +14,41 @@ import javax.swing.JPanel;
   git pull //per ricevere
  */
 public class SendBox {
+
+	public static String myIP = "";
+	public static String otherIP = "";
+	public static int myPort = 16000;
+	public static int otherPort = 16000;
+	
+	
 	private JPanel p;
 	private JLabel lb;
 	private JFrame f;
 	private DropListener listener;
+	private Client client;
+	private Server server;
+	
+	
 
 	public SendBox(){
 		f = new JFrame("Send Box");
 		p = new JPanel();
 		lb = new JLabel("Drop your file here");
-		listener = new DropListener(); // Create the drag and drop listener
+		listener = new DropListener(this);
+		client = new Client();
+		server = new Server(myPort);
+		setup();
+	}
+	 
+
+	public void drop(File file) {
+		System.out.println("Drop: " + file.getPath());
+		client.SendFile(file.getName(), otherIP, otherPort);
 	}
 	
-	private void setup() {
 
+
+	private void setup() {
 		p.setLayout(new GridBagLayout());
 		p.add(lb);
 		p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -41,12 +63,7 @@ public class SendBox {
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);	
 	}
-
-	public static void main(String[] args) {
-		SendBox sendBox = new SendBox();
-		sendBox.setup();
-		new Server(16000);
-	}
+ 
 	
 	/*
 	 * private void getData(){
@@ -57,8 +74,7 @@ public class SendBox {
 		  } catch (UnknownHostException e) {
 			e.printStackTrace();
 		  }
-	}
-	 * 
+	} 
 	 */
 	
 

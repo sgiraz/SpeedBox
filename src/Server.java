@@ -22,7 +22,7 @@ public class Server implements Runnable {
 	}
 	
 	public void startServer() {
-		System.out.println("Server started...");
+		System.out.println("SERVER: Server started...");
 		while(true){
 			try(ServerSocket serverSocket = new ServerSocket(portNumber);
 					Socket clientSocket = serverSocket.accept();
@@ -36,7 +36,7 @@ public class Server implements Runnable {
 				
 				if(typeOfInputClient == "send_request"){
 					// send acceptation
-					System.out.println("Sending confirm...");
+					System.out.println("SERVER: Sending confirm...");
 					String fileName = input.readLine();
 					if(checkResponse(fileName)){
 						writer.println("accept_request");
