@@ -1,26 +1,34 @@
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client implements Runnable {
 
 	private String ip;
-	private String filename;
+	private String path;
 	private int port;
 	boolean sending = false;
+	byte bytes[] = new byte[1024*16];
 	Thread t;
 	
-	public boolean SendFile(String filename, String ip, int port)
+	private final int ERROR = -1;
+	public boolean SendFile(String path, String ip, int port)
 	{
 		if(sending)
 			return false;
 		
 		this.ip = ip;
 		this.port = port;
-		this.filename = filename;
+		this.path = path;
 		sending = true;
 		
 		t = new Thread(this, "Send file thread");
@@ -32,20 +40,45 @@ public class Client implements Runnable {
 	public void run() {
 		 
 		try(Socket clientSocket = new Socket(ip, port);
-			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true)){
+			BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+			DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())){
 			
 			// send first message message
-			System.out.println("CLIENT: Socket created: " + clientSocket + "\nSending data: " + filename +"...");
-			writer.println("send_request");
-			writer.println(filename);
-						
-			System.out.println("CLIENT: Waiting for response.."); 
+			System.out.println("CLIENT: Socket created: " + clientSocket + "\nSending data: " + path +"...");
+			writer.write("send_request");
+			writer.newLine(); 
+			writer.write(Utils.pathGetFilename(path));
+			writer.newLine();
+			writer.flush();
 			
-			String command = input.readLine();
-			if(command == "accept_request")
+			System.out.println("CLIENT: Waiting for response..");
+			String command = reader.readLine();
+			if(command.equals("accept_request"))
 			{
-				System.out.println("CLIENT: Accepted.."); 
+				System.out.println("CLIENT: Accepted... sending file");
+				
+				// send file
+				System.out.println("File request: " + path);
+				File file = new File(path);
+				int pos;
+				if(file.exists()){
+					System.out.println("CLIENT: file exists, sending");
+					try(FileInputStream fs = new FileInputStream(file)){
+						// send for dimension
+						output.writeLong(file.length());
+
+						System.out.println("CLIENT: length" + file.length());
+						
+						// send data
+						while((pos = fs.read(bytes)) > 0 ){
+							output.write(bytes,0,pos); 
+						}
+					}
+					
+				}
+				else
+					output.writeLong(ERROR);
 			}
 			
 		} catch (IOException e) {
