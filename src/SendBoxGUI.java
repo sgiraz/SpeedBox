@@ -1,3 +1,8 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -6,25 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.JProgressBar;
-import java.awt.ComponentOrientation;
-import java.awt.Cursor;
-import javax.swing.JSplitPane;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import javax.swing.JMenuBar;
-import java.awt.Font;
-import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class SendBoxGUI extends JFrame implements ActionListener{
@@ -37,7 +31,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
 	private DropListener listener;
-	private Client client = new Client();
+	private Client client;
 	private Server server;
 	private JProgressBar progressBarDown;
 	private JSplitPane splitPane;
@@ -50,6 +44,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 
 		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
 		catch (Exception e) { e.printStackTrace(); }
+
 		mb = new MenuBar();
 		m1 = new Menu("File");
 		m2 = new Menu("Edit");
@@ -140,9 +135,9 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		client.SendFile(file.getPath(), otherIP, otherPort);
 	}
 	
+	// this is for backgroud color during the drag and drop
 	public JPanel getPane(){
 		return panel;
 	}
- 
-	  
+		  
 }
