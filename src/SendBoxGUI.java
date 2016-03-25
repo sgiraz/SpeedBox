@@ -73,11 +73,11 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		m1.add(mi5);
 		mb.setHelpMenu(m3);
 		setMenuBar(mb);
-		setSize(373, 359);
+		setSize(443, 359);
 		setTitle("SendBox");
 		
 		splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.8);
+		splitPane.setResizeWeight(0.7);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		{
 			scrollPane = new JScrollPane();
@@ -93,7 +93,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		lblDropFileHere.setForeground(Color.GRAY);
 		lblDropFileHere.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDropFileHere.setFont(new Font("Calibri Light", Font.PLAIN, 18));
-		lblDropFileHere.setBounds(61, 126, 163, 65);
+		lblDropFileHere.setBounds(43, 124, 163, 65);
 		panel.add(lblDropFileHere);
 		progressBarDown = new JProgressBar();
 		progressBarDown.setStringPainted(true);
