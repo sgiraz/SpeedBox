@@ -16,6 +16,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JProgressBar;
 import java.awt.ComponentOrientation;
 import java.awt.Cursor;
+import javax.swing.JSplitPane;
+import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import javax.swing.JMenuBar;
+import java.awt.Font;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class SendBoxGUI extends JFrame implements ActionListener{
@@ -24,12 +33,6 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	public static String otherIP = "localhost";
 	public static int myPort = 16000;
 	public static int otherPort = 16000;
-
-	// list of sending files
-	// http://stackoverflow.com/questions/14615888/list-of-jpanels-that-eventually-uses-a-scrollbar
-
-	private JPanel p;
-	private JLabel lb;
 	private MenuBar mb;
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
@@ -37,15 +40,16 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	private Client client = new Client();
 	private Server server;
 	private JProgressBar progressBarDown;
+	private JSplitPane splitPane;
+	private JScrollPane scrollPane;
+	private JPanel panel;
+	private JLabel lblDropFileHere;
 
 
 	public SendBoxGUI(){
 
 		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
 		catch (Exception e) { e.printStackTrace(); }
-
-		p = new JPanel();
-		lb = new JLabel("Drop your file here to send ");
 		mb = new MenuBar();
 		m1 = new Menu("File");
 		m2 = new Menu("Edit");
@@ -61,9 +65,6 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 
 	private void setup() {
 		
-		lb.setHorizontalAlignment(SwingConstants.CENTER);
-		lb.setBounds(51, 119, 197, 39);
-		
 		mi4.addActionListener(this);
 		mi5.addActionListener(this);
 		mb.add(m1);
@@ -77,13 +78,33 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		m1.add(mi5);
 		mb.setHelpMenu(m3);
 		setMenuBar(mb);
-		p.setLayout(null);
-		p.add(lb);
-		p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		setSize(300, 300);
+		setSize(373, 359);
 		setTitle("SendBox");
-		getContentPane().add(p);
-		p.add(getProgressBarDown());
+		
+		splitPane = new JSplitPane();
+		splitPane.setResizeWeight(0.8);
+		getContentPane().add(splitPane, BorderLayout.CENTER);
+		{
+			scrollPane = new JScrollPane();
+			splitPane.setRightComponent(scrollPane);
+		}
+		
+		panel = new JPanel();
+		panel.setForeground(Color.GRAY);
+		splitPane.setLeftComponent(panel);
+		panel.setLayout(null);
+		
+		lblDropFileHere = new JLabel("Drop File Here");
+		lblDropFileHere.setForeground(Color.GRAY);
+		lblDropFileHere.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDropFileHere.setFont(new Font("Calibri Light", Font.PLAIN, 18));
+		lblDropFileHere.setBounds(61, 126, 163, 65);
+		panel.add(lblDropFileHere);
+		progressBarDown = new JProgressBar();
+		progressBarDown.setStringPainted(true);
+		progressBarDown.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		progressBarDown.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		progressBarDown.setBounds(77, 170, 146, 20); 
 
 		// Connect the label with a drag and drop listener
 		new DropTarget(this, listener);							
@@ -120,25 +141,8 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	}
 	
 	public JPanel getPane(){
-		return p;
+		return panel;
 	}
-
-	public Server getServer() {
-		return server;
-	}
-
-	public void setServer(Server server) {
-		this.server = server;
-	}
-	 
-	private JProgressBar getProgressBarDown() {
-		if (progressBarDown == null) {
-			progressBarDown = new JProgressBar();
-			progressBarDown.setStringPainted(true);
-			progressBarDown.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			progressBarDown.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-			progressBarDown.setBounds(77, 170, 146, 20);
-		}
-		return progressBarDown;
-	}
+ 
+	  
 }
