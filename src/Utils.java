@@ -28,6 +28,13 @@ public class Utils {
 	}
 	
 	/**
+	 * this function should be return the ip address of Ad-hoc network (for client)
+	 */
+	public void getNetworkIp(){
+		// .......
+	}
+	
+	/**
 	 * Display some information about network as ifconfig command
 	 */
 	public void ifConfig(){
@@ -46,9 +53,9 @@ public class Utils {
 	/**
 	 * You can discover if a network interface is “up” (that is, running) with the isUP() method.
 	 * The following methods indicate the network interface type:
-	 * isLoopback() indicates if the network interface is a loopback interface.
-	 * isPointToPoint() indicates if the interface is a point-to-point interface.
-	 * isVirtual() indicates if the interface is a virtual interface.
+	 * - isLoopback() indicates if the network interface is a loopback interface.
+	 * - isPointToPoint() indicates if the interface is a point-to-point interface.
+	 * - isVirtual() indicates if the interface is a virtual interface.
 	 * @param netint
 	 * @throws SocketException
 	 */
@@ -72,15 +79,21 @@ public class Utils {
         System.out.printf("\n");
      }
 	
-	public void getData(){
+	/**
+	 * @return the string of current assigned ip address
+	 */
+	public String getData(){
 		try {
 			InetAddress ip = InetAddress.getLocalHost();
 			System.out.println("Current IP address : " + ip.getHostAddress());
-
+			return ip.getHostAddress().toString();	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
+			return ("Host Unknow");
 		}
+		
 	} 
+	
 
 
 }

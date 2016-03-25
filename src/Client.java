@@ -18,16 +18,16 @@ public class Client implements Runnable {
 	byte bytes[] = new byte[1024*32];
 	
 	private final int ERROR = -1;
+	
 	public boolean SendFile(String path, String ip, int port)
 	{
 		if(sending)
 			return false;
-		
 		this.ip = ip;
 		this.port = port;
 		this.path = path;
 		sending = true;
-		new Thread(this, "Client send file thread").start();;
+		new Thread(this, "Client send file thread").start();
 		
 		return true;
 	}
@@ -97,6 +97,7 @@ public class Client implements Runnable {
 		}
 
 		System.out.println("CLIENT: finish");
+		sending=false;
 	}
 	 
 }

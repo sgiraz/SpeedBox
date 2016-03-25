@@ -23,7 +23,7 @@ public class SendingFile extends JButton{
 	
 	private final File file;
 	private int totalBytesSent;
-	private float percent;
+	private int percent;
 	private JProgressBar pb;
 	
 	public SendingFile(File file)
@@ -49,8 +49,10 @@ public class SendingFile extends JButton{
 	public void update(float sent)
 	{
 		this.totalBytesSent += sent;
-		percent = totalBytesSent / file.length();
-		pb.setValue((int)(percent * 100));
+		percent = (int)(totalBytesSent / file.length()*100);
+		pb.setString("Processing " + percent + "%");
+		pb.setValue(percent);
+		
 	}
 	
 	

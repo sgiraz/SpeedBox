@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -11,12 +12,13 @@ import java.util.List;
 class DropListener implements DropTargetListener
 {
 
-	private SendBox sendBox;
+	private SendBoxGUI sendBox;
+	private Color defaultBackgroundColor;
 
-	public DropListener(SendBox sendBox)
+	public DropListener(SendBoxGUI sendBox)
 	{
 		this.sendBox = sendBox;
-		
+		defaultBackgroundColor = sendBox.getPane().getBackground();	
 	}
 	
 	@Override
@@ -57,13 +59,19 @@ class DropListener implements DropTargetListener
 			}
 		}
 		event.dropComplete(true);
+		System.out.println("drop complete");
+		sendBox.getPane().setBackground(defaultBackgroundColor);
 	}
 
 	@Override
-	public void dragEnter(DropTargetDragEvent event){}
+	public void dragEnter(DropTargetDragEvent event){
+		sendBox.getPane().setBackground(new Color(152, 251, 152));
+	}
 
 	@Override
-	public void dragExit(DropTargetEvent event){}
+	public void dragExit(DropTargetEvent event){
+		sendBox.getPane().setBackground(defaultBackgroundColor);
+	}
 
 	@Override
 	public void dragOver(DropTargetDragEvent event){}

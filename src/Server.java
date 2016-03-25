@@ -96,7 +96,7 @@ public class Server implements Runnable {
 				while((count = reader.read(bytes)) > 0 ){
 					received += count;
 					out.write(bytes, 0 , count);
-					System.out.println(received/(float)size * 100 + "%");
+					System.out.format("Dowload: %.1f %% %n", received/(float)size * 100);
 				}  
 				System.out.println("Data saved in: " + path);
 			} catch (IOException x) {
@@ -117,7 +117,6 @@ public class Server implements Runnable {
 		int response = JOptionPane.showConfirmDialog(null, "Do you want to receive " + fileName + "?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (response == JOptionPane.YES_OPTION) {
-			System.out.println("choose yes");
 			return true;
 		}
 		return false;
