@@ -154,7 +154,7 @@ public class Preferences extends JFrame implements Runnable {
 	
 	private JLabel getLblListOfNetworks() {
 		if (lblListOfNetworks == null) {
-			lblListOfNetworks = new JLabel("List of networks:");
+			lblListOfNetworks = new JLabel("Networks list:");
 			lblListOfNetworks.setBounds(121, 113, 118, 16);
 		}
 		return lblListOfNetworks;
