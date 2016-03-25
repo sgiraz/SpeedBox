@@ -21,7 +21,7 @@ import java.awt.Cursor;
 public class SendBoxGUI extends JFrame implements ActionListener{
 
 	public static String myIP = "";
-	public static String otherIP = "88.147.113.67";
+	public static String otherIP = "localhost";
 	public static int myPort = 16000;
 	public static int otherPort = 16000;
 
@@ -34,19 +34,15 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
 	private DropListener listener;
-	private Client client;
+	private Client client = new Client();
 	private Server server;
 	private JProgressBar progressBarDown;
 
 
 	public SendBoxGUI(){
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
+		catch (Exception e) { e.printStackTrace(); }
 
 		p = new JPanel();
 		lb = new JLabel("Drop your file here to send ");
@@ -134,15 +130,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	public void setServer(Server server) {
 		this.server = server;
 	}
-	
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-	
+	 
 	private JProgressBar getProgressBarDown() {
 		if (progressBarDown == null) {
 			progressBarDown = new JProgressBar();
