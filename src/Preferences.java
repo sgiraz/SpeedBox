@@ -58,7 +58,7 @@ public class Preferences extends JFrame implements Runnable {
 		setDefaultListUserIPModel();
 		setType(Type.UTILITY);
 		setTitle("Preferences");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 312);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getListCategoriesPref());

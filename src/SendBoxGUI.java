@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JProgressBar;
 import java.awt.ComponentOrientation;
 import java.awt.Cursor;
@@ -37,7 +39,15 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	private JProgressBar progressBarDown;
 
 
-	public SendBoxGUI(){	
+	public SendBoxGUI(){
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		p = new JPanel();
 		lb = new JLabel("Drop your file here to send ");
 		mb = new MenuBar();
