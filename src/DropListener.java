@@ -58,7 +58,7 @@ class DropListener implements DropTargetListener
 		}
 		event.dropComplete(true);
 		System.out.println("drop complete");
-		//sendBox.getPane().setBackground(defaultBackgroundColor);
+		sendBox.getPane().setBackground(defaultBackgroundColor);
 	}
 
 	@Override
