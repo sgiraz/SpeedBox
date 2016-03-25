@@ -43,9 +43,7 @@ class DropListener implements DropTargetListener
 						for (Object file : files)
 						{
 							if(file instanceof File)
-							{ 
 								sendBox.drop((File)file);
-							}
 							else 
 								System.out.println("This is not a file"); 
 						}
