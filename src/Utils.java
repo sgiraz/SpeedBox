@@ -37,7 +37,7 @@ public class Utils {
 	/**
 	 * Display some information about network as ifconfig command
 	 */
-	public void ifConfig(){
+	public boolean ifConfig(){
 		 
 	        Enumeration<NetworkInterface> nets;
 			try {
@@ -45,13 +45,13 @@ public class Utils {
 				for (NetworkInterface netint : Collections.list(nets))
 		            displayInterfaceInformation(netint);
 			} catch (SocketException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}   
+				return false;
+			} 
+			return true;
 	}
 	
 	/**
-	 * You can discover if a network interface is “up” (that is, running) with the isUP() method.
+	 * You can discover if a network interface is x (that is, running) with the isUP() method.
 	 * The following methods indicate the network interface type:
 	 * - isLoopback() indicates if the network interface is a loopback interface.
 	 * - isPointToPoint() indicates if the interface is a point-to-point interface.
