@@ -31,17 +31,17 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
 	private DropListener listener;
-	private Client client = new Client();
+	private Client client;
 	private Server server;
 	private JProgressBar progressBarDown;
 	private JSplitPane splitPane;
 	private JScrollPane scrollPane;
-	private JPanel panel;
+	private JPanel panelDrop;
 	private JLabel lblDropFileHere;
 
 
 	public SendBoxGUI(){
-
+		
 		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
 		catch (Exception e) { e.printStackTrace(); }
 
@@ -55,6 +55,9 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		mi4 = new MenuItem("Preferences");
 		mi5 = new MenuItem("Quit");
 		listener = new DropListener(this);
+		
+		client = new Client();
+		server = new Server(myPort);
 		setup();
 	}
 
@@ -84,17 +87,17 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 			splitPane.setRightComponent(scrollPane);
 		}
 		
-		panel = new JPanel();
-		panel.setForeground(Color.GRAY);
-		splitPane.setLeftComponent(panel);
-		panel.setLayout(null);
+		panelDrop = new JPanel();
+		panelDrop.setForeground(Color.GRAY);
+		splitPane.setLeftComponent(panelDrop);
+		panelDrop.setLayout(null);
 		
-		lblDropFileHere = new JLabel("Drop File Here");
+		lblDropFileHere = new JLabel("Drop file here");
 		lblDropFileHere.setForeground(Color.GRAY);
 		lblDropFileHere.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDropFileHere.setFont(new Font("Calibri Light", Font.PLAIN, 18));
 		lblDropFileHere.setBounds(61, 126, 163, 65);
-		panel.add(lblDropFileHere);
+		panelDrop.add(lblDropFileHere);
 		progressBarDown = new JProgressBar();
 		progressBarDown.setStringPainted(true);
 		progressBarDown.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -137,7 +140,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	
 	// this is for backgroud color during the drag and drop
 	public JPanel getPane(){
-		return panel;
+		return panelDrop;
 	}
 		  
 }

@@ -7,8 +7,6 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					String winScopeAddress = Utils.windowsReadRegistry("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters", "ScopeAddress");
-					System.out.println(winScopeAddress);
 					new SendBoxGUI();
 				}
 				catch (Exception e) {
@@ -16,6 +14,5 @@ public class Main {
 				}
 			}
 		});
-	}
-	
+	}	
 }
