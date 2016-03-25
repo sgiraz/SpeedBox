@@ -113,6 +113,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		client.SendFile(file.getPath(), otherIP, otherPort);
 	}
 	
+	// this is for backgroud color during the drag and drop
 	public JPanel getPane(){
 		return p;
 	}
