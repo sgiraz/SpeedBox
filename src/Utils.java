@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -37,7 +40,7 @@ public class Utils {
 	/**
 	 * Display some information about network as ifconfig command
 	 */
-	public void ifConfig(){
+	public boolean ifConfig(){
 		 
 	        Enumeration<NetworkInterface> nets;
 			try {
@@ -45,13 +48,13 @@ public class Utils {
 				for (NetworkInterface netint : Collections.list(nets))
 		            displayInterfaceInformation(netint);
 			} catch (SocketException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}   
+				return false;
+			} 
+			return true;
 	}
 	
 	/**
-	 * You can discover if a network interface is “up” (that is, running) with the isUP() method.
+	 * You can discover if a network interface is x (that is, running) with the isUP() method.
 	 * The following methods indicate the network interface type:
 	 * - isLoopback() indicates if the network interface is a loopback interface.
 	 * - isPointToPoint() indicates if the interface is a point-to-point interface.
@@ -94,6 +97,57 @@ public class Utils {
 		
 	} 
 	
+	
+	public static final String windowsReadRegistry(String location, String key){
+        try {
+            // Run reg query, then read output with StreamReader (internal class)
+            Process process = Runtime.getRuntime().exec("reg query " + 
+                    '"'+ location + "\" /v " + key);
 
+            InputStream is = process.getInputStream();
+            StringWriter sw = new StringWriter();
+            int c;
+            while ((c = is.read()) != -1)
+                sw.write(c);
+             
+            process.waitFor(); 
+            String output = sw.toString();
 
+            int i = output.indexOf("REG_SZ");
+            if (i == -1) 
+                return null;
+
+            StringBuilder sb = new StringBuilder();
+            i += 6; // skip REG_SZ
+            
+            // skip spaces or tabs
+            for (;;)
+            {
+               if (i > output.length())
+                   break;
+               char c1 = output.charAt(i);
+               if (c1 != ' ' && c1 != '\t')
+                   break;
+               ++i;
+            }
+
+            // take everything until end of line
+            for (;;)
+            {
+               if (i > output.length())
+                   break;
+               char c1 = output.charAt(i);
+               if (c1 == '\r' || c1 == '\n')
+                   break;
+               sb.append(c1);
+               ++i;
+            }
+
+            return sb.toString();
+        }
+        catch (Exception e) {
+            return null;
+        }
+
+    }
 }

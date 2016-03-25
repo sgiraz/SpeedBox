@@ -27,7 +27,7 @@ public class Client implements Runnable {
 		this.port = port;
 		this.path = path;
 		sending = true;
-		new Thread(this, "Client send file thread").start();
+		new Thread(this, "CLIENT: send file thread").start();
 		
 		return true;
 	}
@@ -87,7 +87,7 @@ public class Client implements Runnable {
 			}
 			else
 			{
-				System.out.println("other command " + command);
+				System.out.println("CLIENT: other command " + command);
 			}
 						
 			
