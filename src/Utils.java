@@ -12,13 +12,14 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 
 /*
 git add --all   //aggiunge i files
 git commit -m "messaggio di commit"  //li salva in locale
 git push  //li carica online
 git pull //per ricevere
-*/
+ */
 
 public class Utils {
 
@@ -27,7 +28,7 @@ public class Utils {
 		int pos = path.lastIndexOf("\\");
 		if(pos <= 0)
 			pos = path.lastIndexOf("/");
-		 
+
 		if (pos > 0)
 			return path.substring(pos + 1);
 
@@ -37,18 +38,21 @@ public class Utils {
 	/**
 	 * this function should be return the ip address of Ad-hoc network (for client)
 	 */
-	public String osxGetGetway(){
+	public static String osxGetGetway(){
 		Process result;
 		String line = "";
 		try {
 			result = Runtime.getRuntime().exec("netstat -rn | grep default");
 			BufferedReader output = new BufferedReader(new InputStreamReader(result.getInputStream()));
 			line = output.readLine();
+			StringTokenizer st = new StringTokenizer( line );
+			st.nextToken();
+			return st.nextToken(); //gateway 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		return line;
+			return null;
+		}	
 	}
 	
 	
@@ -66,8 +70,9 @@ public class Utils {
 				return false;
 			} 
 			return true;
+
 	}
-	
+
 	/**
 	 * You can discover if a network interface is x (that is, running) with the isUP() method.
 	 * The following methods indicate the network interface type:
@@ -78,104 +83,142 @@ public class Utils {
 	 * @throws SocketException
 	 */
 	private static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
-        System.out.printf("Display name: %s\n", netint.getDisplayName());
-        System.out.printf("Name: %s\n", netint.getName());
-        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-        
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            System.out.printf("InetAddress: %s\n", inetAddress);
-        }
-       
-        System.out.printf("Up? %s\n", netint.isUp());
-        System.out.printf("Loopback? %s\n", netint.isLoopback());
-        System.out.printf("PointToPoint? %s\n", netint.isPointToPoint());
-        System.out.printf("Supports multicast? %s\n", netint.supportsMulticast());
-        System.out.printf("Virtual? %s\n", netint.isVirtual());
-        System.out.printf("Hardware address: %s\n",
-                    Arrays.toString(netint.getHardwareAddress()));
-        System.out.printf("MTU: %s\n", netint.getMTU());
-        System.out.printf("\n");
-     }
-	
+		System.out.printf("Display name: %s\n", netint.getDisplayName());
+		System.out.printf("Name: %s\n", netint.getName());
+		Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+
+		for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+			System.out.printf("InetAddress: %s\n", inetAddress);
+		}
+
+		System.out.printf("Up? %s\n", netint.isUp());
+		System.out.printf("Loopback? %s\n", netint.isLoopback());
+		System.out.printf("PointToPoint? %s\n", netint.isPointToPoint());
+		System.out.printf("Supports multicast? %s\n", netint.supportsMulticast());
+		System.out.printf("Virtual? %s\n", netint.isVirtual());
+		System.out.printf("Hardware address: %s\n",
+				Arrays.toString(netint.getHardwareAddress()));
+		System.out.printf("MTU: %s\n", netint.getMTU());
+		System.out.printf("\n");
+	}
+
 	/**
 	 * @return the string of current assigned ip address
 	 */
-	public String getData(){
+	public static String getLocalIP(){
 		try {
 			InetAddress ip = InetAddress.getLocalHost();
-			System.out.println("Current IP address : " + ip.getHostAddress());
-			return ip.getHostAddress().toString();	
+			return ip.getHostAddress();	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			return ("Host Unknow");
-		}
+
+		}		
 	} 
-	 
+
+	public static String getGatewayIP()
+	{
+		try{
+			Process result = Runtime.getRuntime().exec("netstat -rn");
+			BufferedReader output = new BufferedReader(new InputStreamReader(result.getInputStream()));
+
+			String line;
+			int found = 0;
+			while((line = output.readLine()) != null)
+			{
+				line = line.trim();
+				if ( line.startsWith("0.0.0.0"))
+				{
+					found = 1;
+					break;		 
+				}
+				else if(line.startsWith("default")){
+					found = 2;
+					break;	
+				}
+			} 
+			if(found != 0)
+			{
+				StringTokenizer st = new StringTokenizer( line );
+
+				st.nextToken();
+				if(found == 1){
+					st.nextToken();
+				}
+				return st.nextToken(); //gateway 
+			}
+
+		}catch( Exception e ) { 
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static final String windowsReadRegistry(String location, String key){
-        try {
-            // Run reg query, then read output with StreamReader (internal class)
-            Process process = Runtime.getRuntime().exec("reg query " + 
-                    '"'+ location + "\" /v " + key);
+		try {
+			// Run reg query, then read output with StreamReader (internal class)
+			Process process = Runtime.getRuntime().exec("reg query " + 
+					'"'+ location + "\" /v " + key);
 
-            InputStream is = process.getInputStream();
-            StringWriter sw = new StringWriter();
-            int c;
-            while ((c = is.read()) != -1)
-                sw.write(c);
-             
-            process.waitFor(); 
-            String output = sw.toString();
+			InputStream is = process.getInputStream();
+			StringWriter sw = new StringWriter();
+			int c;
+			while ((c = is.read()) != -1)
+				sw.write(c);
 
-            int i = output.indexOf("REG_SZ");
-            if (i == -1) 
-                return null;
+			process.waitFor(); 
+			String output = sw.toString();
 
-            StringBuilder sb = new StringBuilder();
-            i += 6; // skip REG_SZ
-            
-            // skip spaces or tabs
-            for (;;)
-            {
-               if (i > output.length())
-                   break;
-               char c1 = output.charAt(i);
-               if (c1 != ' ' && c1 != '\t')
-                   break;
-               ++i;
-            }
+			int i = output.indexOf("REG_SZ");
+			if (i == -1) 
+				return null;
 
-            // take everything until end of line
-            for (;;)
-            {
-               if (i > output.length())
-                   break;
-               char c1 = output.charAt(i);
-               if (c1 == '\r' || c1 == '\n')
-                   break;
-               sb.append(c1);
-               ++i;
-            }
+			StringBuilder sb = new StringBuilder();
+			i += 6; // skip REG_SZ
 
-            return sb.toString();
-        }
-        catch (Exception e) {
-            return null;
-        }
+			// skip spaces or tabs
+			for (;;)
+			{
+				if (i > output.length())
+					break;
+				char c1 = output.charAt(i);
+				if (c1 != ' ' && c1 != '\t')
+					break;
+				++i;
+			}
 
-    }
-	
+			// take everything until end of line
+			for (;;)
+			{
+				if (i > output.length())
+					break;
+				char c1 = output.charAt(i);
+				if (c1 == '\r' || c1 == '\n')
+					break;
+				sb.append(c1);
+				++i;
+			}
+
+			return sb.toString();
+		}
+		catch (Exception e) {
+			return null;
+		}
+
+	}
+
 	private final static java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
 			"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+					"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+					"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
-	
+
 	public static boolean isIPValid(final String ipv4)
 	{ 
 		java.util.regex.Matcher matcher = pattern.matcher(ipv4);
 		return matcher.matches();             
 	}
-	
+
 	public static final String getPublicIP()
 	{
 		URL url = null;
@@ -184,7 +227,7 @@ public class Utils {
 				"http://myexternalip.com/raw",
 				"https://wtfismyip.com/text",
 				"https://api.ipify.org/"};
-		
+
 		for(String website : websites)
 		{
 			try {
@@ -193,7 +236,7 @@ public class Utils {
 			catch (MalformedURLException e) {
 				continue;
 			}
-			
+
 			try(BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))){
 				String line = in.readLine();
 				if(isIPValid(line))
