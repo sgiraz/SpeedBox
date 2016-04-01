@@ -22,9 +22,6 @@ git pull //per ricevere
 
 public class Utils {
 
-	
-
-	
 	public static String pathGetFilename(String path)
 	{
 		int pos = path.lastIndexOf("\\");
@@ -44,11 +41,12 @@ public class Utils {
 		// .......
 	}
 	
+	
+	
 	/**
 	 * Display some information about network as ifconfig command
 	 */
-	public boolean ifConfig(){
-		 
+	public static boolean ifConfig(){
 	        Enumeration<NetworkInterface> nets;
 			try {
 				nets = NetworkInterface.getNetworkInterfaces();
@@ -69,7 +67,7 @@ public class Utils {
 	 * @param netint
 	 * @throws SocketException
 	 */
-	private void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
+	private static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
         System.out.printf("Display name: %s\n", netint.getDisplayName());
         System.out.printf("Name: %s\n", netint.getName());
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
@@ -103,8 +101,7 @@ public class Utils {
 		}
 		
 	} 
-	
-	
+	 
 	public static final String windowsReadRegistry(String location, String key){
         try {
             // Run reg query, then read output with StreamReader (internal class)
