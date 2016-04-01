@@ -3,8 +3,9 @@ import java.awt.EventQueue;
 public class Main {
 	
 	public static void main(String[] args) {
-		//prova
-		Utils.ifConfig();
+		//prova 
+		System.out.println(Utils.windowsGetGateway());
+		System.out.println(Utils.getLocalIP());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
