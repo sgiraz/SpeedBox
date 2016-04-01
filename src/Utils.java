@@ -23,6 +23,11 @@ git pull //per ricevere
 
 public class Utils {
 
+	/**
+	 * 
+	 * @param path
+	 * @return file name sent from client to server
+	 */
 	public static String pathGetFilename(String path)
 	{
 		int pos = path.lastIndexOf("\\");
@@ -34,28 +39,6 @@ public class Utils {
 
 		return "";
 	}
-	
-	/**
-	 * this function should be return the ip address of Ad-hoc network (for client)
-	 */
-	public static String osxGetGetway(){
-		Process result;
-		String line = "";
-		try {
-			result = Runtime.getRuntime().exec("netstat -rn | grep default");
-			BufferedReader output = new BufferedReader(new InputStreamReader(result.getInputStream()));
-			line = output.readLine();
-			StringTokenizer st = new StringTokenizer( line );
-			st.nextToken();
-			return st.nextToken(); //gateway 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}	
-	}
-	
-	
 	
 	/**
 	 * Display some information about network as ifconfig command
