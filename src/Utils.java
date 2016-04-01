@@ -1,8 +1,13 @@
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +22,9 @@ git pull //per ricevere
 
 public class Utils {
 
+	
+
+	
 	public static String pathGetFilename(String path)
 	{
 		int pos = path.lastIndexOf("\\");
@@ -149,4 +157,46 @@ public class Utils {
         }
 
     }
+	
+	private final static java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
+			"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+	
+	public static boolean isIPValid(final String ipv4)
+	{ 
+		java.util.regex.Matcher matcher = pattern.matcher(ipv4);
+		return matcher.matches();             
+	}
+	
+	public static final String getPublicIP()
+	{
+		URL url = null;
+		final String[] websites = new String[]{
+				"http://checkip.amazonaws.com",
+				"http://myexternalip.com/raw",
+				"https://wtfismyip.com/text",
+				"https://api.ipify.org/"};
+		
+		for(String website : websites)
+		{
+			try {
+				url = new URL(website);
+			}
+			catch (MalformedURLException e) {
+				continue;
+			}
+			
+			try(BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))){
+				String line = in.readLine();
+				if(isIPValid(line))
+					return line;
+			}
+			catch (IOException e) {
+				continue;		
+			}
+		}
+		return null;
+	}
 }
