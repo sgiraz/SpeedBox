@@ -28,8 +28,7 @@ public class Preferences extends JFrame implements Runnable {
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-	private Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
-	private Matcher matcher;
+	
 	private JTextField textFieldUsername;
 	private JLabel lblUsername;
 	private JList<String> JListUsersIP;
@@ -129,7 +128,7 @@ public class Preferences extends JFrame implements Runnable {
 			btnAdd.setPreferredSize(new Dimension(75, 30));
 			btnAdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(!textFieldNetworkIP.getText().isEmpty() && validate(textFieldNetworkIP.getText()) && !textFieldUsername.getText().isEmpty()){
+					if(!textFieldNetworkIP.getText().isEmpty() && Utils.isIPValid(textFieldNetworkIP.getText()) && !textFieldUsername.getText().isEmpty()){
 						String ip = textFieldNetworkIP.getText();
 						String username = textFieldUsername.getText();
 						listModel.addElement(username + " " + ip);
@@ -147,10 +146,8 @@ public class Preferences extends JFrame implements Runnable {
 	    * @param ip ip address for validation
 	    * @return true valid ip address, false invalid ip address
 	    */
-	    public boolean validate(final String ip){		  
-		  matcher = pattern.matcher(ip);
-		  return matcher.matches();	    	    
-	    }
+		
+	   
 	
 	private JLabel getLblListOfNetworks() {
 		if (lblListOfNetworks == null) {

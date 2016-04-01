@@ -48,7 +48,6 @@ public class Utils {
 	 * Display some information about network as ifconfig command
 	 */
 	public boolean ifConfig(){
-		 
 	        Enumeration<NetworkInterface> nets;
 			try {
 				nets = NetworkInterface.getNetworkInterfaces();
