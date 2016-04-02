@@ -61,20 +61,13 @@ public class StartConfig extends JDialog {
 			public void insertUpdate(DocumentEvent e) { check(); }
 
 			public void check() {
-				if(checkSSID(textFieldSSID.getText())){
+				String SSID = textFieldSSID.getText();
+				if(SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+")){
 					textFieldSSID.setBackground(Color.green);
 				}
 				else{
 					textFieldSSID.setBackground(Color.red);
 				}
-			}
-
-			/**
-			 * check the network SSID alphanumeric format
-			 * @param SSID the network name
-			 */
-			private boolean checkSSID(String SSID) {
-				return SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+"); 
 			}
 		});
 		
@@ -88,20 +81,13 @@ public class StartConfig extends JDialog {
 			public void insertUpdate(DocumentEvent e) { check(); }
 
 			public void check() {
-				if(checkPassword(textFieldPassword.getText())){
+				String password = textFieldPassword.getText();
+				if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
 					textFieldPassword.setBackground(Color.green);
 				}
 				else{
 					textFieldPassword.setBackground(Color.red);
 				}
-			}
-
-			/**
-			 * Check if the password is in the alphanumeric format
-			 * @param password the network password to check
-			 */
-			private boolean checkPassword(String password) {
-				return password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+");
 			}
 		});
 		
