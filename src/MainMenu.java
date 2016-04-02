@@ -16,7 +16,7 @@ public class MainMenu extends JDialog {
 			JButton cancelButton = new JButton("Connect");
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//TODO: add connection
+					new ConnectionNetwork();
 				}
 			});
 			cancelButton.setBounds(173, 60, 113, 23);

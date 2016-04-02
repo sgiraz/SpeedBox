@@ -6,29 +6,21 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class ConnectionNetwork extends JDialog {
+public class ConnectionNetwork extends JDialog implements Runnable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6L;
 	private final JPanel contentPanel = new JPanel();
 	private int portNumber = 50000;
 
-	
-	/**
-	 * Create the dialog.
-	 */
 	public ConnectionNetwork() {
-		
 		// print istruction for user to connect ad-hoc network
 		// ...
 		// waiting for user to connect ad-hoc network
@@ -37,9 +29,7 @@ public class ConnectionNetwork extends JDialog {
 		// ...
 		// run SendBox
 		
-		ConnectionNetwork dialog = new ConnectionNetwork();
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setVisible(true);
+		new Thread().start();
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -51,15 +41,22 @@ public class ConnectionNetwork extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
-				// if user click on this button, turn on the last JDialog
 			}
 		}
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setVisible(true);
 	}
 	
-	private void makeHandshake(){
-		System.out.println("SERVERWAIT: waiting for an handshake");
+	@Override
+	public void run() {
+
 		try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -67,25 +64,30 @@ public class ConnectionNetwork extends JDialog {
 
 			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
 
-			// check for input request type
-			String line = reader.readLine(); 
+			// send input for request connection type
+			System.out.println("CLIENT: Sending handshake...");
+			writer.write("handshake");
+			writer.newLine();
+			writer.flush();
 
-			if(line.equals("handshake")){
-				// send acceptation
-				System.out.println("SERVER: Sending handshake");
+			// receive acceptation
+			String line = reader.readLine();
 
-				writer.write("handshake");
-				writer.newLine();
-				writer.flush();
+			if((line.equals("handshake"))){
+				// your are connected
+				System.out.println("CLIENT: connection estabilished correctly");
+
 			}
 			else
 			{
-				System.out.println("faiulure...");
+				// do something...
 			}
+
 		}
 		catch(IOException e){
 			e.printStackTrace();
 		}
 	}
+
 
 }
