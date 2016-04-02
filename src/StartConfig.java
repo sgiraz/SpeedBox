@@ -114,15 +114,18 @@ public class StartConfig extends JDialog {
 	}
 
 	/**
-	 * 
-	 * @param SSID
-	 * @return true only if SSID is alphanumeric and ha minimum 6 characters
+	 * check the network SSID alphanumeric format
+	 * @param SSID the network name
 	 */
 	private boolean checkSSID(String SSID) {
-		return SSID.length() >= 4 && SSID.matches("[a-zA-Z0-9]+"); 
+		return SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+"); 
 	}
 	
+	/**
+	 * Check if the password is in the alphanumeric format
+	 * @param password the network password to check
+	 */
 	private boolean checkPassword(String password) {
-		return password.length() >= 8 && password.matches("[a-zA-Z0-9]+");
+		return password.length() >= 8  &&  password.length() >= 20 && password.matches("[a-zA-Z0-9]+");
 	}
 }
