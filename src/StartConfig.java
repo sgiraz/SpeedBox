@@ -126,7 +126,7 @@ public class StartConfig extends JDialog {
 	}
 
 	public boolean checkPassword() {
-		String password = textFieldPassword.getText();
+		String password = textFieldPassword.getPassword().toString();
 		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
 			textFieldPassword.setBackground(Color.green);
 			return true;
