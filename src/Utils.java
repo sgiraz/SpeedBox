@@ -211,8 +211,8 @@ public class Utils {
 
 	private final static java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
 			"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-					"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-					"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 
 	public static boolean isIPValid(final String ipv4)

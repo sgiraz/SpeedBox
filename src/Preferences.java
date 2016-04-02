@@ -1,8 +1,6 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
@@ -23,11 +21,6 @@ public class Preferences extends JFrame implements Runnable {
 	private JLabel lblNetworkIp;
 	private JButton btnAdd;
 	private JLabel lblListOfNetworks;
-	private static final String IPADDRESS_PATTERN = 
-				"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 	
 	private JTextField textFieldUsername;
 	private JLabel lblUsername;

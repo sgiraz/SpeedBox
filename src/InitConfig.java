@@ -23,7 +23,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class StartConfig extends JDialog {
+public class InitConfig extends JDialog {
 
 	private static final long serialVersionUID = 6L;
 	private final JPanel contentPanel = new JPanel();
@@ -34,16 +34,16 @@ public class StartConfig extends JDialog {
 	private char defaultEchoChar;
 	private JCheckBox chckbxNewCheckBox;
 
-	public StartConfig() 
+	public InitConfig() 
 	{
 		///TODO : change the call to a generic stopHostednetwork function instead of windows only.
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				 WindowsNetwork.stopHostednetwork();
+				WindowsNetwork.stopHostednetwork();
 			}
 		});
-		
+
 		setTitle("Network configuration");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
