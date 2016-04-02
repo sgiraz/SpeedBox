@@ -13,6 +13,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class ConnectionNetwork extends JDialog implements Runnable {
@@ -31,6 +33,13 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 		// when he's connected send an hadshake message to Server
 		// ...
 		// run SendBox
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				close();	
+			}
+		});
 
 		new Thread().start();;
 		setBounds(100, 100, 450, 300);
@@ -46,30 +55,32 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
-						try{
-							if(clientSocket != null){
-								threadClosed = true;
-								clientSocket.close();
-								dispose();
-							}
-						}
-						catch(IOException e){
-							e.printStackTrace();
-						}
+						close();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
+	}
+	
+	private void close(){
+		try{
+			if(clientSocket != null){
+				clientSocket.close();
+			}
+			threadClosed = true;
+			dispose();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void run() {
 		
-
 		while(!threadClosed){
 			try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
 					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
