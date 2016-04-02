@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class StartConfig extends JDialog {
 
@@ -53,10 +55,15 @@ public class StartConfig extends JDialog {
 		textFieldSSID = new JTextField(System.getProperty("user.name"));
 		textFieldSSID.setBounds(177, 52, 130, 26);
 		textFieldSSID.setColumns(10);
-		textFieldSSID.addKeyListener(new KeyAdapter(){
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if(checkSSID(textFieldSSID.getText() + e.getKeyChar())){
+
+		 
+		textFieldSSID.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) { check(); }
+			public void removeUpdate(DocumentEvent e) { check(); }
+			public void insertUpdate(DocumentEvent e) { check(); }
+
+			public void check() {
+				if(checkSSID(textFieldSSID.getText())){
 					textFieldSSID.setBackground(Color.green);
 				}
 				else{
@@ -108,15 +115,19 @@ public class StartConfig extends JDialog {
 	}
 
 	/**
-	 * 
-	 * @param SSID
-	 * @return true only if SSID is alphanumeric and ha minimum 6 characters
+	 * check the network SSID alphanumeric format
+	 * @param SSID the network name
 	 */
 	private boolean checkSSID(String SSID) {
-		return SSID.length() >= 4 && SSID.length() < 16 && SSID.matches("[a-zA-Z0-9]+"); 
+
+		return SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+"); 
 	}
 	
+	/**
+	 * Check if the password is in the alphanumeric format
+	 * @param password the network password to check
+	 */
 	private boolean checkPassword(String password) {
-		return password.length() >= 8 && password.matches("[a-zA-Z0-9]+");
+		return password.length() >= 8  &&  password.length() >= 20 && password.matches("[a-zA-Z0-9]+");
 	}
 }
