@@ -46,7 +46,7 @@ public class Client implements Runnable {
 			writer.write(Utils.pathGetFilename(path));
 			writer.newLine();
 			writer.flush();
-			
+
 			System.out.println("CLIENT: Waiting for response..");
 			String command = reader.readLine();
 
@@ -88,9 +88,7 @@ public class Client implements Runnable {
 			else
 			{
 				System.out.println("CLIENT: other command " + command);
-			}
-						
-			
+			}			
 		} catch (IOException e) {
 			System.out.println("CLIENT: Impossible to connect");			
 			e.printStackTrace();
