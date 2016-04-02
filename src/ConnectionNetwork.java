@@ -19,6 +19,9 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 
 	private final JPanel contentPanel = new JPanel();
 	private int portNumber = 50000;
+	private Socket clientSocket;
+	private boolean threadClosed;
+
 
 	public ConnectionNetwork() {
 		// print istruction for user to connect ad-hoc network
@@ -28,8 +31,8 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 		// when he's connected send an hadshake message to Server
 		// ...
 		// run SendBox
-		
-		new Thread().start();
+
+		new Thread().start();;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -42,8 +45,17 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
+					public void actionPerformed(ActionEvent event) {
+						try{
+							if(clientSocket != null){
+								threadClosed = true;
+								clientSocket.close();
+								dispose();
+							}
+						}
+						catch(IOException e){
+							e.printStackTrace();
+						}
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
@@ -53,39 +65,54 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
-	
+
 	@Override
 	public void run() {
+		
 
-		try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-				DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
+		while(!threadClosed){
+			try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
+					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+					DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
+				
+				this.clientSocket = clientSocket;
 
-			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+				System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
 
-			// send input for request connection type
-			System.out.println("CLIENT: Sending handshake...");
-			writer.write("handshake");
-			writer.newLine();
-			writer.flush();
+				// send input for request connection type
+				System.out.println("CLIENT: Sending handshake...");
+				writer.write("handshake");
+				writer.newLine();
+				writer.flush();
 
-			// receive acceptation
-			String line = reader.readLine();
+				// receive acceptation
+				String line = reader.readLine();
 
-			if((line.equals("handshake"))){
-				// your are connected
-				System.out.println("CLIENT: connection estabilished correctly");
+				if((line.equals("handshake"))){
+					// your are connected
+					System.out.println("CLIENT: connection estabilished correctly");
+					dispose();
+					new SendBoxGUI();
+					return;
+				}
+				else
+				{
+					// do something...
+					System.out.println("CLIENT: problem to handshake");
+				}
 
 			}
-			else
-			{
-				// do something...
+			catch(IOException e){
+				e.printStackTrace();
+				
 			}
-
-		}
-		catch(IOException e){
-			e.printStackTrace();
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
