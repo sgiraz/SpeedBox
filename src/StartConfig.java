@@ -45,7 +45,6 @@ public class StartConfig extends JDialog {
 			contentPanel.add(lblCreateNetwork);
 		}
 
-
 		textFieldSSID = new JTextField(System.getProperty("user.name"));
 		textFieldSSID.setBounds(177, 52, 130, 26);
 		textFieldSSID.setColumns(10);
@@ -120,10 +119,10 @@ public class StartConfig extends JDialog {
 	 * @return true only if SSID is alphanumeric and ha minimum 6 characters
 	 */
 	private boolean checkSSID(String SSID) {
-		return SSID.matches("[a-zA-Z0-9]+") && SSID.length() >= 6; 
+		return SSID.length() >= 4 && SSID.matches("[a-zA-Z0-9]+"); 
 	}
 	
 	private boolean checkPassword(String password) {
-		return password.matches("[a-zA-Z0-9]+") && password.length() >= 8;
+		return password.length() >= 8 && password.matches("[a-zA-Z0-9]+");
 	}
 }
