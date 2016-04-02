@@ -31,7 +31,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class InitConfig extends JDialog {
+public class NetworkConfig extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = 6L;
 	private final JPanel contentPanel = new JPanel();
@@ -44,7 +44,7 @@ public class InitConfig extends JDialog {
 	private int portNumber = 50000;
 	ServerSocket serverSocket;
 
-	public InitConfig() 
+	public NetworkConfig() 
 	{
 		///TODO : change the call to a generic stopHostednetwork function instead of windows only.
 		addWindowListener(new WindowAdapter() {
@@ -87,8 +87,6 @@ public class InitConfig extends JDialog {
 			public void changedUpdate(DocumentEvent e) { checkSSID(); }
 			public void removeUpdate(DocumentEvent e) { checkSSID(); }
 			public void insertUpdate(DocumentEvent e) { checkSSID(); }
-
-
 		});
 
 		passwordField = new JPasswordField();
@@ -192,21 +190,15 @@ public class InitConfig extends JDialog {
 	{
 		System.out.println("SERVERWAIT: waiting for an handshake");
 		
-		//create
-		try {
-			serverSocket = new ServerSocket(portNumber);
-		}
-		catch (IOException e) { 
-			e.printStackTrace();
-			return;
-		}
-		
 		//accept
-		try(Socket clientSocket = serverSocket.accept();
+		try(ServerSocket serverSocket = new ServerSocket(portNumber);
+				Socket clientSocket = serverSocket.accept();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 				DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
 
+			this.serverSocket = serverSocket;
+			
 			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
 
 			// check for input request type

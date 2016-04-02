@@ -27,7 +27,7 @@ public class MainMenu extends JDialog {
 			JButton createButton = new JButton("Create Network");
 			createButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new InitConfig();
+					new NetworkConfig();
 				}
 			});
 			createButton.setBounds(29, 60, 131, 23);
