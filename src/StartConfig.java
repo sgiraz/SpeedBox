@@ -75,9 +75,10 @@ public class StartConfig extends JDialog {
 		});
 		
 		contentPanel.add(textFieldSSID);
+		contentPanel.add(textFieldPassword);
 		contentPanel.add(getLblNetworkName());
 		contentPanel.add(getLblPassword());
-		contentPanel.add(textFieldPassword);
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
