@@ -46,42 +46,26 @@ public class StartConfig extends JDialog {
 		}
 
 		textFieldSSID = new JTextField(System.getProperty("user.name"));
+		textFieldSSID.setToolTipText("4-20 alphanumeric characters");
 		textFieldSSID.setBounds(177, 52, 130, 26);
 		textFieldSSID.setColumns(10);
 		 
 		textFieldSSID.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent e) { check(); }
-			public void removeUpdate(DocumentEvent e) { check(); }
-			public void insertUpdate(DocumentEvent e) { check(); }
+			public void changedUpdate(DocumentEvent e) { checkSSID(); }
+			public void removeUpdate(DocumentEvent e) { checkSSID(); }
+			public void insertUpdate(DocumentEvent e) { checkSSID(); }
 
-			public void check() {
-				String SSID = textFieldSSID.getText();
-				if(SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+")){
-					textFieldSSID.setBackground(Color.green);
-				}
-				else{
-					textFieldSSID.setBackground(Color.red);
-				}
-			}
+		
 		});
 		
 		textFieldPassword = new JTextField();
+		textFieldPassword.setToolTipText("8-20 alphanumeric characters");
 		textFieldPassword.setBounds(177, 85, 130, 26);
 		textFieldPassword.setColumns(10);
 		textFieldPassword.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent e) { check(); }
-			public void removeUpdate(DocumentEvent e) { check(); }
-			public void insertUpdate(DocumentEvent e) { check(); }
-
-			public void check() {
-				String password = textFieldPassword.getText();
-				if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
-					textFieldPassword.setBackground(Color.green);
-				}
-				else{
-					textFieldPassword.setBackground(Color.red);
-				}
-			}
+			public void changedUpdate(DocumentEvent e) { checkPassword(); }
+			public void removeUpdate(DocumentEvent e) { checkPassword(); }
+			public void insertUpdate(DocumentEvent e) { checkPassword(); }		
 		});
 		
 		lblNetworkName = new JLabel("Network name");
@@ -106,7 +90,11 @@ public class StartConfig extends JDialog {
 				buttonPane.add(btnCreate);
 				btnCreate.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// QUA CI VA LA FUNZIONE CHE CREA IL NETWORK
+						if(checkSSID() && checkPassword())
+						{
+							Utils.windowsSetHostednetwork("NuovaReteWindows", "00000000");
+							Utils.windowsStartHostednetwork();
+						}
 					}
 				});
 			}
@@ -118,5 +106,27 @@ public class StartConfig extends JDialog {
 		}
 	}
 
+	public boolean checkPassword() {
+		String password = textFieldPassword.getText();
+		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
+			textFieldPassword.setBackground(Color.green);
+			return true;
+		}
+		else{
+			textFieldPassword.setBackground(Color.red);
+			return false;
+		}
+	}
 	
+	public boolean checkSSID() {
+		String SSID = textFieldSSID.getText();
+		if(SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+")){
+			textFieldSSID.setBackground(Color.green);
+			return true;
+		}
+		else{
+			textFieldSSID.setBackground(Color.red);
+			return false;
+		}
+	}
 }
