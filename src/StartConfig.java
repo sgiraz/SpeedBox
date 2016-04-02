@@ -3,8 +3,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -70,21 +68,40 @@ public class StartConfig extends JDialog {
 					textFieldSSID.setBackground(Color.red);
 				}
 			}
+
+			/**
+			 * check the network SSID alphanumeric format
+			 * @param SSID the network name
+			 */
+			private boolean checkSSID(String SSID) {
+				return SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+"); 
+			}
 		});
 		
 		textFieldPassword = new JTextField();
 		textFieldPassword.setBounds(177, 85, 130, 26);
 		textFieldPassword.setColumns(10);
-		textFieldPassword.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
+
+		textFieldPassword.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) { check(); }
+			public void removeUpdate(DocumentEvent e) { check(); }
+			public void insertUpdate(DocumentEvent e) { check(); }
+
+			public void check() {
 				if(checkPassword(textFieldPassword.getText())){
-					textFieldSSID.setBackground(Color.green);
+					textFieldPassword.setBackground(Color.green);
 				}
 				else{
-					textFieldSSID.setBackground(Color.red);
+					textFieldPassword.setBackground(Color.red);
 				}
+			}
+
+			/**
+			 * Check if the password is in the alphanumeric format
+			 * @param password the network password to check
+			 */
+			private boolean checkPassword(String password) {
+				return password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+");
 			}
 		});
 		
@@ -112,22 +129,5 @@ public class StartConfig extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-	}
-
-	/**
-	 * check the network SSID alphanumeric format
-	 * @param SSID the network name
-	 */
-	private boolean checkSSID(String SSID) {
-
-		return SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+"); 
-	}
-	
-	/**
-	 * Check if the password is in the alphanumeric format
-	 * @param password the network password to check
-	 */
-	private boolean checkPassword(String password) {
-		return password.length() >= 8  &&  password.length() >= 20 && password.matches("[a-zA-Z0-9]+");
 	}
 }
