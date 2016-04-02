@@ -74,10 +74,19 @@ public class StartConfig extends JDialog {
 			}
 		});
 		
+		lblNetworkName = new JLabel("Network name");
+		lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNetworkName.setBounds(74, 57, 91, 16);
+		
+		lblPassword = new JLabel("Password");
+		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPassword.setBounds(104, 90, 61, 16);
+		
 		contentPanel.add(textFieldSSID);
-		contentPanel.add(getLblNetworkName());
-		contentPanel.add(getLblPassword());
 		contentPanel.add(textFieldPassword);
+		contentPanel.add(lblNetworkName);
+		contentPanel.add(lblPassword);
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -110,22 +119,5 @@ public class StartConfig extends JDialog {
 	
 	private boolean checkPassword(String password) {
 		return password.matches("[a-zA-Z0-9]+") && password.length() >= 8;
-	}
-
-	private JLabel getLblNetworkName() {
-		if (lblNetworkName == null) {
-			lblNetworkName = new JLabel("Network name");
-			lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblNetworkName.setBounds(74, 57, 91, 16);
-		}
-		return lblNetworkName;
-	}
-	private JLabel getLblPassword() {
-		if (lblPassword == null) {
-			lblPassword = new JLabel("Password");
-			lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblPassword.setBounds(104, 90, 61, 16);
-		}
-		return lblPassword;
 	}
 }
