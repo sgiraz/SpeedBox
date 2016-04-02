@@ -137,44 +137,6 @@ public class Utils {
 		return null;
 	}
 
-	public static String windowsSetHostednetwork(String name, String password){
-		try {
-			Process p = Runtime.getRuntime().exec("netsh wlan set hostednetwork mode=allow ssid=\"" + name + "\" key=\""+password+"\"");
-		
-			BufferedReader output = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line, result = "";
-			while((line = output.readLine()) != null) 
-				result += line;
-
-			return result;
-		}
-		catch (IOException e) {
-			return null;
-		}
-	}
-	
-	public static String windowsStartHostednetwork()
-	{
-		try {
-			Process p = Runtime.getRuntime().exec("netsh wlan start hostednetwork");
-			return getProcessOutput(p);
-		}
-		catch (IOException e) {
-			return null;
-		}
-	}
-	
-	public static String windowsStopHostednetwork()
-	{
-		try {
-			Process p = Runtime.getRuntime().exec("netsh wlan stop hostednetwork");
-			return getProcessOutput(p);
-		}
-		catch (IOException e) {
-			return null;
-		}
-	}
-	
 	/**
 	 * Returns the process output (like a pipe in bash)
 	 * @param proc  the process

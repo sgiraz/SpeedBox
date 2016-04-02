@@ -111,8 +111,8 @@ public class StartConfig extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							Utils.windowsSetHostednetwork(textFieldSSID.getText(), new String(textFieldPassword.getPassword()));
-							Utils.windowsStartHostednetwork();
+							WindowsNetwork.setHostednetwork(textFieldSSID.getText(), new String(textFieldPassword.getPassword()));
+							WindowsNetwork.startHostednetwork();
 						}
 					}
 				});

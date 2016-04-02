@@ -10,6 +10,8 @@ public class Main {
 		System.out.println(Utils.getGatewayIP());
 		System.out.println(Utils.getLocalIP());
 		
+		if(WindowsNetwork.checkHostednetwork())
+			System.out.println("ok");
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
