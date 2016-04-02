@@ -1,12 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -16,36 +11,38 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
- 
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 public class WaitConnection extends JFrame {
 	private static final long serialVersionUID = -8611725700060761275L;
-	
+
 	private JPanel contentPane;
 	private int portNumber = 50000;
- 
+
 	public WaitConnection() {
-		
+
 		setResizable(false);
 		setTitle("Connecting...");
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 199);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel labelTitle = new JLabel("Waiting for synchronization");
 		labelTitle.setBackground(Color.WHITE);
 		labelTitle.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitle.setBounds(10, 10, 414, 53);
 		contentPane.add(labelTitle);
-		
+
 		JTextArea textareaDescription = new JTextArea();
 		textareaDescription.setWrapStyleWord(true);
 		textareaDescription.setLineWrap(true);
@@ -53,7 +50,7 @@ public class WaitConnection extends JFrame {
 		textareaDescription.setText("In the other pc, connect to the created hostednetwork and wait for the synchronization process.");
 		textareaDescription.setBounds(20, 74, 404, 82);
 		contentPane.add(textareaDescription);
-		
+
 		setVisible(true);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,9 +61,9 @@ public class WaitConnection extends JFrame {
 				startWaitSocket();
 			}
 		});
-		 
+
 	}
-	
+
 	private void startWaitSocket()
 	{
 		System.out.println("SERVERWAIT: waiting for an handshake");
@@ -84,7 +81,7 @@ public class WaitConnection extends JFrame {
 			if(line.equals("handshake")){
 				// send acceptation
 				System.out.println("SERVER: Sending handshake");
-				
+
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
