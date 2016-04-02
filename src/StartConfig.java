@@ -92,7 +92,7 @@ public class StartConfig extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							Utils.windowsSetHostednetwork("NuovaReteWindows", "00000000");
+							Utils.windowsSetHostednetwork(textFieldSSID.getText(), textFieldPassword.getText());
 							Utils.windowsStartHostednetwork();
 						}
 					}
