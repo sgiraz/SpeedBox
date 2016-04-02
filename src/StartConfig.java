@@ -8,11 +8,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.JCheckBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class StartConfig extends JDialog {
 
@@ -24,7 +28,9 @@ public class StartConfig extends JDialog {
 	private JTextField textFieldSSID;
 	private JLabel lblNetworkName;
 	private JLabel lblPassword;
-	private JTextField textFieldPassword;
+	private JPasswordField textFieldPassword;
+	private char defaultEchoChar;
+	private JCheckBox chckbxNewCheckBox;
 
 	/**
 	 * Create the dialog.
@@ -56,7 +62,9 @@ public class StartConfig extends JDialog {
 		
 		});
 		
-		textFieldPassword = new JTextField();
+		textFieldPassword = new JPasswordField();
+		defaultEchoChar = textFieldPassword.getEchoChar();
+		
 		textFieldPassword.setToolTipText("8-20 alphanumeric characters");
 		textFieldPassword.setBounds(177, 85, 130, 26);
 		textFieldPassword.setColumns(10);
@@ -78,6 +86,19 @@ public class StartConfig extends JDialog {
 		contentPanel.add(textFieldPassword);
 		contentPanel.add(lblNetworkName);
 		contentPanel.add(lblPassword);
+		
+		chckbxNewCheckBox = new JCheckBox("show password");
+		chckbxNewCheckBox.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent e) {
+		        if (e.getStateChange() == ItemEvent.SELECTED) {
+		            textFieldPassword.setEchoChar('\0');
+		        } else {
+		        	textFieldPassword.setEchoChar(defaultEchoChar);
+		        }
+		    }
+		});
+		chckbxNewCheckBox.setBounds(177, 115, 130, 23);
+		contentPanel.add(chckbxNewCheckBox);
 		
 		{
 			JPanel buttonPane = new JPanel();
