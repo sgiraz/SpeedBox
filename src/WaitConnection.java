@@ -52,8 +52,9 @@ public class WaitConnection extends JFrame {
 		contentPane.add(textareaDescription);
 
 		setVisible(true);
-
-
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
