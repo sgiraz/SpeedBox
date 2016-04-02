@@ -1,67 +1,80 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class StartConfig extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
-
 	/**
-	 * Launch the application.
+	 * 
 	 */
-	public static void main(String[] args) {
-		try {
-			StartConfig dialog = new StartConfig();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private static final long serialVersionUID = 6L;
+	private final JPanel contentPanel = new JPanel();
+	private JTextField textFieldSSID;
+	private JLabel lblNetworkName;
+	private JLabel lblPassword;
+	private JTextField textFieldPassword;
 
 	/**
 	 * Create the dialog.
 	 */
 	public StartConfig() {
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setVisible(true);
+		setBounds(100, 100, 395, 205);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel lblCreateNetwork = new JLabel("create a new network");
-			lblCreateNetwork.setBounds(205, 16, 133, 16);
+			JLabel lblCreateNetwork = new JLabel("CREATE A NEW NETWORK");
+			lblCreateNetwork.setBounds(115, 19, 165, 16);
 			contentPanel.add(lblCreateNetwork);
 		}
-		{
-			JButton btnCreate = new JButton("create");
-			btnCreate.setBounds(350, 11, 94, 29);
-			contentPanel.add(btnCreate);
-		}
-		{
-			JLabel lblClickHereTo = new JLabel("connect to a network");
-			lblClickHereTo.setBounds(205, 44, 133, 16);
-			contentPanel.add(lblClickHereTo);
-		}
-		{
-			JButton btnConnect = new JButton("connect");
-			btnConnect.setBounds(350, 39, 94, 29);
-			contentPanel.add(btnConnect);
-		}
+		
+		
+			textFieldSSID = new JTextField();
+			textFieldSSID.setBounds(177, 52, 130, 26);
+			textFieldSSID.setColumns(10);
+			textFieldSSID.addKeyListener(new KeyAdapter(){
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(checkSSID(textFieldSSID.getText())){
+					textFieldSSID.setBackground(Color.green);
+				}
+				else{
+					textFieldSSID.setBackground(Color.red);
+				}
+			}
+		});
+		
+		contentPanel.add(textFieldSSID);
+		contentPanel.add(getLblNetworkName());
+		contentPanel.add(getLblPassword());
+		contentPanel.add(getTextFieldPassword());
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				JButton btnCreate = new JButton("create");
+				buttonPane.add(btnCreate);
+				btnCreate.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// QUA CI VA LA FUNZIONE CHE CREA IL NETWORK
+					}
+				});
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -70,5 +83,38 @@ public class StartConfig extends JDialog {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param SSID
+	 * @return true only if SSID is alphanumeric and ha minimum 6 characters
+	 */
+	private boolean checkSSID(String SSID) {
+		return SSID.matches("[a-zA-Z0-9]+") && SSID.length() >= 6 ; 
+	}
 
+	private JLabel getLblNetworkName() {
+		if (lblNetworkName == null) {
+			lblNetworkName = new JLabel("Network name");
+			lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblNetworkName.setBounds(74, 57, 91, 16);
+		}
+		return lblNetworkName;
+	}
+	private JLabel getLblPassword() {
+		if (lblPassword == null) {
+			lblPassword = new JLabel("Password");
+			lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblPassword.setBounds(104, 90, 61, 16);
+		}
+		return lblPassword;
+	}
+	private JTextField getTextFieldPassword() {
+		if (textFieldPassword == null) {
+			textFieldPassword = new JTextField();
+			textFieldPassword.setBounds(177, 85, 130, 26);
+			textFieldPassword.setColumns(10);
+		}
+		return textFieldPassword;
+	}
 }
