@@ -42,8 +42,6 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 
 	public SendBoxGUI(){
 		
-		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-		catch (Exception e) { e.printStackTrace(); }
 
 		mb = new MenuBar();
 		m1 = new Menu("File");

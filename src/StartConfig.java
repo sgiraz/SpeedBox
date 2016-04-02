@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class StartConfig extends JDialog {
 
@@ -47,9 +49,13 @@ public class StartConfig extends JDialog {
 		textFieldSSID = new JTextField(System.getProperty("user.name"));
 		textFieldSSID.setBounds(177, 52, 130, 26);
 		textFieldSSID.setColumns(10);
-		textFieldSSID.addKeyListener(new KeyAdapter(){
-			@Override
-			public void keyTyped(KeyEvent e) {
+		 
+		textFieldSSID.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) { check(); }
+			public void removeUpdate(DocumentEvent e) { check(); }
+			public void insertUpdate(DocumentEvent e) { check(); }
+
+			public void check() {
 				if(checkSSID(textFieldSSID.getText())){
 					textFieldSSID.setBackground(Color.green);
 				}
