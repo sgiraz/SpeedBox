@@ -151,11 +151,11 @@ public class InitConfig extends JDialog {
 	public boolean checkPassword() {
 		String password = new String(passwordField.getPassword());
 		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
-			passwordField.setBackground(Color.green);
+			passwordField.setBackground(new Color(152, 251, 152));
 			return true;
 		}
 		else{
-			passwordField.setBackground(Color.red);
+			passwordField.setBackground(new Color(255, 153, 153));
 			return false;
 		}
 	}
@@ -163,11 +163,11 @@ public class InitConfig extends JDialog {
 	public boolean checkSSID() {
 		String SSID = textFieldSSID.getText();
 		if(SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+")){
-			textFieldSSID.setBackground(Color.green);
+			textFieldSSID.setBackground(new Color(152, 251, 152));
 			return true;
 		}
 		else{
-			textFieldSSID.setBackground(Color.red);
+			textFieldSSID.setBackground(new Color(255, 153, 153));
 			return false;
 		}
 	}
