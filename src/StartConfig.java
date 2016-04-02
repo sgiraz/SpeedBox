@@ -42,12 +42,12 @@ public class StartConfig extends JDialog {
 			lblCreateNetwork.setBounds(115, 19, 165, 16);
 			contentPanel.add(lblCreateNetwork);
 		}
-		
-		
-			textFieldSSID = new JTextField();
-			textFieldSSID.setBounds(177, 52, 130, 26);
-			textFieldSSID.setColumns(10);
-			textFieldSSID.addKeyListener(new KeyAdapter(){
+
+
+		textFieldSSID = new JTextField(System.getProperty("user.name"));
+		textFieldSSID.setBounds(177, 52, 130, 26);
+		textFieldSSID.setColumns(10);
+		textFieldSSID.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if(checkSSID(textFieldSSID.getText())){
@@ -59,10 +59,25 @@ public class StartConfig extends JDialog {
 			}
 		});
 		
+		textFieldPassword = new JTextField();
+		textFieldPassword.setBounds(177, 85, 130, 26);
+		textFieldPassword.setColumns(10);
+		textFieldPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(checkPassword(textFieldPassword.getText())){
+					textFieldSSID.setBackground(Color.green);
+				}
+				else{
+					textFieldSSID.setBackground(Color.red);
+				}
+			}
+		});
+		
 		contentPanel.add(textFieldSSID);
 		contentPanel.add(getLblNetworkName());
 		contentPanel.add(getLblPassword());
-		contentPanel.add(getTextFieldPassword());
+		contentPanel.add(textFieldPassword);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -83,14 +98,18 @@ public class StartConfig extends JDialog {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param SSID
 	 * @return true only if SSID is alphanumeric and ha minimum 6 characters
 	 */
 	private boolean checkSSID(String SSID) {
-		return SSID.matches("[a-zA-Z0-9]+") && SSID.length() >= 6 ; 
+		return SSID.matches("[a-zA-Z0-9]+") && SSID.length() >= 6; 
+	}
+	
+	private boolean checkPassword(String password) {
+		return password.matches("[a-zA-Z0-9]+") && password.length() >= 8;
 	}
 
 	private JLabel getLblNetworkName() {
@@ -108,13 +127,5 @@ public class StartConfig extends JDialog {
 			lblPassword.setBounds(104, 90, 61, 16);
 		}
 		return lblPassword;
-	}
-	private JTextField getTextFieldPassword() {
-		if (textFieldPassword == null) {
-			textFieldPassword = new JTextField();
-			textFieldPassword.setBounds(177, 85, 130, 26);
-			textFieldPassword.setColumns(10);
-		}
-		return textFieldPassword;
 	}
 }
