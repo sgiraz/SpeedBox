@@ -22,6 +22,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class InitConfig extends JDialog {
 
@@ -33,19 +41,28 @@ public class InitConfig extends JDialog {
 	private JPasswordField passwordField;
 	private char defaultEchoChar;
 	private JCheckBox chckbxNewCheckBox;
+	private int portNumber = 50000;
+	ServerSocket serverSocket;
 
 	public InitConfig() 
 	{
 		///TODO : change the call to a generic stopHostednetwork function instead of windows only.
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent event) {
 				WindowsNetwork.stopHostednetwork();
+				dispose();
+				try {
+					if(serverSocket != null)
+						serverSocket.close();
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}		
 			}
 		});
 
 		setTitle("Network configuration");
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setBounds(100, 100, 301, 211);
 		getContentPane().setLayout(new BorderLayout());
@@ -109,9 +126,9 @@ public class InitConfig extends JDialog {
 				}
 			}
 		});
+		
 		chckbxNewCheckBox.setBounds(124, 108, 130, 23);
 		contentPanel.add(chckbxNewCheckBox);
-
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -127,8 +144,7 @@ public class InitConfig extends JDialog {
 							String startResult = WindowsNetwork.startHostednetwork();
 							if(WindowsNetwork.checkHostednetwork())
 							{
-								new WaitConnection();
-								dispose();
+								new Thread("wait connection").start();
 							}
 							else
 							{
@@ -169,6 +185,50 @@ public class InitConfig extends JDialog {
 		else{
 			textFieldSSID.setBackground(new Color(255, 153, 153));
 			return false;
+		}
+	}
+	
+	public void run()
+	{
+		System.out.println("SERVERWAIT: waiting for an handshake");
+		
+		//create
+		try {
+			serverSocket = new ServerSocket(portNumber);
+		}
+		catch (IOException e) { 
+			e.printStackTrace();
+			return;
+		}
+		
+		//accept
+		try(Socket clientSocket = serverSocket.accept();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+				DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
+
+			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
+
+			// check for input request type
+			String line = reader.readLine(); 
+
+			if(line.equals("handshake")){
+				// send acceptation
+				System.out.println("SERVER: Sending handshake");
+
+				writer.write("handshake");
+				writer.newLine();
+				writer.flush();
+			}
+			else
+			{
+				System.out.println("faiulure...");
+			}
+
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			return;
 		}
 	}
 }
