@@ -6,29 +6,24 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class ConnectionNetwork extends JDialog {
+public class ConnectionNetwork extends JDialog implements Runnable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6L;
 	private final JPanel contentPanel = new JPanel();
 	private int portNumber = 50000;
+	private Socket clientSocket;
+	private boolean threadClosed;
 
-	
-	/**
-	 * Create the dialog.
-	 */
+
 	public ConnectionNetwork() {
-		
 		// print istruction for user to connect ad-hoc network
 		// ...
 		// waiting for user to connect ad-hoc network
@@ -36,10 +31,8 @@ public class ConnectionNetwork extends JDialog {
 		// when he's connected send an hadshake message to Server
 		// ...
 		// run SendBox
-		
-		ConnectionNetwork dialog = new ConnectionNetwork();
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setVisible(true);
+
+		new Thread().start();;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -51,41 +44,77 @@ public class ConnectionNetwork extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						try{
+							if(clientSocket != null){
+								threadClosed = true;
+								clientSocket.close();
+								dispose();
+							}
+						}
+						catch(IOException e){
+							e.printStackTrace();
+						}
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
-				// if user click on this button, turn on the last JDialog
 			}
 		}
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setVisible(true);
 	}
-	
-	private void makeHandshake(){
-		System.out.println("SERVERWAIT: waiting for an handshake");
-		try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-				DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
 
-			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+	@Override
+	public void run() {
+		
 
-			// check for input request type
-			String line = reader.readLine(); 
+		while(!threadClosed){
+			try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
+					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+					DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
+				
+				this.clientSocket = clientSocket;
 
-			if(line.equals("handshake")){
-				// send acceptation
-				System.out.println("SERVER: Sending handshake");
+				System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
 
+				// send input for request connection type
+				System.out.println("CLIENT: Sending handshake...");
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
+
+				// receive acceptation
+				String line = reader.readLine();
+
+				if((line.equals("handshake"))){
+					// your are connected
+					System.out.println("CLIENT: connection estabilished correctly");
+					dispose();
+					new SendBoxGUI();
+					return;
+				}
+				else
+				{
+					// do something...
+					System.out.println("CLIENT: problem to handshake");
+				}
+
 			}
-			else
-			{
-				System.out.println("faiulure...");
+			catch(IOException e){
+				e.printStackTrace();
+				
 			}
-		}
-		catch(IOException e){
-			e.printStackTrace();
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
+
 
 }
