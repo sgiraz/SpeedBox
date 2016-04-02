@@ -42,66 +42,37 @@ public class StartConfig extends JDialog {
 			lblCreateNetwork.setBounds(115, 19, 165, 16);
 			contentPanel.add(lblCreateNetwork);
 		}
-		
-		lblNetworkName = new JLabel("Network name");
-		lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNetworkName.setBounds(74, 57, 91, 16);
-		lblPassword = new JLabel("Password");
-		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setBounds(104, 90, 61, 16);
 
 		textFieldSSID = new JTextField(System.getProperty("user.name"));
 		textFieldSSID.setToolTipText("4-20 alphanumeric characters");
 		textFieldSSID.setBounds(177, 52, 130, 26);
 		textFieldSSID.setColumns(10);
-
 		 
 		textFieldSSID.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) { checkSSID(); }
 			public void removeUpdate(DocumentEvent e) { checkSSID(); }
 			public void insertUpdate(DocumentEvent e) { checkSSID(); }
 
-<<<<<<< HEAD
-			public void check() {
-				String SSID = textFieldSSID.getText();
-				if(SSID.length() >= 4 && SSID.length() <= 20 && SSID.matches("[a-zA-Z0-9]+")){
-					textFieldSSID.setBackground(Color.green);
-				}
-				else{
-					textFieldSSID.setBackground(Color.red);
-				}
-			}
-=======
 		
->>>>>>> 21fd09c428fcb0f751123a9775f547b43c4888b9
 		});
 		
 		textFieldPassword = new JTextField();
 		textFieldPassword.setToolTipText("8-20 alphanumeric characters");
 		textFieldPassword.setBounds(177, 85, 130, 26);
 		textFieldPassword.setColumns(10);
-
 		textFieldPassword.getDocument().addDocumentListener(new DocumentListener() {
-<<<<<<< HEAD
-			public void changedUpdate(DocumentEvent e) { check(); }
-			public void removeUpdate(DocumentEvent e) { check(); }
-			public void insertUpdate(DocumentEvent e) { check(); }
-
-			public void check() {
-				String password = textFieldPassword.getText();
-				if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
-					textFieldPassword.setBackground(Color.green);
-				}
-				else{
-					textFieldPassword.setBackground(Color.red);
-				}
-			}
-=======
 			public void changedUpdate(DocumentEvent e) { checkPassword(); }
 			public void removeUpdate(DocumentEvent e) { checkPassword(); }
 			public void insertUpdate(DocumentEvent e) { checkPassword(); }		
->>>>>>> 21fd09c428fcb0f751123a9775f547b43c4888b9
 		});
+		
+		lblNetworkName = new JLabel("Network name");
+		lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNetworkName.setBounds(74, 57, 91, 16);
+		
+		lblPassword = new JLabel("Password");
+		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPassword.setBounds(104, 90, 61, 16);
 		
 		contentPanel.add(textFieldSSID);
 		contentPanel.add(textFieldPassword);
@@ -132,8 +103,6 @@ public class StartConfig extends JDialog {
 			}
 		}
 	}
-<<<<<<< HEAD
-=======
 
 	public boolean checkPassword() {
 		String password = textFieldPassword.getText();
@@ -158,5 +127,4 @@ public class StartConfig extends JDialog {
 			return false;
 		}
 	}
->>>>>>> 21fd09c428fcb0f751123a9775f547b43c4888b9
 }
