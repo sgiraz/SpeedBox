@@ -39,6 +39,8 @@ public class Client implements Runnable {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())){
 			
+			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+			
 			// send first message message
 			System.out.println("CLIENT: Socket created: " + clientSocket + "\nSending data: " + path +"...");
 			writer.write("send_request");
@@ -62,10 +64,9 @@ public class Client implements Runnable {
 					SendingFile sendingFile = new SendingFile(file);
 					// TODO: ADD sendingFile TO THE SENDING FILES LIST
 					
-					
 					System.out.println("CLIENT: file exists, sending..");
 					try(FileInputStream fs = new FileInputStream(file)){
-						// send for dimension
+						// send file dimension
 						output.writeLong(file.length());
 						System.out.println("CLIENT: file length: " + file.length());
 						
