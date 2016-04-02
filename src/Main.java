@@ -20,7 +20,7 @@ public class Main {
 					try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
 					catch (Exception e) { e.printStackTrace(); }
 					
-					new InitConfig();
+					new MainMenu();
 					//new SendBoxGUI();
 				}
 				catch (Exception e) {
