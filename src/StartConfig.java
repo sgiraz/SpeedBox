@@ -111,7 +111,7 @@ public class StartConfig extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							Utils.windowsSetHostednetwork(textFieldSSID.getText(), textFieldPassword.getText());
+							Utils.windowsSetHostednetwork(textFieldSSID.getText(), new String(textFieldPassword.getPassword()));
 							Utils.windowsStartHostednetwork();
 						}
 					}
@@ -126,7 +126,7 @@ public class StartConfig extends JDialog {
 	}
 
 	public boolean checkPassword() {
-		String password = textFieldPassword.getPassword().toString();
+		String password = new String(textFieldPassword.getPassword());
 		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
 			textFieldPassword.setBackground(Color.green);
 			return true;
