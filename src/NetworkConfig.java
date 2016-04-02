@@ -50,15 +50,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
-				WindowsNetwork.stopHostednetwork();
-				dispose();
-				try {
-					if(serverSocket != null)
-						serverSocket.close();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}		
+				close();	
 			}
 		});
 
@@ -143,6 +135,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 							if(WindowsNetwork.checkHostednetwork())
 							{
 								new Thread("wait connection").start();
+								JOptionPane.showMessageDialog(new JFrame(), "Hostednetwork "+textFieldSSID.getText()+" created", "Created",
+										JOptionPane.INFORMATION_MESSAGE);
 							}
 							else
 							{
@@ -156,12 +150,30 @@ public class NetworkConfig extends JDialog implements Runnable {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						close();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
 	}
 
+	private void close()
+	{
+		WindowsNetwork.stopHostednetwork();
+		dispose();
+		try {
+			if(serverSocket != null)
+				serverSocket.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}
+	
 	public boolean checkPassword() {
 		String password = new String(passwordField.getPassword());
 		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
