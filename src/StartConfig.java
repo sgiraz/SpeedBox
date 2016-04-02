@@ -42,6 +42,13 @@ public class StartConfig extends JDialog {
 			lblCreateNetwork.setBounds(115, 19, 165, 16);
 			contentPanel.add(lblCreateNetwork);
 		}
+		
+		lblNetworkName = new JLabel("Network name");
+		lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNetworkName.setBounds(74, 57, 91, 16);
+		lblPassword = new JLabel("Password");
+		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPassword.setBounds(104, 90, 61, 16);
 
 		textFieldSSID = new JTextField(System.getProperty("user.name"));
 		textFieldSSID.setBounds(177, 52, 130, 26);
@@ -49,7 +56,7 @@ public class StartConfig extends JDialog {
 		textFieldSSID.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if(checkSSID(textFieldSSID.getText())){
+				if(checkSSID(textFieldSSID.getText() + e.getKeyChar())){
 					textFieldSSID.setBackground(Color.green);
 				}
 				else{
@@ -64,6 +71,7 @@ public class StartConfig extends JDialog {
 		textFieldPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				
 				if(checkPassword(textFieldPassword.getText())){
 					textFieldSSID.setBackground(Color.green);
 				}
@@ -72,14 +80,6 @@ public class StartConfig extends JDialog {
 				}
 			}
 		});
-		
-		lblNetworkName = new JLabel("Network name");
-		lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNetworkName.setBounds(74, 57, 91, 16);
-		
-		lblPassword = new JLabel("Password");
-		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setBounds(104, 90, 61, 16);
 		
 		contentPanel.add(textFieldSSID);
 		contentPanel.add(textFieldPassword);
@@ -113,7 +113,7 @@ public class StartConfig extends JDialog {
 	 * @return true only if SSID is alphanumeric and ha minimum 6 characters
 	 */
 	private boolean checkSSID(String SSID) {
-		return SSID.length() >= 4 && SSID.matches("[a-zA-Z0-9]+"); 
+		return SSID.length() >= 4 && SSID.length() < 16 && SSID.matches("[a-zA-Z0-9]+"); 
 	}
 	
 	private boolean checkPassword(String password) {
