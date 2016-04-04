@@ -7,8 +7,9 @@ public class Main {
 	public static void main(String[] args) {
 
 		//prova 
-		System.out.println(Utils.getGatewayIP());
-		System.out.println(Utils.getLocalIP());
+		//System.out.println(Utils.getGatewayIP());
+		//System.out.println(Utils.getLocalIP());
+		System.out.println("Application running..");
 		
 		if(WindowsNetwork.checkHostednetwork())
 			System.out.println("ok");
