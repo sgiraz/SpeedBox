@@ -17,8 +17,17 @@ public class Main {
 			public void run() {
 				try {
 
+					
 					try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
 					catch (Exception e) { e.printStackTrace(); }
+					
+					
+					for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+					    if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {   
+					       javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					       break;
+					     } 
+					}
 					
 					new MainMenu();
 					//new SendBoxGUI();
