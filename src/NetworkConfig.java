@@ -93,7 +93,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 		});
 
 		lblNetworkName = new JLabel("Network name");
-		lblNetworkName.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNetworkName.setHorizontalTextPosition(SwingConstants.RIGHT);
+		lblNetworkName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNetworkName.setBounds(21, 49, 91, 16);
 
 		lblPassword = new JLabel("Password");

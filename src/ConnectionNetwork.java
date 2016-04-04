@@ -49,7 +49,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 
 		new Thread(this, "try connection..").start();
 		
-		setBounds(100, 100, 380, 230);
+		setBounds(100, 100, 330, 185);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
