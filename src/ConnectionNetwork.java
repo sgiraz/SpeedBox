@@ -55,7 +55,8 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
-			JLabel labelInstructions = new JLabel("<html>&#8226; switch on your Wi-Fi<br>&#8226; choose the ad-hoc network<br>&#8226;"
+			JLabel labelInstructions = new JLabel("<html>&#8226; switch on your Wi-Fi<br>&#8226;"
+					+ " choose the ad-hoc network<br>&#8226;"
 					+ " wait for connection...</html>");
 			labelInstructions.setBorder(UIManager.getBorder("TextField.border"));
 			labelInstructions.setBackground(Color.LIGHT_GRAY);
@@ -132,7 +133,6 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 			}
 			catch(IOException e){
 				System.out.println("Connection refused..");
-				
 			}
 			try {
 				Thread.sleep(3000);
