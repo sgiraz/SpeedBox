@@ -137,24 +137,7 @@ public class Utils {
 		return null;
 	}
 
-	/**
-	 * Returns the process output (like a pipe in bash)
-	 * @param proc  the process
-	 * @return
-	 */
-	public static String getProcessOutput(Process proc)
-	{
-		String line, result = "";
-		try (BufferedReader output = new BufferedReader(new InputStreamReader(proc.getInputStream()));){
-			while((line = output.readLine()) != null) 
-				result += line;
-
-			return result;
-		}
-		catch (IOException e) {
-			return "";
-		}			 
-	}
+	
 	
 	public static final String windowsReadRegistry(String location, String key){
 		try {

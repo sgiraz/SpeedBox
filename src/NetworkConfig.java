@@ -1,25 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -30,8 +17,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 
 public class NetworkConfig extends JDialog implements Runnable {
 
@@ -134,8 +133,10 @@ public class NetworkConfig extends JDialog implements Runnable {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							String setResult = WindowsNetwork.setHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
-							String startResult = WindowsNetwork.startHostednetwork();
+							String setResult = LinuxNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
+							System.out.println(setResult);
+							/*
+							String setResult = WindowsNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
 							if(WindowsNetwork.checkHostednetwork())
 							{
 								new Thread("wait connection").start();
@@ -148,6 +149,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 								JOptionPane.showMessageDialog(new JFrame(), message, "Impossible to connect",
 										JOptionPane.ERROR_MESSAGE);
 							}
+							*/
 						}
 					}
 				});

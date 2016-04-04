@@ -4,44 +4,17 @@ import java.io.InputStreamReader;
 
 public class WindowsNetwork {
 
-	public static String setHostednetwork(String name, String password){
-		try {
-			Process p = Runtime.getRuntime().exec("netsh wlan set hostednetwork mode=allow ssid=\"" + name + "\" key=\""+password+"\"");
-		
-			BufferedReader output = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line, result = "";
-			while((line = output.readLine()) != null) 
-				result += line;
-
-			return result;
-		}
-		catch (IOException e) {
-			return null;
-		}
-	}
-	
-	public static String startHostednetwork()
+	public static String startHostednetwork(String name, String password)
 	{
-		try {
-			Process p = Runtime.getRuntime().exec("netsh wlan start hostednetwork");
-			return Utils.getProcessOutput(p);
-		}
-		catch (IOException e) {
-			return null;
-		}
+		String result = executeCommand("netsh wlan set hostednetwork mode=allow ssid=\"" + name + "\" key=\""+password+"\"");
+		result += "\n" +  executeCommand("netsh wlan start hostednetwork");
+		return result;
 	}
-	
+
 	public static String stopHostednetwork()
 	{
-		try {
-			Process p = Runtime.getRuntime().exec("netsh wlan stop hostednetwork");
-			return Utils.getProcessOutput(p);
-		}
-		catch (IOException e) {
-			return null;
-		}
+		return executeCommand("netsh wlan stop hostednetwork");
 	}
-	
 
 	public static boolean checkHostednetwork()
 	{ 
@@ -56,9 +29,31 @@ public class WindowsNetwork {
 		}
 		catch (IOException e) {
 			return false;
-		}			 
-		
+		}
 	}
-	
-	
+
+	/**
+	 * Returns the process output (like a pipe in bash)
+	 * @param proc  the process
+	 * @return
+	 */
+	public static String executeCommand(String command)
+	{
+
+		try {
+			Process proc = Runtime.getRuntime().exec(command);
+			String line, result = "";
+			try (BufferedReader output = new BufferedReader(new InputStreamReader(proc.getInputStream()));){
+				while((line = output.readLine()) != null) 
+					result += line;
+
+				return result;
+			}
+		}
+		catch (IOException e) {
+			return null;
+		}	 
+	}
+
+
 }
