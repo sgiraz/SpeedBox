@@ -130,8 +130,10 @@ public class NetworkConfig extends JDialog implements Runnable {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							String setResult = WindowsNetwork.setHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
-							String startResult = WindowsNetwork.startHostednetwork();
+							String setResult = LinuxNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
+							System.out.println(setResult);
+							/*
+							String setResult = WindowsNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
 							if(WindowsNetwork.checkHostednetwork())
 							{
 								new Thread("wait connection").start();
@@ -144,6 +146,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 								JOptionPane.showMessageDialog(new JFrame(), message, "Impossible to connect",
 										JOptionPane.ERROR_MESSAGE);
 							}
+							*/
 						}
 					}
 				});

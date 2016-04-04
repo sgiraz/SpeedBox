@@ -4,14 +4,11 @@ import java.io.InputStreamReader;
 
 public class WindowsNetwork {
 
-	public static String setHostednetwork(String name, String password)
+	public static String startHostednetwork(String name, String password)
 	{
-		return executeCommand("netsh wlan set hostednetwork mode=allow ssid=\"" + name + "\" key=\""+password+"\"");
-	}
-
-	public static String startHostednetwork()
-	{
-		return executeCommand("netsh wlan start hostednetwork");
+		String result = executeCommand("netsh wlan set hostednetwork mode=allow ssid=\"" + name + "\" key=\""+password+"\"");
+		result += "\n" +  executeCommand("netsh wlan start hostednetwork");
+		return result;
 	}
 
 	public static String stopHostednetwork()
