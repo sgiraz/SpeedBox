@@ -30,6 +30,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class NetworkConfig extends JDialog implements Runnable {
 
@@ -43,6 +45,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 	private JCheckBox chckbxNewCheckBox;
 	private int portNumber = 50000;
 	ServerSocket serverSocket;
+	private JLabel lblCreateNetwork;
 
 	public NetworkConfig() 
 	{
@@ -61,7 +64,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel lblCreateNetwork = new JLabel("Create a new network");
+			lblCreateNetwork = new JLabel("Create a new network");
 			lblCreateNetwork.setForeground(Color.DARK_GRAY);
 			lblCreateNetwork.setHorizontalAlignment(SwingConstants.CENTER);
 			lblCreateNetwork.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -119,6 +122,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 		
 		chckbxNewCheckBox.setBounds(124, 108, 130, 23);
 		contentPanel.add(chckbxNewCheckBox);
+		contentPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPassword, textFieldSSID, passwordField, chckbxNewCheckBox, lblNetworkName, lblCreateNetwork}));
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
