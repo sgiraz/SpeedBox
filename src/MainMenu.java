@@ -1,27 +1,28 @@
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MainMenu extends JDialog {
-   
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = -3088890058631223710L;
 
 	public MainMenu() {
 		setBounds(100, 100, 338, 156);
 		getContentPane().setLayout(null);
 		{
-			JButton cancelButton = new JButton("Connect");
-			cancelButton.addActionListener(new ActionListener() {
+			JButton connectButton = new JButton("Connect");
+			connectButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new ConnectionNetwork();
 				}
 			});
-			cancelButton.setBounds(173, 60, 113, 23);
-			getContentPane().add(cancelButton);
-			cancelButton.setActionCommand("Cancel");
+			connectButton.setBounds(173, 60, 131, 23);
+			getContentPane().add(connectButton);
+			connectButton.setActionCommand("Connect");
 		}
 		{
 			JButton createButton = new JButton("Create Network");
@@ -32,8 +33,7 @@ public class MainMenu extends JDialog {
 			});
 			createButton.setBounds(29, 60, 131, 23);
 			getContentPane().add(createButton);
-			createButton.setActionCommand("OK");
-			getRootPane().setDefaultButton(createButton);
+			createButton.setActionCommand("create");
 		}
 		
 		JLabel lblChooseAnOption = new JLabel("Choose an option");
@@ -42,6 +42,7 @@ public class MainMenu extends JDialog {
 		getContentPane().add(lblChooseAnOption);
 		
 
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}

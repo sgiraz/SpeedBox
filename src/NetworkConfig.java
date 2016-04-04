@@ -33,7 +33,7 @@ import java.net.Socket;
 
 public class NetworkConfig extends JDialog implements Runnable {
 
-	private static final long serialVersionUID = 6L;
+	private static final long serialVersionUID = -2008573826970412684L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldSSID;
 	private JLabel lblNetworkName;
@@ -55,7 +55,6 @@ public class NetworkConfig extends JDialog implements Runnable {
 		});
 
 		setTitle("Network configuration");
-		setVisible(true);
 		setBounds(100, 100, 301, 211);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -159,6 +158,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 				buttonPane.add(cancelButton);
 			}
 		}
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 
 	private void close()

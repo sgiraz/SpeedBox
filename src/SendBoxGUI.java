@@ -18,11 +18,14 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
-@SuppressWarnings("serial")
+
 public class SendBoxGUI extends JFrame implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7014623789915977930L;
 	public static String myIP = "";
 	public static String otherIP = "localhost";
 	public static int myPort = 16000;

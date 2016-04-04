@@ -1,5 +1,10 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -10,29 +15,30 @@ import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
 
 public class ConnectionNetwork extends JDialog implements Runnable {
 
+	private static final long serialVersionUID = -7111909162789102303L;
 	private final JPanel contentPanel = new JPanel();
 	private int portNumber = 50000;
 	private Socket clientSocket;
 	private boolean threadClosed;
 
-
+	// print istruction for user to connect ad-hoc network
+	// ...
+	// waiting for user to connect ad-hoc network
+	// ...
+	// when he's connected send an hadshake message to Server
+	// ...
+	// run SendBox
+	
 	public ConnectionNetwork() {
-		// print istruction for user to connect ad-hoc network
-		// ...
-		// waiting for user to connect ad-hoc network
-		// ...
-		// when he's connected send an hadshake message to Server
-		// ...
-		// run SendBox
+		setTitle("Waiting for connection...");
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -41,12 +47,20 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 			}
 		});
 
-		new Thread().start();;
-		setBounds(100, 100, 450, 300);
+		new Thread(this, "try connection..").start();
+		
+		setBounds(100, 100, 380, 230);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new BorderLayout(0, 0));
+		{
+			JLabel labelInstructions = new JLabel("<html>&#8226; switch on your Wi-Fi<br>&#8226; choose the ad-hoc network<br>&#8226; wait for connection...</html>");
+			labelInstructions.setBorder(UIManager.getBorder("TextField.border"));
+			labelInstructions.setBackground(Color.LIGHT_GRAY);
+			labelInstructions.setHorizontalAlignment(SwingConstants.LEFT);
+			contentPanel.add(labelInstructions, BorderLayout.NORTH);
+		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -62,6 +76,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 				buttonPane.add(cancelButton);
 			}
 		}
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
