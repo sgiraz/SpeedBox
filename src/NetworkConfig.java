@@ -78,6 +78,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 		});
 
 		passwordField = new JPasswordField();
+		passwordField.setText("00000000");
 		defaultEchoChar = passwordField.getEchoChar();
 
 		passwordField.setToolTipText("8-20 alphanumeric characters");
@@ -221,26 +222,37 @@ public class NetworkConfig extends JDialog implements Runnable {
 		{
 			this.serverSocket = serverSocket;
 
-			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
-
-			// check for input request type
-			String line = reader.readLine(); 
-
-			if(line.equals("handshake"))
+			while(true)
 			{
-				// send acceptation
-				System.out.println("SERVER: Sending handshake");
-
-				writer.write("handshake");
-				writer.newLine();
-				writer.flush();
-				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
-				new SendBoxGUI();
-				setVisible(false);
-			}
-			else
-			{
-				System.out.println("faiulure...");
+				System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
+				
+				// check for input request type
+				String line = reader.readLine(); 
+				
+				if(line == null)
+				{
+					new MainMenu();
+					dispose();
+					SendBoxGUI.instance.dispose();
+					return;
+				}
+				
+				if(line.equals("handshake"))
+				{
+					// send acceptation
+					System.out.println("SERVER: Sending handshake");
+	
+					writer.write("handshake");
+					writer.newLine();
+					writer.flush();
+					SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
+					new SendBoxGUI();
+					setVisible(false);
+				}
+				else
+				{
+					System.out.println("faiulure...");
+				}
 			}
 
 		}
@@ -250,6 +262,5 @@ public class NetworkConfig extends JDialog implements Runnable {
 			return;
 		}
 
-		System.out.println("boh");
 	}
 }

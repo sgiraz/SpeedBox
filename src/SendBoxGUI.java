@@ -39,9 +39,11 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private JPanel panelDrop;
 	private JLabel lblDropFileHere;
 
+	public static SendBoxGUI instance;
 
 	public SendBoxGUI()
 	{
+		instance = this;
 		//close main menu
 		MainMenu.instance.dispose();
 		
