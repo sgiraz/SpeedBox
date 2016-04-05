@@ -3,8 +3,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -116,9 +114,12 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 					if((line.equals("handshake"))){
 						// your are connected
 						System.out.println("CLIENT: connection estabilished correctly");
-						dispose();
+						setVisible(false);
 						new SendBoxGUI();
-						//return;
+						if(reader.readLine() == null){
+							dispose();
+							return;
+						}
 					}
 					else
 					{
