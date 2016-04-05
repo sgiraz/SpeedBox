@@ -22,9 +22,6 @@ import javax.swing.SwingConstants;
 
 public class SendBoxGUI extends JFrame implements ActionListener{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7014623789915977930L;
 	public static String myIP = "";
 	public static String otherIP = "localhost";

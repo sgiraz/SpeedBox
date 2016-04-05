@@ -21,7 +21,9 @@ import java.net.Socket;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -118,7 +120,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 				}
 			}
 		});
-		
+
 		chckbxNewCheckBox.setBounds(124, 108, 130, 23);
 		contentPanel.add(chckbxNewCheckBox);
 		contentPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPassword, textFieldSSID, passwordField, chckbxNewCheckBox, lblNetworkName, lblCreateNetwork}));
@@ -133,23 +135,25 @@ public class NetworkConfig extends JDialog implements Runnable {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							String setResult = LinuxNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
-							System.out.println(setResult);
-							/*
+							/*String setResult = LinuxNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));							*/
+
 							String setResult = WindowsNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
+
+							System.out.println(setResult);
+
 							if(WindowsNetwork.checkHostednetwork())
 							{
-								new Thread("wait connection").start();
-								JOptionPane.showMessageDialog(new JFrame(), "Hostednetwork "+textFieldSSID.getText()+" created", "Created",
+								startThread();
+								JOptionPane.showMessageDialog(new JFrame(), "Hostednetwork " + textFieldSSID.getText() + " created", "Created",
 										JOptionPane.INFORMATION_MESSAGE);
 							}
 							else
 							{
-								String message = "Sorry, your computer can't create a hostednetwork:\n" + setResult + "\n" + startResult;
+								String message = "Sorry, your computer can't create a hostednetwork:\n" + setResult + "\n";
 								JOptionPane.showMessageDialog(new JFrame(), message, "Impossible to connect",
 										JOptionPane.ERROR_MESSAGE);
 							}
-							*/
+
 						}
 					}
 				});
@@ -181,7 +185,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 			e.printStackTrace();
 		}	
 	}
-	
+
 	public boolean checkPassword() {
 		String password = new String(passwordField.getPassword());
 		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
@@ -205,11 +209,16 @@ public class NetworkConfig extends JDialog implements Runnable {
 			return false;
 		}
 	}
-	
+
+	public void startThread()
+	{
+		new Thread(this).start();
+	}
+
 	public void run()
 	{
 		System.out.println("SERVERWAIT: waiting for an handshake");
-		
+
 		//accept
 		try(ServerSocket serverSocket = new ServerSocket(portNumber);
 				Socket clientSocket = serverSocket.accept();
@@ -217,20 +226,23 @@ public class NetworkConfig extends JDialog implements Runnable {
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 				DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
 
+			System.out.println("SERVERWAIT: connected " + clientSocket.getLocalPort());
 			this.serverSocket = serverSocket;
-			
+
 			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
 
 			// check for input request type
 			String line = reader.readLine(); 
 
-			if(line.equals("handshake")){
+			if(line.equals("handshake"))
+			{
 				// send acceptation
 				System.out.println("SERVER: Sending handshake");
 
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
+				new SendBoxGUI();
 			}
 			else
 			{
