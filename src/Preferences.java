@@ -214,6 +214,4 @@ public class Preferences extends JFrame implements Runnable {
 		}
 		return scrollPane;
 	}
-
-	
 }

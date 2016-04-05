@@ -23,8 +23,7 @@ import javax.swing.SwingConstants;
 public class SendBoxGUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 7014623789915977930L;
-	public static String myIP = "";
-	public static String otherIP = "localhost";
+	public static String otherIP;
 	public static int myPort = 16000;
 	public static int otherPort = 16000;
 	private MenuBar mb;
@@ -42,7 +41,7 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 
 	public SendBoxGUI(){
 		
-
+		otherIP = Utils.getGatewayIP();
 		mb = new MenuBar();
 		m1 = new Menu("File");
 		m2 = new Menu("Edit");

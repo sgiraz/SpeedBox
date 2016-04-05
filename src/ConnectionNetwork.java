@@ -11,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import javax.swing.JButton;
@@ -99,46 +100,49 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 	public void run() {
 		
 		while(!threadClosed){
-			try(Socket clientSocket = new Socket(Utils.getGatewayIP(), portNumber);
-					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-					DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
-				
-				this.clientSocket = clientSocket;
+			try(Socket clientSocket = new Socket()){
+				clientSocket.connect(new InetSocketAddress(Utils.getGatewayIP(), portNumber), 1000);
+				try(BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+						BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+						DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
+					
+					this.clientSocket = clientSocket;
 
-				System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+					System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
 
-				// send input for request connection type
-				System.out.println("CLIENT: Sending handshake...");
-				writer.write("handshake");
-				writer.newLine();
-				writer.flush();
+					// send input for request connection type
+					System.out.println("CLIENT: Sending handshake...");
+					writer.write("handshake");
+					writer.newLine();
+					writer.flush();
 
-				// receive acceptation
-				String line = reader.readLine();
+					// receive acceptation
+					String line = reader.readLine();
 
-				if((line.equals("handshake"))){
-					// your are connected
-					System.out.println("CLIENT: connection estabilished correctly");
-					dispose();
-					new SendBoxGUI();
-					return;
+					if((line.equals("handshake"))){
+						// your are connected
+						System.out.println("CLIENT: connection estabilished correctly");
+						dispose();
+						new SendBoxGUI();
+						return;
+					}
+					else
+					{
+						// do something...
+						System.out.println("CLIENT: problem to handshake");
+					}
 				}
-				else
-				{
-					// do something...
-					System.out.println("CLIENT: problem to handshake");
-				}
-
 			}
+			
 			catch(IOException e){
-				System.out.println("Connection refused..");
+				System.out.println("Connection refused from IP: " + Utils.getGatewayIP());
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException excetption) {
+					excetption.printStackTrace();
+				}
 			}
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		
 		}
 	}
 
