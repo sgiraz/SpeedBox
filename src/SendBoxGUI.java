@@ -20,7 +20,8 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
 
-public class SendBoxGUI extends JFrame implements ActionListener{
+public class SendBoxGUI extends JFrame implements ActionListener
+{
 
 	private static final long serialVersionUID = 7014623789915977930L;
 	public static String otherIP;
@@ -58,7 +59,8 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		setup();
 	}
 
-	private void setup() {
+	private void setup() 
+	{
 
 		mi4.addActionListener(this);
 		mi5.addActionListener(this);
@@ -111,7 +113,8 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		MenuItem mi = (MenuItem) e.getSource();
 		System.out.println("In menu', you have clicked " + mi.getLabel());
 		
@@ -131,13 +134,15 @@ public class SendBoxGUI extends JFrame implements ActionListener{
 		
 	}
 	
-	public void drop(File file) {
+	public void drop(File file) 
+	{
 		System.out.println("Drop: " + file.getPath());
 		client.SendFile(file.getPath(), otherIP, otherPort);
 	}
 	
 	// this is for backgroud color during the drag and drop
-	public JPanel getPane(){
+	public JPanel getPane()
+	{
 		return panelDrop;
 	}
 		  

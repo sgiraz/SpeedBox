@@ -24,7 +24,8 @@ import javax.swing.JOptionPane;
  * if the user accept the request, Server send a message to Client and it prepare to receive the file
  * else the Server send a message to refuse request.
  */
-public class Server implements Runnable {
+public class Server implements Runnable
+{
 	private int portNumber;
 
 	public Server(int portNumber){
@@ -32,7 +33,8 @@ public class Server implements Runnable {
 		new Thread(this, "Server receive file Thread").start();
 	}
 
-	public void startServer() {
+	public void startServer() 
+	{
 		System.out.println("SERVER: Server started...");
 		while(true){
 			try(ServerSocket serverSocket = new ServerSocket(portNumber);
@@ -47,11 +49,13 @@ public class Server implements Runnable {
 				String typeOfInputClient = reader.readLine();
 				System.out.println("TYPE OF INPUT: "+ typeOfInputClient);
 
-				if(typeOfInputClient.equals("send_request")){
+				if(typeOfInputClient.equals("send_request"))
+				{
 					// send acceptation
 					System.out.println("SERVER: Sending confirm...");
 					String fileName = reader.readLine();
-					if(checkResponse(fileName)){
+					if(checkResponse(fileName))
+					{
 						System.out.println("check response successed!");
 						writer.write("accept_request");
 						writer.newLine();
@@ -60,7 +64,8 @@ public class Server implements Runnable {
 						// receiving data
 						receiveData(input, fileName);
 					}
-					else{
+					else
+					{
 						writer.write("refused_request");
 						writer.newLine();
 						writer.flush();
@@ -72,7 +77,8 @@ public class Server implements Runnable {
 					System.out.println("faiulure...");
 
 			}
-			catch(IOException e){
+			catch(IOException e)
+			{
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -85,8 +91,9 @@ public class Server implements Runnable {
 	 * @param fileName: name of file to receive with its extension
 	 * @throws IOException
 	 */
-	private void receiveData(DataInputStream reader, String fileName) throws IOException {
-		Path path = Paths.get("/Users/Simonegirardi/Desktop/"+ fileName);
+	private void receiveData(DataInputStream reader, String fileName) throws IOException
+	{
+		Path path = Paths.get(System.getProperty("user.home") + "/Desktop/" + fileName);
 		int count;
 		byte[] bytes = new byte[1024*32]; // my personal buffer (32KB)
 		long size = reader.readLong();
