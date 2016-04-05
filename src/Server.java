@@ -33,8 +33,53 @@ public class Server implements Runnable
 		this.portNumber = portNumber;
 		new Thread(this, "Server receive file Thread").start();
 	}
+ 
+	/**
+	 * Receive data from client ad save it on a file in local machine
+	 * @param reader : a DataImputStream reader
+	 * @param fileName: name of file to receive with its extension
+	 * @throws IOException
+	 */
+	private void receiveData(DataInputStream reader, String fileName) throws IOException
+	{
+		Path path = Paths.get(System.getProperty("user.home") + "/Desktop/" + fileName);
+		int count;
+		byte[] bytes = new byte[10240]; // my personal buffer (10KB)
+		long size = reader.readLong();
+		int received = 0;
+		if(size >= 0){
+			try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path, CREATE, APPEND))) {
+				while((count = reader.read(bytes)) > 0 ){
+					received += count;
+					out.write(bytes, 0 , count);
+					System.out.format("Dowload: %.1f %% %n", received/(float)size * 100);
+				}  
+				System.out.println("Data saved in: " + path);
+			} catch (IOException x) {
+				System.err.println(x);
+			}	
+		}
+		else
+			System.out.println("Error: returned -1, impossible to receive" + fileName);	
+	}
 
-	public void startServer() 
+	/**
+	 * A Dialog window that ask confirm for accept to receive file  
+	 * @param fileName: name of file to receive
+	 * @return true only if the user say yes
+	 */
+	private boolean checkResponse(String fileName) {
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		int response = JOptionPane.showConfirmDialog(null, "Do you want to receive " + fileName + "?", "Confirm",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (response == JOptionPane.YES_OPTION) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void run() 
 	{
 		System.out.println("SERVER: Server started...");
 		while(true){
@@ -71,7 +116,6 @@ public class Server implements Runnable
 						writer.newLine();
 						writer.flush();
 					}
-						
 
 				}
 				else
@@ -80,59 +124,11 @@ public class Server implements Runnable
 			}
 			catch(IOException e)
 			{
+				System.out.println("SERVER: client disconnected.");
 				e.printStackTrace();
-				System.exit(1);
+				return;
 			}
 		} 
-	}
-
-	/**
-	 * Receive data from client ad save it on a file in local machine
-	 * @param reader : a DataImputStream reader
-	 * @param fileName: name of file to receive with its extension
-	 * @throws IOException
-	 */
-	private void receiveData(DataInputStream reader, String fileName) throws IOException
-	{
-		Path path = Paths.get(System.getProperty("user.home") + "/Desktop/" + fileName);
-		int count;
-		byte[] bytes = new byte[1024*32]; // my personal buffer (32KB)
-		long size = reader.readLong();
-		int received = 0;
-		if(size >= 0){
-			try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path, CREATE, APPEND))) {
-				while((count = reader.read(bytes)) > 0 ){
-					received += count;
-					out.write(bytes, 0 , count);
-					System.out.format("Dowload: %.1f %% %n", received/(float)size * 100);
-				}  
-				System.out.println("Data saved in: " + path);
-			} catch (IOException x) {
-				System.err.println(x);
-			}	
-		}
-		else
-			System.out.println("Error: returned -1, impossible to receive" + fileName);	
-	}
-
-	/**
-	 * A Dialog window that ask confirm for accept to receive file  
-	 * @param fileName: name of file to receive
-	 * @return true only if the user say yes
-	 */
-	private boolean checkResponse(String fileName) {
-		JDialog.setDefaultLookAndFeelDecorated(true);
-		int response = JOptionPane.showConfirmDialog(null, "Do you want to receive " + fileName + "?", "Confirm",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (response == JOptionPane.YES_OPTION) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void run() {
-		startServer();
 	}
 }
 

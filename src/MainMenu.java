@@ -4,14 +4,19 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class MainMenu extends JDialog {
+public class MainMenu extends JFrame 
+{
 
 	private static final long serialVersionUID = -3088890058631223710L;
 
-	public MainMenu() {
-		setBounds(100, 100, 338, 156);
+	public static MainMenu instance;
+	public MainMenu() 
+	{
+		instance = this;
+		setBounds(100, 100, 338, 156);	
 		getContentPane().setLayout(null);
 		{
 			JButton connectButton = new JButton("Connect");
@@ -43,7 +48,7 @@ public class MainMenu extends JDialog {
 		
 
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 

@@ -41,13 +41,6 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 	public ConnectionNetwork() {
 		setTitle("Waiting for connection...");
 		
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				close();	
-			}
-		});
-
 		new Thread(this, "try connection..").start();
 		
 		setBounds(100, 100, 330, 185);
@@ -99,7 +92,8 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 	@Override
 	public void run() {
 		
-		while(!threadClosed){
+		while(!threadClosed)
+		{
 			try(Socket clientSocket = new Socket()){
 				clientSocket.connect(new InetSocketAddress(Utils.getGatewayIP(), portNumber), 1000);
 				try(BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -124,7 +118,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 						System.out.println("CLIENT: connection estabilished correctly");
 						dispose();
 						new SendBoxGUI();
-						return;
+						//return;
 					}
 					else
 					{

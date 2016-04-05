@@ -40,8 +40,11 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private JLabel lblDropFileHere;
 
 
-	public SendBoxGUI(){
-
+	public SendBoxGUI()
+	{
+		//close main menu
+		MainMenu.instance.dispose();
+		
 		otherIP = Utils.getGatewayIP();
 		mb = new MenuBar();
 		m1 = new Menu("File");

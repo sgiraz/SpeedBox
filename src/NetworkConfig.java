@@ -50,13 +50,6 @@ public class NetworkConfig extends JDialog implements Runnable {
 
 	public NetworkConfig() 
 	{
-		///TODO : change the call to a generic stopHostednetwork function instead of windows only.
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				close();	
-			}
-		});
 
 		setTitle("Network configuration");
 		setBounds(100, 100, 301, 211);
@@ -226,8 +219,6 @@ public class NetworkConfig extends JDialog implements Runnable {
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 				DataInputStream input = new DataInputStream(clientSocket.getInputStream()))
 		{
-
-			System.out.println("SERVERWAIT: connected " + clientSocket.getLocalPort());
 			this.serverSocket = serverSocket;
 
 			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
@@ -245,6 +236,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 				writer.flush();
 				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
 				new SendBoxGUI();
+				setVisible(false);
 			}
 			else
 			{
@@ -252,9 +244,12 @@ public class NetworkConfig extends JDialog implements Runnable {
 			}
 
 		}
-		catch(IOException e){
+		catch(IOException e)
+		{
 			e.printStackTrace();
 			return;
 		}
+
+		System.out.println("boh");
 	}
 }
