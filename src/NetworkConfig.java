@@ -224,7 +224,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 				Socket clientSocket = serverSocket.accept();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-				DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
+				DataInputStream input = new DataInputStream(clientSocket.getInputStream()))
+		{
 
 			System.out.println("SERVERWAIT: connected " + clientSocket.getLocalPort());
 			this.serverSocket = serverSocket;
@@ -242,6 +243,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
+				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
 				new SendBoxGUI();
 			}
 			else

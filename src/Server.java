@@ -28,7 +28,8 @@ public class Server implements Runnable
 {
 	private int portNumber;
 
-	public Server(int portNumber){
+	public Server(int portNumber)
+	{
 		this.portNumber = portNumber;
 		new Thread(this, "Server receive file Thread").start();
 	}

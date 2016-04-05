@@ -41,7 +41,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 
 	public SendBoxGUI(){
-		
+
 		otherIP = Utils.getGatewayIP();
 		mb = new MenuBar();
 		m1 = new Menu("File");
@@ -53,7 +53,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		mi4 = new MenuItem("Preferences");
 		mi5 = new MenuItem("Quit");
 		listener = new DropListener(this);
-		
+
 		client = new Client();
 		server = new Server(myPort);
 		setup();
@@ -77,7 +77,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		setMenuBar(mb);
 		setSize(443, 359);
 		setTitle("SendBox");
-		
+
 		splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.7);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
@@ -85,12 +85,12 @@ public class SendBoxGUI extends JFrame implements ActionListener
 			scrollPane = new JScrollPane();
 			splitPane.setRightComponent(scrollPane);
 		}
-		
+
 		panelDrop = new JPanel();
 		panelDrop.setForeground(Color.GRAY);
 		splitPane.setLeftComponent(panelDrop);
 		panelDrop.setLayout(null);
-		
+
 		lblDropFileHere = new JLabel("Drop file here");
 		lblDropFileHere.setForeground(Color.GRAY);
 		lblDropFileHere.setHorizontalAlignment(SwingConstants.CENTER);
@@ -106,18 +106,18 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 		// Connect the label with a drag and drop listener
 		new DropTarget(this, listener);							
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);	
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		MenuItem mi = (MenuItem) e.getSource();
 		System.out.println("In menu', you have clicked " + mi.getLabel());
-		
+
 		// USANDO I THREAD VOLEVO METTERE IN WAIT SANDBOX FINO A QUANDO L'UTENTE
 		// NON CLICCA SUL BOTTONE SAVE IN PREFERENCES MA NON RIESCO
 		switch(mi.getLabel()){
@@ -131,19 +131,19 @@ public class SendBoxGUI extends JFrame implements ActionListener
 			System.out.println("Pressed: " + mi.getLabel());
 			break;
 		}
-		
+
 	}
-	
+
 	public void drop(File file) 
 	{
-		System.out.println("Drop: " + file.getPath());
+		System.out.println("Drop: " + file.getPath() + " to " + otherIP);
 		client.SendFile(file.getPath(), otherIP, otherPort);
 	}
-	
+
 	// this is for backgroud color during the drag and drop
 	public JPanel getPane()
 	{
 		return panelDrop;
 	}
-		  
+
 }
