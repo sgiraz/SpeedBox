@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -47,6 +49,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 	private int portNumber = 50000;
 	ServerSocket serverSocket;
 	private JLabel lblCreateNetwork;
+	private long keepAliveTime;
 
 	public NetworkConfig() 
 	{
@@ -222,45 +225,76 @@ public class NetworkConfig extends JDialog implements Runnable {
 		{
 			this.serverSocket = serverSocket;
 
-			while(true)
+			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
+
+			// check for input request type
+			String line = reader.readLine();
+
+			if(line.equals("handshake"))
 			{
-				System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
-				
-				// check for input request type
-				String line = reader.readLine(); 
-				
-				if(line == null)
+				// send acceptation
+				System.out.println("SERVER: Sending handshake");
+				writer.write("handshake");
+				writer.newLine();
+				writer.flush();
+				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
+				//new SendBoxGUI();
+				setVisible(false);
+
+				// keep alive timer
+				keepAliveTime = System.currentTimeMillis() ;
+				Timer t = new Timer();
+				t.schedule(new TimerTask()
 				{
-					new MainMenu();
-					dispose();
-					SendBoxGUI.instance.dispose();
-					return;
-				}
+					@Override
+					public void run() {
+						long diff = System.currentTimeMillis() - keepAliveTime;
+						System.out.println("timer: " + diff);
+						if(diff > 5000)
+						{
+							try { reader.close(); }
+							catch (IOException e) { e.printStackTrace(); }
+						}
+					}
+				}, 2000);
 				
-				if(line.equals("handshake"))
+				System.out.println("timer started");
+				while(clientSocket.isConnected() && !clientSocket.isClosed())
 				{
-					// send acceptation
-					System.out.println("SERVER: Sending handshake");
-	
-					writer.write("handshake");
-					writer.newLine();
-					writer.flush();
-					SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
-					new SendBoxGUI();
-					setVisible(false);
+					System.out.println("under the while");
+					if((line = reader.readLine()).equals("keepalive"))
+					{
+						keepAliveTime = System.currentTimeMillis();
+						System.out.println("keepalive received");
+					}
+					else{
+						System.out.print("recived: ");
+						System.out.println(line);
+						break;
+						
+					}
 				}
-				else
-				{
-					System.out.println("faiulure...");
-				}
+
+
 			}
+			else
+			{
+				System.out.println("wrong handshake");
+			}
+
 
 		}
 		catch(IOException e)
 		{
+			System.out.println("catch executed");
 			e.printStackTrace();
-			return;
 		}
+
+		System.out.println("socket closed by host");
+		new MainMenu();
+		dispose();
+		SendBoxGUI.instance.dispose();
+		return;
 
 	}
 }

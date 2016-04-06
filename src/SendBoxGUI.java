@@ -10,6 +10,9 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,6 +65,8 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		client = new Client();
 		server = new Server(myPort);
 		setup();
+		
+		
 	}
 
 	private void setup() 

@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,6 +29,8 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 	private int portNumber = 50000;
 	private Socket clientSocket;
 	private boolean threadClosed;
+
+	private long keepAliveTime;
 
 	// print istruction for user to connect ad-hoc network
 	// ...
@@ -115,11 +119,45 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 						// your are connected
 						System.out.println("CLIENT: connection estabilished correctly");
 						setVisible(false);
-						new SendBoxGUI();
-						if(reader.readLine() == null){
-							dispose();
-							return;
+						//new SendBoxGUI();
+
+						// keep alive timer
+						keepAliveTime = System.currentTimeMillis() ;
+						Timer t = new Timer();
+						t.schedule(new TimerTask()
+						{
+							@Override
+							public void run() {
+								long diff = System.currentTimeMillis() - keepAliveTime;
+								System.out.println("timer: " + diff);
+								if(diff > 5000)
+								{
+									try { reader.close(); }
+									catch (IOException e) { e.printStackTrace(); }
+								}
+							}
+						}, 2000);
+						
+						System.out.println("timer started");
+						while(clientSocket.isConnected() && !clientSocket.isClosed())
+						{
+							System.out.println("under the while");
+							if((line = reader.readLine()).equals("keepalive"))
+							{
+								keepAliveTime = System.currentTimeMillis();
+								System.out.println("keepalive received");
+							}
+							else{
+								System.out.print("recived: ");
+								System.out.println(line);
+								break;
+								
+							}
 						}
+						
+						
+						
+						
 					}
 					else
 					{
