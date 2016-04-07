@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -20,9 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class MainMenu extends JFrame 
 {
@@ -35,12 +33,23 @@ public class MainMenu extends JFrame
 	public MainMenu() 
 	{
 		instance = this;
-		setBounds(100, 100, 552, 407);
+		setBounds(100, 100, 530, 287);
 		getContentPane().setLayout(new BorderLayout(0, 3));
 
 		JPanel panelMenu = new JPanel();
 		getContentPane().add(panelMenu, BorderLayout.NORTH);
 		panelMenu.setLayout(new BorderLayout(0, 0));
+		
+				JPanel panelMenuITitle = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
+				panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
+				
+						JLabel lblMainMenu = new JLabel();
+						lblMainMenu.setIcon(new ImageIcon(this.getClass().getResource("/img/speedbox.png")));
+						panelMenuITitle.add(lblMainMenu);
+						lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
+						lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
+						lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JPanel panelMenuSeparator = new JPanel();
 		panelMenu.add(panelMenuSeparator, BorderLayout.SOUTH);
@@ -49,17 +58,6 @@ public class MainMenu extends JFrame
 		panelMenuSeparator.add(separator);
 		separator.setBounds(new Rectangle(0, 0, 5, 0));
 		separator.setPreferredSize(new Dimension(300, 2));
-
-		JPanel panelMenuITitle = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
-		panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
-
-		JLabel lblMainMenu = new JLabel("");
-		lblMainMenu.setIcon(new ImageIcon(MainMenu.class.getResource("/img/menu_logo.png")));
-		panelMenuITitle.add(lblMainMenu);
-		lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JPanel panelCentral = new JPanel();
 		panelCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
