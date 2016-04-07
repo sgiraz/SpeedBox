@@ -11,11 +11,11 @@ import java.util.TimerTask;
 public class Server implements Runnable
 {
 	private int portNumber = 50000;
-
-	ServerSocket serverSocket;
-	Socket clientSocket;
-	BufferedReader reader;
-	BufferedWriter writer;
+	private boolean connected;
+	private ServerSocket serverSocket;
+	private Socket clientSocket;
+	private BufferedReader reader;
+	private BufferedWriter writer;
 
 	Timer timer;
 	private long keepAliveTime;
@@ -29,7 +29,7 @@ public class Server implements Runnable
 
 	public void run()
 	{
-		System.out.println("SERVERWAIT: waiting for an handshake");
+		System.out.println("Server.java: waiting for an handshake");
 
 		//accept
 		try
@@ -39,15 +39,17 @@ public class Server implements Runnable
 			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
-			System.out.println("SERVERWAIT: connected to " + clientSocket.getInetAddress());
+			System.out.println("Server.java: connected to " + clientSocket.getInetAddress());
 
 			// check for input request type
 			String line = reader.readLine();
 
 			if(line.equals("handshake"))
 			{
+				connected = true;
+				
 				// send acceptation
-				System.out.println("SERVER: Sending handshake");
+				System.out.println("Server.java: Sending handshake");
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
@@ -68,23 +70,23 @@ public class Server implements Runnable
 					@Override
 					public void run() {
 						long diff = System.currentTimeMillis() - keepAliveTime;
-						System.out.println("timer: " + diff);
+						System.out.println("Server.java: timer: " + diff);
 						if(diff > 5000)
 						{
-							System.out.println("CLOSING READER");
+							System.out.println("Server.java: Closing reader");
 							try { reader.close(); }
 							catch (IOException e) { e.printStackTrace(); }
 						}
 					}
 				}, 0, 2000);
 
-				System.out.println("timer started");
+				System.out.println("Server.java: timer started");
 				while(clientSocket.isConnected() && !clientSocket.isClosed())
 				{
-					System.out.println("under the while");
+					System.out.println("Server.java: under the while");
 					if((line = reader.readLine()) != null && line.equals("keepalive"))
 					{
-						System.out.println("keepalive received");
+						System.out.println("Server.java: keepalive received");
 						keepAliveTime = System.currentTimeMillis();
 						writer.write("keepalive");
 						writer.newLine();
@@ -92,7 +94,7 @@ public class Server implements Runnable
 					}
 					else
 					{
-						System.out.print("not keepalive: ");
+						System.out.print("Server.java: not keepalive: ");
 						System.out.println(line);
 					}
 
@@ -102,19 +104,24 @@ public class Server implements Runnable
 			}
 			else
 			{
-				System.out.println("wrong handshake");
+				System.out.println("Server.java: wrong handshake");
 			}
 
 
 		}
 		catch(IOException e)
 		{
-			System.out.println("catch executed");
+			System.out.println("Server.java: catch executed");
 			e.printStackTrace();
+		}
+		
+		if(connected)
+		{
+			Utils.showWarning("Connection closed");
+			System.out.println("Server.java: socket closed by host");
 		}
 
 		destroy();
-		System.out.println("socket closed by host");
 		new MainMenu();
 	}
 

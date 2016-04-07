@@ -38,10 +38,10 @@ public class Client implements Runnable
 				reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
-				System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+				System.out.println("Client.java: connected to " + clientSocket.getInetAddress());
 
 				// send input for request connection type
-				System.out.println("CLIENT: Sending handshake...");
+				System.out.println("Client.java: Sending handshake...");
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
@@ -52,7 +52,7 @@ public class Client implements Runnable
 				if((line.equals("handshake")))
 				{
 					connected = true;
-					System.out.println("CLIENT: connection estabilished correctly");
+					System.out.println("Client.java: connection estabilished correctly");
 
 					// close the previous window and start the sending box
 					if(window != null)
@@ -76,20 +76,20 @@ public class Client implements Runnable
 						public void run()
 						{
 							long diff = System.currentTimeMillis() - keepAliveTime;
-							System.out.println("timer: " + diff);
+							System.out.println("Client.java: timer: " + diff);
 							if(diff > 5000)
 							{
-								System.out.println("CLOSING READER");
+								System.out.println("Client.java: Closing Reader");
 								try { reader.close(); }
 								catch (IOException e) { e.printStackTrace(); }
 							}
 						}
 					}, 0, 2000);
 
-					System.out.println("Timer started");
+					System.out.println("Client.java: Timer started");
 					while(clientSocket.isConnected() && !clientSocket.isClosed())
 					{
-						System.out.println("under the while");
+						System.out.println("Client.java: under the while");
 						if((line = reader.readLine()) != null && line.equals("keepalive"))
 						{
 							keepAliveTime = System.currentTimeMillis();
@@ -97,11 +97,11 @@ public class Client implements Runnable
 							writer.newLine();
 							writer.flush();
 
-							System.out.println("keepalive received");
+							System.out.println("Client.java: keepalive received");
 						}
 						else
 						{
-							System.out.print("not keepalive: ");
+							System.out.print("Client.java: not keepalive: ");
 							System.out.println(line);
 						}
 
@@ -110,7 +110,7 @@ public class Client implements Runnable
 				}
 				else
 				{
-					System.out.println("CLIENT: problem to handshake");
+					System.out.println("Client.java: problem to handshake");
 				}
 			}
 			catch(Exception e)
@@ -120,16 +120,19 @@ public class Client implements Runnable
 
 				closeStreams();
 
-				System.out.println("Connection refused from IP: " + Utils.getGatewayIP());
+				System.out.println("Client.java: Connection refused from IP: " + Utils.getGatewayIP());
 				try{ Thread.sleep(3000);}
 				catch (InterruptedException excetption) { excetption.printStackTrace(); }
 			}
 		}
 
 		destroy();
-		System.out.println("socket closed by host");
+		if(connected)
+		{
+			Utils.showWarning("Connection closed");
+			System.out.println("Client.java: socket closed by host");
+		}
 		new MainMenu();
-
 	}
 
 	public void destroy()
