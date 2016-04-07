@@ -46,6 +46,23 @@ public class Utils {
 				JOptionPane.WARNING_MESSAGE);
 	}
 	
+	public static void showInfo(String message)
+	{
+		//default title and icon
+		JOptionPane.showMessageDialog(new JDialog(),message);
+	}
+	
+	public static void showError(String message)
+	{
+		//custom title, error icon
+		JOptionPane.showMessageDialog(new JDialog(),
+		    message,
+		    "Inane error",
+		    JOptionPane.ERROR_MESSAGE);
+	}
+	
+	
+	
 	/**
 	 * Display some information about network as ifconfig command
 	 */
