@@ -111,8 +111,7 @@ public class Server implements Runnable
 		}
 		catch(IOException e)
 		{
-			System.out.println("Server.java: catch executed");
-			e.printStackTrace();
+			System.out.println("Server.java: CATCH (" + e.getMessage() + ")");
 		}
 		
 		if(connected)
