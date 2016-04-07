@@ -14,13 +14,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-/*
-git add --all   //aggiunge i files
-git commit -m "messaggio di commit"  //li salva in locale
-git push  //li carica online
-git pull //per ricevere
- */
-
 public class Utils {
 
 	/**
@@ -95,9 +88,8 @@ public class Utils {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			return ("Host Unknow");
-
 		}		
-	} 
+	}
 
 	public static String getGatewayIP()
 	{
