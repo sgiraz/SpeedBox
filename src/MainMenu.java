@@ -28,7 +28,8 @@ public class MainMenu extends JFrame
 {
 
 	private static final long serialVersionUID = -3088890058631223710L;
-	private final String infoNetworkType = "";
+	private final String infoNetworkType = "LAN NETWORK:choose this if you are connected on internet or local network yet.\n"
+				+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n";
 
 	public static MainMenu instance;
 	public MainMenu() 
@@ -70,8 +71,7 @@ public class MainMenu extends JFrame
 		panelCentral.add(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"LAN NETWORK", "DIRECT WIFI"}));
 
-		JLabel lblHelplabel = new JLabel("LAN NETWORK:choose this if you are connected on internet or local network yet.\n"
-				+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n");
+		JLabel lblHelplabel = new JLabel();
 		lblHelplabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
