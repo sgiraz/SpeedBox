@@ -15,6 +15,9 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 public class Utils {
 
 	/**
@@ -32,6 +35,15 @@ public class Utils {
 			return path.substring(pos + 1);
 
 		return "";
+	}
+
+	public static void showWarning(String message)
+	{
+		//custom title, warning icon
+		JOptionPane.showMessageDialog(new JDialog(),
+				message,
+				"Inane warning",
+				JOptionPane.WARNING_MESSAGE);
 	}
 	
 	/**

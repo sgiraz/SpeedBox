@@ -25,14 +25,14 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 	private static final long serialVersionUID = 7014623789915977930L;
 	public static String otherIP;
-	public static int myPort = 16000;
-	public static int otherPort = 16000;
+	public int myPort = 16000;
+	public int otherPort = 16000;
 	private MenuBar mb;
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
 	private DropListener listener;
-	private Client client;
-	private Server server;
+	private ClientDataTransfer clientData;
+	private ServerDataTransfer serverData;
 	private JProgressBar progressBarDown;
 	private JSplitPane splitPane;
 	private JScrollPane scrollPane;
@@ -41,13 +41,12 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 	public static SendBoxGUI instance;
 
-	public SendBoxGUI()
+	public SendBoxGUI(String ip)
 	{
 		instance = this;
-		//close main menu
 		MainMenu.instance.dispose();
 		
-		otherIP = Utils.getGatewayIP();
+		otherIP = ip;
 		mb = new MenuBar();
 		m1 = new Menu("File");
 		m2 = new Menu("Edit");
@@ -59,15 +58,15 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		mi5 = new MenuItem("Quit");
 		listener = new DropListener(this);
 
-		client = new Client();
-		server = new Server(myPort);
+		clientData = new ClientDataTransfer();
+		serverData = new ServerDataTransfer(myPort);
 		setup();
 	}
 	
 	public void destroy()
 	{
-		client.destroy();
-		server.destroy();
+		clientData.destroy();
+		serverData.destroy();
 		dispose();
 	}
 
@@ -149,7 +148,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	public void drop(File file) 
 	{
 		System.out.println("Drop: " + file.getPath() + " to " + otherIP);
-		client.SendFile(file.getPath(), otherIP, otherPort);
+		clientData.SendFile(file.getPath(), otherIP, otherPort);
 	}
 
 	// this is for backgroud color during the drag and drop

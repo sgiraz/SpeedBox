@@ -1,120 +1,169 @@
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Client implements Runnable {
-
+public class Client implements Runnable
+{
+	private int portNumber = 50000;
 	private Socket clientSocket;
-	private String ip;
-	private String path;
-	private int port;
-	boolean sending = false;
-	byte bytes[] = new byte[1024*10];
-	
-	private final int ERROR = -1;
-	
-	public boolean SendFile(String path, String ip, int port)
+	private long keepAliveTime;
+	private boolean connected;
+	private Timer timer;
+	private ClosableWindow window;
+	private BufferedWriter writer;
+	private BufferedReader reader;
+
+	public Client(ClosableWindow ownerWindow)
 	{
-		if(sending)
-			return false;
-		this.ip = ip;
-		this.port = port;
-		this.path = path;
-		sending = true;
-		new Thread(this, "CLIENT: send file thread").start();
-		
-		return true;
+		window = ownerWindow;
+		new Thread(this).start();
 	}
-	
-	public void destroy(){
-		if(clientSocket != null && !clientSocket.isClosed())
-			try {
-				clientSocket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
-	
-	public void run() {
-		 
-		try(Socket clientSocket = new Socket(ip, port);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-			DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())){
-			
-			this.clientSocket = clientSocket;
-			
-			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
-			
-			// send first message message
-			System.out.println("CLIENT: Socket created: " + clientSocket + "\nSending data: " + path +"...");
-			writer.write("send_request");
-			writer.newLine(); 
-			writer.write(Utils.pathGetFilename(path));
-			writer.newLine();
-			writer.flush();
 
-			System.out.println("CLIENT: Waiting for response..");
-			String command = reader.readLine();
-
-			System.out.println("CLIENT: command: " + command);
-			if(command.equals("accept_request"))
+	@Override
+	public void run()
+	{
+		while(true)
+		{
+			try
 			{
-				System.out.println("CLIENT: Accepted... sending file");
-				 
-				// send file
-				File file = new File(path);
-				if(file.exists()){
-					
-					SendingFile sendingFile = new SendingFile(file);
-					// TODO: ADD sendingFile TO THE SENDING FILES LIST
-					
-					System.out.println("CLIENT: file exists, sending..");
-					try(FileInputStream fs = new FileInputStream(file)){
-						// send file dimension
-						output.writeLong(file.length());
-						System.out.println("CLIENT: file length: " + file.length());
-						
-						int sent;
-						while((sent = fs.read(bytes)) > 0 ){
-							output.write(bytes,0,sent); 
-							sendingFile.update(sent);
+				clientSocket = new Socket();
+				clientSocket.connect(new InetSocketAddress(Utils.getGatewayIP(), portNumber), 1000);
+				reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+
+				System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+
+				// send input for request connection type
+				System.out.println("CLIENT: Sending handshake...");
+				writer.write("handshake");
+				writer.newLine();
+				writer.flush();
+
+				// receive acceptation
+				String line = reader.readLine();
+
+				if((line.equals("handshake")))
+				{
+					connected = true;
+					System.out.println("CLIENT: connection estabilished correctly");
+
+					// close the previous window and start the sending box
+					if(window != null)
+						window.destroy();
+
+					// create sendbox GUI
+					String otherIP = Utils.getGatewayIP();
+					new SendBoxGUI(otherIP);
+
+					// begin keepalive
+					writer.write("keepalive");
+					writer.newLine();
+					writer.flush();
+
+					// keep alive timer
+					keepAliveTime = System.currentTimeMillis() ;
+					timer = new Timer();
+					timer.schedule(new TimerTask()
+					{
+						@Override
+						public void run()
+						{
+							long diff = System.currentTimeMillis() - keepAliveTime;
+							System.out.println("timer: " + diff);
+							if(diff > 5000)
+							{
+								System.out.println("CLOSING READER");
+								try { reader.close(); }
+								catch (IOException e) { e.printStackTrace(); }
+							}
 						}
+					}, 0, 2000);
+
+					System.out.println("Timer started");
+					while(clientSocket.isConnected() && !clientSocket.isClosed())
+					{
+						System.out.println("under the while");
+						if((line = reader.readLine()) != null && line.equals("keepalive"))
+						{
+							keepAliveTime = System.currentTimeMillis();
+							writer.write("keepalive");
+							writer.newLine();
+							writer.flush();
+
+							System.out.println("keepalive received");
+						}
+						else
+						{
+							System.out.print("not keepalive: ");
+							System.out.println(line);
+						}
+
+						Thread.sleep(1000);
 					}
-					
 				}
 				else
-					output.writeLong(ERROR);
+				{
+					System.out.println("CLIENT: problem to handshake");
+				}
 			}
-			else if (command.equals("refused_request"))
+			catch(Exception e)
 			{
-				System.out.println("CLIENT: File Refused");
-				
+				if(connected)
+					break;
+
+				closeStreams();
+
+				System.out.println("Connection refused from IP: " + Utils.getGatewayIP());
+				try{ Thread.sleep(3000);}
+				catch (InterruptedException excetption) { excetption.printStackTrace(); }
 			}
-			else
-			{
-				System.out.println("CLIENT: other command " + command);
-			}			
-		} catch (IOException e) {
-			System.out.println("CLIENT: Impossible to connect");			
-			e.printStackTrace();
 		}
 
-		System.out.println("CLIENT: finish");
-		sending=false;
+		destroy();
+		System.out.println("socket closed by host");
+		new MainMenu();
+
 	}
-	 
+
+	public void destroy()
+	{
+		System.out.println("Client.java: destroy()");
+
+		closeStreams();
+
+		if(timer != null)
+			timer.cancel();
+
+		if(SendBoxGUI.instance != null)
+			SendBoxGUI.instance.dispose();
+	}
+
+	private void closeStreams()
+	{
+		try {
+			if(clientSocket != null && !clientSocket.isClosed())
+				clientSocket.close();
+		}
+		catch (IOException e) {}
+
+		try {
+			if(reader != null)
+				reader.close();
+		}
+		catch (IOException e) {}
+
+		try {
+			if(writer != null)
+				writer.close();
+		}
+		catch (IOException e) {}
+	}
 }
 
-
-		
-	
-
-			
