@@ -29,16 +29,9 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 	private int portNumber = 50000;
 	private Socket clientSocket;
 	private boolean threadClosed;
-
 	private long keepAliveTime;
-
-	// print istruction for user to connect ad-hoc network
-	// ...
-	// waiting for user to connect ad-hoc network
-	// ...
-	// when he's connected send an hadshake message to Server
-	// ...
-	// run SendBox
+	private boolean connected;
+	private Timer timer;
 
 	public ConnectionNetwork() {
 		setTitle("Waiting for connection...");
@@ -117,14 +110,20 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 
 					if((line.equals("handshake"))){
 						// your are connected
+						connected = true;
 						System.out.println("CLIENT: connection estabilished correctly");
 						setVisible(false);
-						//new SendBoxGUI();
+						new SendBoxGUI();
+
+						// starting keepalive
+						writer.write("keepalive");
+						writer.newLine();
+						writer.flush();
 
 						// keep alive timer
 						keepAliveTime = System.currentTimeMillis() ;
-						Timer t = new Timer();
-						t.schedule(new TimerTask()
+						timer = new Timer();
+						timer.schedule(new TimerTask()
 						{
 							@Override
 							public void run() {
@@ -146,24 +145,40 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 							if((line = reader.readLine()) != null && line.equals("keepalive"))
 							{
 								keepAliveTime = System.currentTimeMillis();
+								writer.write("keepalive");
+								writer.newLine();
+								writer.flush();
+
 								System.out.println("keepalive received");
 							}
 							else{
 								System.out.print("not keepalive: ");
 								System.out.println(line);
 							}
+							Thread.sleep(1000);
 						}
 					}
 					else
 					{
 						System.out.println("CLIENT: problem to handshake");
 					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 
 			catch(IOException e)
 			{
 				System.out.println("Connection refused from IP: " + Utils.getGatewayIP());
+				if(connected){
+					close();
+					if(SendBoxGUI.instance != null){
+						SendBoxGUI.instance.dispose();
+					}
+					timer.cancel();
+					new MainMenu();
+				}
 				try{ Thread.sleep(3000);}
 				catch (InterruptedException excetption) { excetption.printStackTrace(); }
 			}

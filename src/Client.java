@@ -11,11 +11,12 @@ import java.net.Socket;
 
 public class Client implements Runnable {
 
+	private Socket clientSocket;
 	private String ip;
 	private String path;
 	private int port;
 	boolean sending = false;
-	byte bytes[] = new byte[1024*32];
+	byte bytes[] = new byte[1024*10];
 	
 	private final int ERROR = -1;
 	
@@ -32,12 +33,23 @@ public class Client implements Runnable {
 		return true;
 	}
 	
+	public void destroy(){
+		if(clientSocket != null && !clientSocket.isClosed())
+			try {
+				clientSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
 	public void run() {
 		 
 		try(Socket clientSocket = new Socket(ip, port);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())){
+			
+			this.clientSocket = clientSocket;
 			
 			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
 			
