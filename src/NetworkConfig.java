@@ -49,6 +49,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 	private JLabel lblCreateNetwork;
 	private long keepAliveTime;
 	Timer timer;
+	private JButton btnCreate;
 	
 	public NetworkConfig() 
 	{
@@ -125,13 +126,12 @@ public class NetworkConfig extends JDialog implements Runnable {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton btnCreate = new JButton("create");
+				btnCreate = new JButton("create");
 				buttonPane.add(btnCreate);
 				btnCreate.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-
 							String setResult = HostedNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
 
 							System.out.println(setResult);
@@ -139,16 +139,19 @@ public class NetworkConfig extends JDialog implements Runnable {
 							if(HostedNetwork.checkHostednetwork())
 							{
 								startThread();
-								JOptionPane.showMessageDialog(new JFrame(), "Hostednetwork " + textFieldSSID.getText() + " created", "Created",
-										JOptionPane.INFORMATION_MESSAGE);
+								
+								//created, wait
+								btnCreate.setText("Waiting for connection");
+								btnCreate.setEnabled(false);
+								
 							}
 							else
 							{
 								String message = "Sorry, your computer can't create a hostednetwork:\n" + setResult + "\n";
 								JOptionPane.showMessageDialog(new JFrame(), message, "Impossible to connect",
 										JOptionPane.ERROR_MESSAGE);
+								dispose();
 							}
-
 						}
 					}
 				});
@@ -170,17 +173,19 @@ public class NetworkConfig extends JDialog implements Runnable {
 
 	private void close()
 	{
-		dispose();
 		try {
-			if(serverSocket != null)
+			if(serverSocket != null && !serverSocket.isClosed())
 				serverSocket.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
+
+		dispose();
 	}
 
-	public boolean checkPassword() {
+	public boolean checkPassword()
+	{
 		String password = new String(passwordField.getPassword());
 		if(password.length() >= 8  &&  password.length() <= 20 && password.matches("[a-zA-Z0-9]+")){
 			passwordField.setBackground(new Color(152, 251, 152));

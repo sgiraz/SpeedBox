@@ -76,12 +76,12 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 			if(clientSocket != null){
 				clientSocket.close();
 			}
-			threadClosed = true;
-			dispose();
 		}
 		catch(IOException e){
 			e.printStackTrace();
 		}
+		threadClosed = true;
+		dispose();
 	}
 
 	@Override
