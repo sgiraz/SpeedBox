@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -252,30 +250,31 @@ public class NetworkConfig extends JDialog implements Runnable {
 						System.out.println("timer: " + diff);
 						if(diff > 5000)
 						{
+							System.out.println("CLOSING READER");
 							try { reader.close(); }
 							catch (IOException e) { e.printStackTrace(); }
 						}
 					}
-				}, 2000);
-				
+				}, 0, 2000);
+
 				System.out.println("timer started");
 				while(clientSocket.isConnected() && !clientSocket.isClosed())
 				{
 					System.out.println("under the while");
-					if((line = reader.readLine()).equals("keepalive"))
+					if((line = reader.readLine()) != null && line.equals("keepalive"))
 					{
 						keepAliveTime = System.currentTimeMillis();
 						System.out.println("keepalive received");
+						writer.write("keepalive");
+						writer.newLine();
+						writer.flush();
 					}
-					else{
-						System.out.print("recived: ");
+					else
+					{
+						System.out.print("not keepalive: ");
 						System.out.println(line);
-						break;
-						
 					}
 				}
-
-
 			}
 			else
 			{
@@ -293,7 +292,7 @@ public class NetworkConfig extends JDialog implements Runnable {
 		System.out.println("socket closed by host");
 		new MainMenu();
 		dispose();
-		SendBoxGUI.instance.dispose();
+		//SendBoxGUI.instance.dispose();
 		return;
 
 	}

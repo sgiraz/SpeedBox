@@ -39,12 +39,12 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 	// when he's connected send an hadshake message to Server
 	// ...
 	// run SendBox
-	
+
 	public ConnectionNetwork() {
 		setTitle("Waiting for connection...");
-		
+
 		new Thread(this, "try connection..").start();
-		
+
 		setBounds(100, 100, 330, 185);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,7 +77,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
+
 	private void close(){
 		try{
 			if(clientSocket != null){
@@ -93,7 +93,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 
 	@Override
 	public void run() {
-		
+
 		while(!threadClosed)
 		{
 			try(Socket clientSocket = new Socket()){
@@ -101,7 +101,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 				try(BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 						BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 						DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
-					
+
 					this.clientSocket = clientSocket;
 
 					System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
@@ -132,50 +132,42 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 								System.out.println("timer: " + diff);
 								if(diff > 5000)
 								{
+									System.out.println("CLOSING READER");
 									try { reader.close(); }
 									catch (IOException e) { e.printStackTrace(); }
 								}
 							}
-						}, 2000);
-						
+						}, 0, 2000);
+
 						System.out.println("timer started");
 						while(clientSocket.isConnected() && !clientSocket.isClosed())
 						{
 							System.out.println("under the while");
-							if((line = reader.readLine()).equals("keepalive"))
+							if((line = reader.readLine()) != null && line.equals("keepalive"))
 							{
 								keepAliveTime = System.currentTimeMillis();
 								System.out.println("keepalive received");
 							}
 							else{
-								System.out.print("recived: ");
+								System.out.print("not keepalive: ");
 								System.out.println(line);
-								break;
-								
 							}
 						}
-						
-						
-						
-						
 					}
 					else
 					{
-						// do something...
 						System.out.println("CLIENT: problem to handshake");
 					}
 				}
 			}
-			
-			catch(IOException e){
+
+			catch(IOException e)
+			{
 				System.out.println("Connection refused from IP: " + Utils.getGatewayIP());
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException excetption) {
-					excetption.printStackTrace();
-				}
+				try{ Thread.sleep(3000);}
+				catch (InterruptedException excetption) { excetption.printStackTrace(); }
 			}
-		
+
 		}
 	}
 
