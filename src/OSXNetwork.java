@@ -1,12 +1,8 @@
 public class OSXNetwork {
 	
 	// networksetup -setairportnetwork [interface] [router SSID] [password] create to wi-fi
-	
-	public static String setHostednetwork(String name, String password){
-		return null;
-	}
 
-	public static String startHostednetwork()
+	public static String startHostednetwork(String name, String password)
 	{
 		return null;
 	}

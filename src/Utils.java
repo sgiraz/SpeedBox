@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class Utils {
@@ -78,6 +79,32 @@ public class Utils {
 		System.out.printf("\n");
 	}
 
+	
+
+	public enum OSType {
+		Windows, OSX, Linux, Other
+	};
+
+	protected static OSType detectedOS;
+
+	public static OSType getOS() 
+	{
+		if (detectedOS == null) 
+		{
+			String OS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+			if ((OS.indexOf("mac") >= 0) || (OS.indexOf("darwin") >= 0)) {
+				detectedOS = OSType.OSX;
+			} else if (OS.indexOf("win") >= 0) {
+				detectedOS = OSType.Windows;
+			} else if (OS.indexOf("nux") >= 0) {
+				detectedOS = OSType.Linux;
+			} else {
+				detectedOS = OSType.Other;
+			}
+		}
+		return detectedOS;
+	}
+	
 	/**
 	 * @return the string of current assigned ip address
 	 */

@@ -45,7 +45,7 @@ public class LinuxNetwork
 		return result;
 	}
 
-	public static String stopHostedNetwork()
+	public static String stopHostednetwork()
 	{
 		String result = executeCommand("ifconfig "+getWirelessInteraface()+" down");
 		result += "\n" + executeCommand("iwconfig "+getWirelessInteraface()+" mode managed");

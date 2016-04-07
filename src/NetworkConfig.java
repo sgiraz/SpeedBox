@@ -131,13 +131,12 @@ public class NetworkConfig extends JDialog implements Runnable {
 					public void actionPerformed(ActionEvent e) {
 						if(checkSSID() && checkPassword())
 						{
-							/*String setResult = LinuxNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));							*/
 
-							String setResult = WindowsNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
+							String setResult = HostedNetwork.startHostednetwork(textFieldSSID.getText(), new String(passwordField.getPassword()));
 
 							System.out.println(setResult);
 
-							if(WindowsNetwork.checkHostednetwork())
+							if(HostedNetwork.checkHostednetwork())
 							{
 								startThread();
 								JOptionPane.showMessageDialog(new JFrame(), "Hostednetwork " + textFieldSSID.getText() + " created", "Created",
@@ -235,8 +234,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
-				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
 				new SendBoxGUI();
+				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
 				setVisible(false);
 
 				// keep alive timer
