@@ -10,9 +10,8 @@ public class LinuxNetwork
 	{
 		if(wirelessInterface == null)
 		{
-			System.out.println("asd");
 			wirelessInterface = executeCommand("iwconfig 2>&1 | grep IEEE | cut -f 1 -d \" \"");
-			System.out.println("asd:" +wirelessInterface);
+			System.out.println("Linu wireless interface: " +wirelessInterface);
 		}
 		return wirelessInterface;
 	}

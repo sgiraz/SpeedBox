@@ -5,13 +5,14 @@ import javax.swing.UIManager;
 public class Main {
 	
 	public static void main(String[] args) {
-
+		
+		System.out.println("Application running..");
 		//System.out.println(Utils.getGatewayIP());
 		//System.out.println(Utils.getLocalIP());
-		System.out.println("Application running.." + LinuxNetwork.getWirelessInteraface());
+		//System.out.println("Application running.." + LinuxNetwork.getWirelessInteraface());
 		
 		if(WindowsNetwork.checkHostednetwork())
-			System.out.println("ok");
+			System.out.println("check hostednetwork: ok");
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -28,7 +29,6 @@ public class Main {
 					}
 					
 					new MainMenu();
-					//new SendBoxGUI();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
