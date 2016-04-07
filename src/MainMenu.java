@@ -35,7 +35,7 @@ public class MainMenu extends JFrame
 	public MainMenu() 
 	{
 		instance = this;
-		setBounds(100, 100, 369, 217);
+		setBounds(100, 100, 552, 407);
 		getContentPane().setLayout(new BorderLayout(0, 3));
 
 		JPanel panelMenu = new JPanel();
@@ -51,13 +51,14 @@ public class MainMenu extends JFrame
 		separator.setPreferredSize(new Dimension(300, 2));
 
 		JPanel panelMenuITitle = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
 		panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
 
-		JLabel lblMainMenu = new JLabel("MAIN MEN\u00D9");
+		JLabel lblMainMenu = new JLabel("");
+		lblMainMenu.setIcon(new ImageIcon(MainMenu.class.getResource("/img/menu_logo.png")));
 		panelMenuITitle.add(lblMainMenu);
 		lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JPanel panelCentral = new JPanel();
@@ -79,7 +80,7 @@ public class MainMenu extends JFrame
 			}
 		});
 		lblHelplabel.setToolTipText("click for information about ...");
-		lblHelplabel.setIcon(new ImageIcon(MainMenu.class.getResource("/javax/swing/plaf/metal/icons/ocean/question.png")));
+		lblHelplabel.setIcon(new ImageIcon(this.getClass().getResource("/help_icon.png")));
 		panelCentral.add(lblHelplabel);
 
 		JPanel panelButtons = new JPanel();
