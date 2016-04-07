@@ -17,6 +17,7 @@ import java.util.TimerTask;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -175,6 +176,7 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 					close();
 					if(SendBoxGUI.instance != null){
 						SendBoxGUI.instance.dispose();
+						informTheUser();
 					}
 					timer.cancel();
 					new MainMenu();
@@ -184,6 +186,14 @@ public class ConnectionNetwork extends JDialog implements Runnable {
 			}
 
 		}
+	}
+
+	private void informTheUser() {
+		//custom title, warning icon
+		JOptionPane.showMessageDialog(new JDialog(),
+		    "Connection lost.",
+		    "Inane warning",
+		    JOptionPane.WARNING_MESSAGE);
 	}
 
 
