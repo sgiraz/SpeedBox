@@ -32,6 +32,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
 	private DropListener listener;
 	private Client client;
+	private Server server;
 	private JProgressBar progressBarDown;
 	private JSplitPane splitPane;
 	private JScrollPane scrollPane;
@@ -59,10 +60,15 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		listener = new DropListener(this);
 
 		client = new Client();
-		new Server(myPort);
+		server = new Server(myPort);
 		setup();
-		
-		
+	}
+	
+	public void destroy()
+	{
+		client.destroy();
+		server.destroy();
+		dispose();
 	}
 
 	private void setup() 

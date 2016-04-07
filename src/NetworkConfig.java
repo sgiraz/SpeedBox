@@ -48,7 +48,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 	ServerSocket serverSocket;
 	private JLabel lblCreateNetwork;
 	private long keepAliveTime;
-
+	Timer timer;
+	
 	public NetworkConfig() 
 	{
 
@@ -170,7 +171,6 @@ public class NetworkConfig extends JDialog implements Runnable {
 
 	private void close()
 	{
-		WindowsNetwork.stopHostednetwork();
 		dispose();
 		try {
 			if(serverSocket != null)
@@ -236,13 +236,13 @@ public class NetworkConfig extends JDialog implements Runnable {
 				writer.newLine();
 				writer.flush();
 				SendBoxGUI.otherIP = clientSocket.getInetAddress().getHostAddress();
-				//new SendBoxGUI();
+				new SendBoxGUI();
 				setVisible(false);
 
 				// keep alive timer
 				keepAliveTime = System.currentTimeMillis() ;
-				Timer t = new Timer();
-				t.schedule(new TimerTask()
+				timer = new Timer();
+				timer.schedule(new TimerTask()
 				{
 					@Override
 					public void run() {
@@ -263,8 +263,8 @@ public class NetworkConfig extends JDialog implements Runnable {
 					System.out.println("under the while");
 					if((line = reader.readLine()) != null && line.equals("keepalive"))
 					{
-						keepAliveTime = System.currentTimeMillis();
 						System.out.println("keepalive received");
+						keepAliveTime = System.currentTimeMillis();
 						writer.write("keepalive");
 						writer.newLine();
 						writer.flush();
@@ -274,6 +274,10 @@ public class NetworkConfig extends JDialog implements Runnable {
 						System.out.print("not keepalive: ");
 						System.out.println(line);
 					}
+					
+					try{ Thread.sleep(3000);}
+					catch (InterruptedException excetption) { excetption.printStackTrace(); }
+				
 				}
 			}
 			else
@@ -288,10 +292,13 @@ public class NetworkConfig extends JDialog implements Runnable {
 			System.out.println("catch executed");
 			e.printStackTrace();
 		}
-
+		
+		close();
+		if(SendBoxGUI.instance != null)
+			SendBoxGUI.instance.dispose();
+		timer.cancel();
 		System.out.println("socket closed by host");
 		new MainMenu();
-		dispose();
 		//SendBoxGUI.instance.dispose();
 		return;
 

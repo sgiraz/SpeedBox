@@ -27,13 +27,28 @@ import javax.swing.JOptionPane;
 public class Server implements Runnable
 {
 	private int portNumber;
-
+	public ServerSocket serverSocket;
+	public Socket clientSocket;
+	
 	public Server(int portNumber)
 	{
 		this.portNumber = portNumber;
 		new Thread(this, "Server receive file Thread").start();
 	}
  
+	public void destroy()
+	{
+		try {
+			if(clientSocket != null && !clientSocket.isClosed())
+				clientSocket.close();
+			if(serverSocket != null && !serverSocket.isClosed())
+				serverSocket.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Receive data from client ad save it on a file in local machine
 	 * @param reader : a DataImputStream reader
@@ -82,13 +97,17 @@ public class Server implements Runnable
 	public void run() 
 	{
 		System.out.println("SERVER: Server started...");
-		while(true){
+		while(true)
+		{
 			try(ServerSocket serverSocket = new ServerSocket(portNumber);
 					Socket clientSocket = serverSocket.accept();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 					DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
-
+				
+				this.serverSocket = serverSocket;
+				this.clientSocket = clientSocket;
+				
 				System.out.println("SERVER: create" + clientSocket);
 
 				// check for input request type
