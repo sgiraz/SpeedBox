@@ -35,8 +35,8 @@ public class MainMenu extends JFrame
 	public MainMenu() 
 	{
 		instance = this;
-		setBounds(100, 100, 340, 190);
-		getContentPane().setLayout(new BorderLayout(0, 1));
+		setBounds(100, 100, 369, 217);
+		getContentPane().setLayout(new BorderLayout(0, 3));
 
 		JPanel panelMenu = new JPanel();
 		getContentPane().add(panelMenu, BorderLayout.NORTH);
