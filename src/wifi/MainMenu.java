@@ -42,7 +42,6 @@ public class MainMenu extends JFrame
 		panelMenu.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelMenuITitle = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
 		panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
 
 		JLabel lblMainMenu = new JLabel();
