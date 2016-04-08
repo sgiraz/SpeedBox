@@ -127,20 +127,11 @@ public class MainMenu extends JFrame
 			startServerButton.setBorder(UIManager.getBorder("Button.border"));
 			startServerButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					selectedItem = (String) comboBox.getSelectedItem();
-					checkSelectedItem(selectedItem);
-				}
-
-				private void checkSelectedItem(String selectedItem) {
-					switch(selectedItem){
-					case "LAN NETWORK":
-						
-						break;
-					case "DIRECT WIFI":
+					if(comboBox.getSelectedIndex() == 0){
+						new LanNetwork();
+					}
+					else{
 						new DirectNetwork();
-						break;
-					default:
-						break;
 					}
 				}
 			});
@@ -157,7 +148,13 @@ public class MainMenu extends JFrame
 			panelButtons.add(connectButton);
 			connectButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new DirectConnection();
+					if(comboBox.getSelectedIndex() == 0){
+						new LanConnection();
+					}
+					else{
+						new DirectConnection();
+					}
+					
 				}
 			});
 			connectButton.setActionCommand("Connect");
