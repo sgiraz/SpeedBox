@@ -29,7 +29,6 @@ public class MainMenu extends JFrame
 
 	private static final long serialVersionUID = -3088890058631223710L;
 	private JComboBox<String> comboBox;
-	private String selectedItem;
 	private final String infoNetworkType = "LAN NETWORK:choose this if you are connected on internet or local network yet.\n"
 			+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n";
 
