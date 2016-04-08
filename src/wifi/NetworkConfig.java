@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -34,14 +36,13 @@ public class NetworkConfig extends JDialog implements ClosableWindow
 	private JLabel lblPassword;
 	private JPasswordField passwordField;
 	private JCheckBox chckbxNewCheckBox;
-
 	private JLabel lblCreateNetwork;
-
 	private JButton btnCreate;
+	private JButton cancelButton;
 
 	public NetworkConfig() 
 	{
-
+		
 		setTitle("Network configuration");
 		MainMenu.instance.setVisible(false);
 		setBounds(100, 100, 301, 211);
@@ -143,7 +144,7 @@ public class NetworkConfig extends JDialog implements ClosableWindow
 				}
 			});
 		}
-		JButton cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -163,6 +164,14 @@ public class NetworkConfig extends JDialog implements ClosableWindow
 		buttonPane.add(cancelButton);
 
 		setLocationRelativeTo(null);
+		addWindowListener(new WindowAdapter()
+        {
+            public void windowClosing(WindowEvent e)
+            {
+                System.out.println("NetworkConfig.java: Closed");
+                cancelButton.doClick();
+            }
+        });
 		setVisible(true);
 	}
 

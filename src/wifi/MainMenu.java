@@ -28,6 +28,8 @@ public class MainMenu extends JFrame
 {
 
 	private static final long serialVersionUID = -3088890058631223710L;
+	private JComboBox<String> comboBox;
+	private String selectedItem;
 	private final String infoNetworkType = "LAN NETWORK:choose this if you are connected on internet or local network yet.\n"
 			+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n";
 
@@ -55,7 +57,6 @@ public class MainMenu extends JFrame
 		lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JPanel panelMenuSeparator = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panelMenuSeparator.getLayout();
 		panelNorth.add(panelMenuSeparator, BorderLayout.SOUTH);
 
 		JSeparator separator = new JSeparator();
@@ -77,7 +78,7 @@ public class MainMenu extends JFrame
 		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
 		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER); 
 
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setMaximumRowCount(2);
 		comboBox.setPreferredSize(new Dimension(140, 22));
 		comboBox.setMinimumSize(new Dimension(28, 22));
@@ -102,7 +103,6 @@ public class MainMenu extends JFrame
 		panelSouth.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelButtonSeparator = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panelButtonSeparator.getLayout();
 		panelSouth.add(panelButtonSeparator, BorderLayout.NORTH);
 
 		JSeparator separator_1 = new JSeparator();
@@ -127,7 +127,21 @@ public class MainMenu extends JFrame
 			startServerButton.setBorder(UIManager.getBorder("Button.border"));
 			startServerButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new NetworkConfig();
+					selectedItem = (String) comboBox.getSelectedItem();
+					checkSelectedItem(selectedItem);
+				}
+
+				private void checkSelectedItem(String selectedItem) {
+					switch(selectedItem){
+					case "LAN NETWORK":
+						
+						break;
+					case "DIRECT WIFI":
+						new NetworkConfig();
+						break;
+					default:
+						break;
+					}
 				}
 			});
 			startServerButton.setActionCommand("create");
