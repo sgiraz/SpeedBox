@@ -33,9 +33,10 @@ public class MainMenu extends JFrame
 	public static MainMenu instance;
 	public MainMenu() 
 	{
+		setTitle("Configuration..");
 		instance = this;
-		setBounds(100, 100, 530, 287);
-		getContentPane().setLayout(new BorderLayout(0, 3));
+		setBounds(100, 100, 462, 276);
+		getContentPane().setLayout(new BorderLayout(0, 5));
 
 		JPanel panelMenu = new JPanel();
 		getContentPane().add(panelMenu, BorderLayout.NORTH);
@@ -63,15 +64,25 @@ public class MainMenu extends JFrame
 		JPanel panelCentral = new JPanel();
 		panelCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		panelCentral.setMinimumSize(new Dimension(5, 5));
-		FlowLayout fl_panelCentral = (FlowLayout) panelCentral.getLayout();
-		fl_panelCentral.setHgap(20);
 		getContentPane().add(panelCentral, BorderLayout.CENTER);
+		panelCentral.setLayout(null);
+		
+		JLabel lblChooseNetworkType = new JLabel("Choose network type:");
+		lblChooseNetworkType.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblChooseNetworkType.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblChooseNetworkType.setBounds(34, 19, 123, 15);
+		panelCentral.add(lblChooseNetworkType);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setBounds(167, 16, 122, 22);
+		comboBox.setMaximumRowCount(2);
+		comboBox.setPreferredSize(new Dimension(28, 22));
+		comboBox.setMinimumSize(new Dimension(28, 22));
 		panelCentral.add(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"LAN NETWORK", "DIRECT WIFI"}));
 
 		JLabel lblHelplabel = new JLabel();
+		lblHelplabel.setBounds(299, 11, 32, 32);
 		lblHelplabel.setIcon(new ImageIcon(MainMenu.class.getResource("/img/help_icon.png")));
 		lblHelplabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -87,11 +98,12 @@ public class MainMenu extends JFrame
 		panelButtons.setSize(new Dimension(0, 2));
 		getContentPane().add(panelButtons, BorderLayout.SOUTH);
 		FlowLayout fl_panelButtons = new FlowLayout(FlowLayout.CENTER);
-		fl_panelButtons.setVgap(15);
+		fl_panelButtons.setVgap(25);
 		fl_panelButtons.setHgap(71);
 		panelButtons.setLayout(fl_panelButtons);
 		{
 			JButton startServerButton = new JButton("Start Server");
+			startServerButton.setPreferredSize(new Dimension(91, 27));
 			startServerButton.setMargin(new Insets(2, 14, 4, 14));
 			startServerButton.setBounds(new Rectangle(0, 0, 2, 2));
 			startServerButton.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -106,7 +118,7 @@ public class MainMenu extends JFrame
 		}
 		{
 			JButton connectButton = new JButton("Connect");
-			connectButton.setPreferredSize(new Dimension(91, 23));
+			connectButton.setPreferredSize(new Dimension(91, 27));
 			connectButton.setMinimumSize(new Dimension(91, 23));
 			connectButton.setMaximumSize(new Dimension(91, 23));
 			connectButton.setMargin(new Insets(2, 14, 4, 14));
