@@ -24,7 +24,7 @@ public class DirectConnection extends JDialog implements ClosableWindow
 		setTitle("Waiting for connection...");
 		MainMenu.instance.setVisible(false);
 
-		client = new Client(this, false);
+		client = new Client(this, null);
 		
 		setBounds(100, 100, 330, 185);
 		getContentPane().setLayout(new BorderLayout());

@@ -22,21 +22,21 @@ public class Client implements Runnable
 	private ClosableWindow window;
 	private BufferedWriter writer;
 	private BufferedReader reader;
-	private boolean isLAN;
+	private String ip;
 
-	public Client(ClosableWindow ownerWindow, boolean isLAN)
+	public Client(ClosableWindow ownerWindow, String ip)
 	{
 		window = ownerWindow;
 		connecting = true;
 		new Thread(this).start();
-		this.isLAN = isLAN;
+		this.ip = ip;
 	}
 
 
 	String getIP()
 	{ 
-		if(isLAN)
-			return Utils.getLocalIP();
+		if(ip != null)
+			return ip;
 		else
 			return Utils.getGatewayIP();
 	}

@@ -25,9 +25,9 @@ public class LanConnection extends JDialog implements ClosableWindow{
 	private JButton cancelButton;
 	private JButton okButton;
 
-	private void startClient()
+	private void startClient(String ip)
 	{
-		client = new Client(this, true);
+		client = new Client(this, ip);
 	}
 
 	public LanConnection() 
@@ -61,7 +61,7 @@ public class LanConnection extends JDialog implements ClosableWindow{
 			okButton = new JButton("OK");
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					startClient();
+					startClient(textField.getText());
 					
 					//created, wait
 					okButton.setText("Waiting for connection");
