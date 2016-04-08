@@ -85,8 +85,10 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 	public void destroy()
 	{
+		new MainMenu();
 		free();
 		dispose();
+		
 	}
 	
 	private void setup() 
