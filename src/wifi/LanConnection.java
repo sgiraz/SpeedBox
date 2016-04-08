@@ -20,26 +20,13 @@ public class LanConnection extends JDialog implements ClosableWindow{
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			LanConnection dialog = new LanConnection();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	private void startClient()
 	{
 		new Client(this, true);
 	}
 
-	public LanConnection() {
+	public LanConnection() 
+	{
 		setTitle("Connect");
 		setBounds(100, 100, 313, 167);
 		getContentPane().setLayout(new BorderLayout());
