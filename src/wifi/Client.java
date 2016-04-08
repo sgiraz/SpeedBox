@@ -40,7 +40,7 @@ public class Client implements Runnable
 		else
 			return Utils.getGatewayIP();
 	}
-	
+
 	@Override
 	public void run()
 	{
@@ -165,7 +165,7 @@ public class Client implements Runnable
 	private void closeStreams()
 	{
 		System.out.println("Client.java: closeStreams()");
-	
+
 		try {
 			if(clientSocket != null && !clientSocket.isClosed())
 				clientSocket.close();

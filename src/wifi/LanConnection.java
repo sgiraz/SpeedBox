@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class LanConnection extends JDialog implements ClosableWindow{
-
+public class LanConnection extends JDialog implements ClosableWindow
+{
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
@@ -62,7 +62,7 @@ public class LanConnection extends JDialog implements ClosableWindow{
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					startClient(textField.getText());
-					
+
 					//created, wait
 					okButton.setText("Waiting for connection");
 					okButton.setEnabled(false);
