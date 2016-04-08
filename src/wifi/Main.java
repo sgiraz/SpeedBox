@@ -28,7 +28,7 @@ public class Main
 					       break;
 					     } 
 					}
-					
+					new SendBoxGUI();
 					new MainMenu();
 				}
 				catch (Exception e) {

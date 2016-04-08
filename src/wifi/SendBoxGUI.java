@@ -23,7 +23,6 @@ import javax.swing.SwingConstants;
 
 public class SendBoxGUI extends JFrame implements ActionListener
 {
-
 	private static final long serialVersionUID = 7014623789915977930L;
 	public static String otherIP;
 	public int myPort = 16000;
@@ -42,13 +41,11 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 	public static SendBoxGUI instance;
 
-	public SendBoxGUI(String ip)
+	public SendBoxGUI()
 	{
-		
+		this.setEnabled(false);
 		instance = this;
-		MainMenu.instance.dispose();
 		
-		otherIP = ip;
 		mb = new MenuBar();
 		m1 = new Menu("File");
 		m2 = new Menu("Edit");
@@ -72,6 +69,21 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		dispose();
 	}
 
+	public void start(String ip)
+	{
+		System.out.println("SendBoxGUI.java: Started!");
+		
+		if(MainMenu.instance != null)
+			MainMenu.instance.dispose();
+		
+		otherIP = ip;
+		
+		// Connect the label with a drag and drop listener
+		new DropTarget(this, listener);		
+
+		this.setEnabled(true);
+	}
+	
 	private void setup() 
 	{
 
@@ -88,8 +100,8 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		m1.add(mi5);
 		mb.setHelpMenu(m3);
 		setMenuBar(mb);
-		setSize(443, 359);
-		setTitle("SendBox");
+		setSize(640, 480);
+		setTitle("SpeedBox");
 
 		splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.7);
@@ -107,18 +119,15 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		lblDropFileHere = new JLabel("Drop file here");
 		lblDropFileHere.setForeground(Color.GRAY);
 		lblDropFileHere.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDropFileHere.setFont(new Font("Calibri Light", Font.PLAIN, 18));
+		lblDropFileHere.setFont(new Font("Calibri Light", Font.PLAIN, 24));
 
-		lblDropFileHere.setBounds(43, 124, 163, 65);
+		lblDropFileHere.setBounds(145, 185, 163, 65);
 		panelDrop.add(lblDropFileHere);
 		progressBarDown = new JProgressBar();
 		progressBarDown.setStringPainted(true);
 		progressBarDown.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		progressBarDown.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		progressBarDown.setBounds(77, 170, 146, 20); 
-
-		// Connect the label with a drag and drop listener
-		new DropTarget(this, listener);							
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);

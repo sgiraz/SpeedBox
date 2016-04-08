@@ -63,7 +63,7 @@ public class Client implements Runnable
 
 					// create sendbox GUI
 					String otherIP = Utils.getGatewayIP();
-					new SendBoxGUI(otherIP);
+					SendBoxGUI.instance.start(otherIP);
 
 					// begin keepalive
 					writer.write("keepalive");

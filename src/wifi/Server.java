@@ -61,8 +61,9 @@ public class Server implements Runnable
 
 				// create the sand box
 				String otherIP = clientSocket.getInetAddress().getHostAddress();
-				new SendBoxGUI(otherIP);
 
+				SendBoxGUI.instance.start(otherIP);
+				
 				// keep alive timer
 				keepAliveTime = System.currentTimeMillis() ;
 				timer = new Timer();
