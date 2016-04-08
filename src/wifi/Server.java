@@ -20,6 +20,7 @@ public class Server implements Runnable
 
 	Timer timer;
 	private long keepAliveTime;
+	private int keepAliveMax = 5000;
 	private ClosableWindow window;
 
 	public Server(ClosableWindow ownerWindow)
@@ -73,7 +74,7 @@ public class Server implements Runnable
 					public void run() {
 						long diff = System.currentTimeMillis() - keepAliveTime;
 						System.out.println("Server.java: timer: " + diff);
-						if(diff > 5000)
+						if(diff > keepAliveMax)
 						{
 							System.out.println("Server.java: Closing reader");
 							try { reader.close(); }

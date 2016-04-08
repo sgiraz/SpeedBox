@@ -15,6 +15,7 @@ public class Client implements Runnable
 	private int portNumber = 50000;
 	private Socket clientSocket;
 	private long keepAliveTime;
+	private int keepAliveMax = 5000;
 	private boolean connected;
 	private boolean connecting;
 	private Timer timer;
@@ -80,7 +81,7 @@ public class Client implements Runnable
 						{
 							long diff = System.currentTimeMillis() - keepAliveTime;
 							System.out.println("Client.java: timer: " + diff);
-							if(diff > 5000)
+							if(diff > keepAliveMax)
 							{
 								System.out.println("Client.java: Closing Reader");
 								try { reader.close(); }
