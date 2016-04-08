@@ -124,7 +124,6 @@ public class Server implements Runnable
 		}
 
 		destroy();
-		MainMenu.instance.setEnabled(true);
 	}
 
 	public void destroy()
@@ -137,7 +136,7 @@ public class Server implements Runnable
 			timer.cancel();
 
 		SendBoxGUI.instance.free();
-		SendBoxGUI.instance.destroy();
+		MainMenu.instance.setEnabled(true);
 	}
 
 	private void closeStreams()

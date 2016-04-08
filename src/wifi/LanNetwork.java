@@ -22,7 +22,10 @@ public class LanNetwork extends JDialog implements ClosableWindow {
 	private Server server;
 	private JButton cancelButton;
 
-	public LanNetwork() {
+	public LanNetwork()
+	{
+		MainMenu.instance.setVisible(false);
+		
 		server = new Server(this);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 325, 147);

@@ -62,7 +62,6 @@ public class MainMenu extends JFrame
 		separator.setPreferredSize(new Dimension(350, 12));
 		panelMenuSeparator.add(separator);
 
-
 		JPanel panelCentral = new JPanel();
 		panelCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		panelCentral.setMinimumSize(new Dimension(5, 5));
@@ -107,7 +106,6 @@ public class MainMenu extends JFrame
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setPreferredSize(new Dimension(350, 12));
 		panelButtonSeparator.add(separator_1);
-		
 
 		JPanel panelButtons = new JPanel();
 		panelSouth.add(panelButtons, BorderLayout.SOUTH);
@@ -116,49 +114,46 @@ public class MainMenu extends JFrame
 		fl_panelButtons.setVgap(20);
 		fl_panelButtons.setHgap(71);
 		panelButtons.setLayout(fl_panelButtons);
-		{
-			JButton startServerButton = new JButton("Start Server");
-			startServerButton.setPreferredSize(new Dimension(100, 27));
-			startServerButton.setMargin(new Insets(2, 14, 4, 14));
-			startServerButton.setBounds(new Rectangle(0, 0, 2, 2));
-			startServerButton.setHorizontalTextPosition(SwingConstants.LEFT);
-			panelButtons.add(startServerButton);
-			startServerButton.setBorder(UIManager.getBorder("Button.border"));
-			startServerButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(comboBox.getSelectedIndex() == 0){
-						new LanNetwork();
-					}
-					else{
-						new DirectNetwork();
-					}
+		
+		JButton startServerButton = new JButton("Start Server");
+		startServerButton.setPreferredSize(new Dimension(100, 27));
+		startServerButton.setMargin(new Insets(2, 14, 4, 14));
+		startServerButton.setBounds(new Rectangle(0, 0, 2, 2));
+		startServerButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		panelButtons.add(startServerButton);
+		startServerButton.setBorder(UIManager.getBorder("Button.border"));
+		startServerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(comboBox.getSelectedIndex() == 0){
+					new LanNetwork();
 				}
-			});
-			startServerButton.setActionCommand("create");
-		}
-		{
-			JButton connectButton = new JButton("Connect");
-			connectButton.setPreferredSize(new Dimension(100, 27));
-			connectButton.setMinimumSize(new Dimension(91, 23));
-			connectButton.setMaximumSize(new Dimension(91, 23));
-			connectButton.setMargin(new Insets(2, 14, 4, 14));
-			connectButton.setBounds(new Rectangle(0, 0, 2, 2));
-			connectButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-			panelButtons.add(connectButton);
-			connectButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(comboBox.getSelectedIndex() == 0){
-						new LanConnection();
-					}
-					else{
-						new DirectConnection();
-					}
-					
+				else{
+					new DirectNetwork();
 				}
-			});
-			connectButton.setActionCommand("Connect");
-		}
+			}
+		});
+		startServerButton.setActionCommand("create");
+		
+		JButton connectButton = new JButton("Connect");
+		connectButton.setPreferredSize(new Dimension(100, 27));
+		connectButton.setMinimumSize(new Dimension(91, 23));
+		connectButton.setMaximumSize(new Dimension(91, 23));
+		connectButton.setMargin(new Insets(2, 14, 4, 14));
+		connectButton.setBounds(new Rectangle(0, 0, 2, 2));
+		connectButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+		panelButtons.add(connectButton);
+		connectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(comboBox.getSelectedIndex() == 0){
+					new LanConnection();
+				}
+				else{
+					new DirectConnection();
+				}
 
+			}
+		});
+		connectButton.setActionCommand("Connect");
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);

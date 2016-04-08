@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,10 +21,13 @@ public class LanConnection extends JDialog implements ClosableWindow{
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
+	private Client client;
+	private JButton cancelButton;
+	private JButton okButton;
 
 	private void startClient()
 	{
-		new Client(this, true);
+		client = new Client(this, true);
 	}
 
 	public LanConnection() 
@@ -48,35 +53,56 @@ public class LanConnection extends JDialog implements ClosableWindow{
 			contentPanel.add(textField);
 			textField.setColumns(20);
 		}
+
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						startClient();
-					}
-				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						//free
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+			okButton = new JButton("OK");
+			okButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					startClient();
+					
+					//created, wait
+					okButton.setText("Waiting for connection");
+					okButton.setEnabled(false);
+				}
+			});
+			okButton.setActionCommand("OK");
+			buttonPane.add(okButton);
+			getRootPane().setDefaultButton(okButton);
 		}
+
+		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainMenu.instance.setVisible(true);
+
+				System.out.println("Cancel clicked");
+				if(client != null)
+				{
+					System.out.println("Destroying client");
+					client.destroy();
+				}
+				destroy();
+			}
+		});
+		cancelButton.setActionCommand("Cancel");
+		buttonPane.add(cancelButton);
+
+		setLocationRelativeTo(null);
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+				System.out.println("NetworkConfig.java: Closed");
+				cancelButton.doClick();
+			}
+		});
+
+
+		setVisible(true);
 	}
-	
-	
 
 	@Override
 	public void destroy() {

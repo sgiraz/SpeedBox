@@ -147,7 +147,6 @@ public class Client implements Runnable
 			Utils.showWarning("Connection closed");
 			System.out.println("Client.java: socket closed by host");
 		}
-		MainMenu.instance.setEnabled(true);
 	}
 
 	public void destroy()
@@ -160,7 +159,7 @@ public class Client implements Runnable
 			timer.cancel();
 
 		SendBoxGUI.instance.free();
-		
+		MainMenu.instance.setEnabled(true);
 	}
 
 	private void closeStreams()
