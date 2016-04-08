@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -73,11 +74,15 @@ public class MainMenu extends JFrame
 		lblChooseNetworkType.setBounds(34, 19, 123, 15);
 		panelCentral.add(lblChooseNetworkType);
 
+		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
+		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER); 
+		
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(167, 16, 122, 22);
 		comboBox.setMaximumRowCount(2);
 		comboBox.setPreferredSize(new Dimension(28, 22));
 		comboBox.setMinimumSize(new Dimension(28, 22));
+		comboBox.setRenderer(dlcr); 
 		panelCentral.add(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"LAN NETWORK", "DIRECT WIFI"}));
 
