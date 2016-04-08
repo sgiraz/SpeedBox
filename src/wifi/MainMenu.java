@@ -66,28 +66,25 @@ public class MainMenu extends JFrame
 		panelCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		panelCentral.setMinimumSize(new Dimension(5, 5));
 		getContentPane().add(panelCentral, BorderLayout.CENTER);
-		panelCentral.setLayout(null);
+		panelCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblChooseNetworkType = new JLabel("Choose network type:");
 		lblChooseNetworkType.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblChooseNetworkType.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblChooseNetworkType.setBounds(54, 13, 123, 15);
 		panelCentral.add(lblChooseNetworkType);
 
 		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
 		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER); 
 		
 		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(189, 10, 143, 22);
 		comboBox.setMaximumRowCount(2);
-		comboBox.setPreferredSize(new Dimension(28, 22));
+		comboBox.setPreferredSize(new Dimension(140, 22));
 		comboBox.setMinimumSize(new Dimension(28, 22));
 		comboBox.setRenderer(dlcr); 
 		panelCentral.add(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"LAN NETWORK", "DIRECT WIFI"}));
 
 		JLabel lblHelplabel = new JLabel();
-		lblHelplabel.setBounds(344, 5, 32, 32);
 		lblHelplabel.setIcon(new ImageIcon(MainMenu.class.getResource("/img/help_icon.png")));
 		lblHelplabel.addMouseListener(new MouseAdapter() {
 			@Override
