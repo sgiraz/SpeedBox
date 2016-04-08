@@ -46,6 +46,7 @@ public class MainMenu extends JFrame
 		panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
 
 		JLabel lblMainMenu = new JLabel();
+		lblMainMenu.setIcon(new ImageIcon(MainMenu.class.getResource("/img/speedbox.png")));
 		//lblMainMenu.setIcon(new ImageIcon(this.getClass().getResource("/img/speedbox.png")));
 		panelMenuITitle.add(lblMainMenu);
 		lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -72,6 +73,7 @@ public class MainMenu extends JFrame
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"LAN NETWORK", "DIRECT WIFI"}));
 
 		JLabel lblHelplabel = new JLabel();
+		lblHelplabel.setIcon(new ImageIcon(MainMenu.class.getResource("/img/help_icon.png")));
 		lblHelplabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
