@@ -1,3 +1,4 @@
+package wifi;
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -27,7 +28,7 @@ public class MainMenu extends JFrame
 
 	private static final long serialVersionUID = -3088890058631223710L;
 	private final String infoNetworkType = "LAN NETWORK:choose this if you are connected on internet or local network yet.\n"
-				+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n";
+			+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n";
 
 	public static MainMenu instance;
 	public MainMenu() 
@@ -39,17 +40,17 @@ public class MainMenu extends JFrame
 		JPanel panelMenu = new JPanel();
 		getContentPane().add(panelMenu, BorderLayout.NORTH);
 		panelMenu.setLayout(new BorderLayout(0, 0));
-		
-				JPanel panelMenuITitle = new JPanel();
-				FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
-				panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
-				
-						JLabel lblMainMenu = new JLabel();
-						lblMainMenu.setIcon(new ImageIcon(this.getClass().getResource("/img/speedbox.png")));
-						panelMenuITitle.add(lblMainMenu);
-						lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
-						lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
-						lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
+
+		JPanel panelMenuITitle = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
+		panelMenu.add(panelMenuITitle, BorderLayout.NORTH);
+
+		JLabel lblMainMenu = new JLabel();
+		//lblMainMenu.setIcon(new ImageIcon(this.getClass().getResource("/img/speedbox.png")));
+		panelMenuITitle.add(lblMainMenu);
+		lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JPanel panelMenuSeparator = new JPanel();
 		panelMenu.add(panelMenuSeparator, BorderLayout.SOUTH);
@@ -78,7 +79,7 @@ public class MainMenu extends JFrame
 			}
 		});
 		lblHelplabel.setToolTipText("click for information about ...");
-		lblHelplabel.setIcon(new ImageIcon(this.getClass().getResource("/help_icon.png")));
+		//lblHelplabel.setIcon(new ImageIcon(this.getClass().getResource("/help_icon.png")));
 		panelCentral.add(lblHelplabel);
 
 		JPanel panelButtons = new JPanel();

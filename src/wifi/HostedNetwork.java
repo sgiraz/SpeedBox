@@ -1,3 +1,4 @@
+package wifi;
 
 public class HostedNetwork 
 {

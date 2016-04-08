@@ -1,3 +1,4 @@
+package wifi;
 
 public interface ClosableWindow
 {

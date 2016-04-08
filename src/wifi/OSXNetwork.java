@@ -1,3 +1,4 @@
+package wifi;
 public class OSXNetwork {
 	
 	// networksetup -setairportnetwork [interface] [router SSID] [password] create to wi-fi

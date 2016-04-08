@@ -1,3 +1,4 @@
+package wifi;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +16,7 @@ public class Client implements Runnable
 	private Socket clientSocket;
 	private long keepAliveTime;
 	private boolean connected;
+	private boolean connecting;
 	private Timer timer;
 	private ClosableWindow window;
 	private BufferedWriter writer;
@@ -23,13 +25,14 @@ public class Client implements Runnable
 	public Client(ClosableWindow ownerWindow)
 	{
 		window = ownerWindow;
+		connecting = true;
 		new Thread(this).start();
 	}
 
 	@Override
 	public void run()
 	{
-		while(true)
+		while(connecting)
 		{
 			try
 			{
@@ -115,7 +118,7 @@ public class Client implements Runnable
 			}
 			catch(Exception e)
 			{
-				if(connected)
+				if(connected || !connecting)
 					break;
 
 				closeStreams();
@@ -138,7 +141,7 @@ public class Client implements Runnable
 	public void destroy()
 	{
 		System.out.println("Client.java: destroy()");
-
+		connecting = false;
 		closeStreams();
 
 		if(timer != null)
@@ -150,6 +153,8 @@ public class Client implements Runnable
 
 	private void closeStreams()
 	{
+		System.out.println("Client.java: closeStreams()");
+	
 		try {
 			if(clientSocket != null && !clientSocket.isClosed())
 				clientSocket.close();
