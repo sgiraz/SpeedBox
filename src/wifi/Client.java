@@ -74,7 +74,7 @@ public class Client implements Runnable
 						window.destroy();
 
 					// create sendbox GUI
-					String otherIP = Utils.getGatewayIP();
+					String otherIP = getIP();
 					SendBoxGUI.instance.start(otherIP);
 
 					// begin keepalive
@@ -135,7 +135,7 @@ public class Client implements Runnable
 
 				closeStreams();
 
-				System.out.println("Client.java: Connection refused from IP: " + Utils.getGatewayIP());
+				System.out.println("Client.java: Connection refused from IP: " + getIP());
 				try{ Thread.sleep(3000);}
 				catch (InterruptedException excetption) { excetption.printStackTrace(); }
 			}
