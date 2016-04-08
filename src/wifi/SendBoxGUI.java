@@ -57,8 +57,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		mi5 = new MenuItem("Quit");
 		listener = new DropListener(this);
 
-		clientData = new ClientDataTransfer();
-		serverData = new ServerDataTransfer(myPort);
+		
 		setup();
 	}
 	
@@ -70,7 +69,8 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		MainMenu.instance.setEnabled(false);
 		
 		otherIP = ip;
-		
+		clientData = new ClientDataTransfer();
+		serverData = new ServerDataTransfer(myPort);
 		// Connect the label with a drag and drop listener
 		new DropTarget(this, listener);		
 
