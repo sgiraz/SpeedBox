@@ -53,21 +53,22 @@ public class MainMenu extends JFrame
 		lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMainMenu.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		
+
 		JPanel panelMenuSeparator = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panelMenuSeparator.getLayout();
 		panelNorth.add(panelMenuSeparator, BorderLayout.SOUTH);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setPreferredSize(new Dimension(350, 12));
 		panelMenuSeparator.add(separator);
-		
+
 
 		JPanel panelCentral = new JPanel();
 		panelCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		panelCentral.setMinimumSize(new Dimension(5, 5));
 		getContentPane().add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		JLabel lblChooseNetworkType = new JLabel("Choose network type:");
 		lblChooseNetworkType.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblChooseNetworkType.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -75,7 +76,7 @@ public class MainMenu extends JFrame
 
 		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
 		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER); 
-		
+
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setMaximumRowCount(2);
 		comboBox.setPreferredSize(new Dimension(140, 22));
@@ -95,56 +96,58 @@ public class MainMenu extends JFrame
 		lblHelplabel.setToolTipText("click for information about ...");
 		//lblHelplabel.setIcon(new ImageIcon(this.getClass().getResource("/help_icon.png")));
 		panelCentral.add(lblHelplabel);
-		
+
 		JPanel panelSouth = new JPanel();
 		getContentPane().add(panelSouth, BorderLayout.SOUTH);
-				panelSouth.setLayout(new BorderLayout(0, 0));
-				
-				JPanel panelButtonSeparator = new JPanel();
-				panelSouth.add(panelButtonSeparator, BorderLayout.NORTH);
-				
-				JSeparator separator_1 = new JSeparator();
-				separator_1.setPreferredSize(new Dimension(350, 12));
-				panelButtonSeparator.add(separator_1);
+		panelSouth.setLayout(new BorderLayout(0, 0));
+
+		JPanel panelButtonSeparator = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelButtonSeparator.getLayout();
+		panelSouth.add(panelButtonSeparator, BorderLayout.NORTH);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setPreferredSize(new Dimension(350, 12));
+		panelButtonSeparator.add(separator_1);
 		
-				JPanel panelButtons = new JPanel();
-				panelSouth.add(panelButtons, BorderLayout.SOUTH);
-				panelButtons.setSize(new Dimension(0, 2));
-				FlowLayout fl_panelButtons = new FlowLayout(FlowLayout.CENTER);
-				fl_panelButtons.setVgap(25);
-				fl_panelButtons.setHgap(71);
-				panelButtons.setLayout(fl_panelButtons);
-				{
-					JButton startServerButton = new JButton("Start Server");
-					startServerButton.setPreferredSize(new Dimension(100, 27));
-					startServerButton.setMargin(new Insets(2, 14, 4, 14));
-					startServerButton.setBounds(new Rectangle(0, 0, 2, 2));
-					startServerButton.setHorizontalTextPosition(SwingConstants.LEFT);
-					panelButtons.add(startServerButton);
-					startServerButton.setBorder(UIManager.getBorder("Button.border"));
-					startServerButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							new NetworkConfig();
-						}
-					});
-					startServerButton.setActionCommand("create");
+
+		JPanel panelButtons = new JPanel();
+		panelSouth.add(panelButtons, BorderLayout.SOUTH);
+		panelButtons.setSize(new Dimension(0, 2));
+		FlowLayout fl_panelButtons = new FlowLayout(FlowLayout.CENTER);
+		fl_panelButtons.setVgap(20);
+		fl_panelButtons.setHgap(71);
+		panelButtons.setLayout(fl_panelButtons);
+		{
+			JButton startServerButton = new JButton("Start Server");
+			startServerButton.setPreferredSize(new Dimension(100, 27));
+			startServerButton.setMargin(new Insets(2, 14, 4, 14));
+			startServerButton.setBounds(new Rectangle(0, 0, 2, 2));
+			startServerButton.setHorizontalTextPosition(SwingConstants.LEFT);
+			panelButtons.add(startServerButton);
+			startServerButton.setBorder(UIManager.getBorder("Button.border"));
+			startServerButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new NetworkConfig();
 				}
-				{
-					JButton connectButton = new JButton("Connect");
-					connectButton.setPreferredSize(new Dimension(100, 27));
-					connectButton.setMinimumSize(new Dimension(91, 23));
-					connectButton.setMaximumSize(new Dimension(91, 23));
-					connectButton.setMargin(new Insets(2, 14, 4, 14));
-					connectButton.setBounds(new Rectangle(0, 0, 2, 2));
-					connectButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-					panelButtons.add(connectButton);
-					connectButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							new ConnectionNetwork();
-						}
-					});
-					connectButton.setActionCommand("Connect");
+			});
+			startServerButton.setActionCommand("create");
+		}
+		{
+			JButton connectButton = new JButton("Connect");
+			connectButton.setPreferredSize(new Dimension(100, 27));
+			connectButton.setMinimumSize(new Dimension(91, 23));
+			connectButton.setMaximumSize(new Dimension(91, 23));
+			connectButton.setMargin(new Insets(2, 14, 4, 14));
+			connectButton.setBounds(new Rectangle(0, 0, 2, 2));
+			connectButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+			panelButtons.add(connectButton);
+			connectButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new ConnectionNetwork();
 				}
+			});
+			connectButton.setActionCommand("Connect");
+		}
 
 
 		setLocationRelativeTo(null);
