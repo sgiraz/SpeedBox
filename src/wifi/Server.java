@@ -31,7 +31,7 @@ public class Server implements Runnable
 
 	public void run()
 	{
-		System.out.println("Server.java: waiting for an handshake");
+		System.out.println("Server.java: waiting for connection");
 
 		//accept
 		try
@@ -51,7 +51,7 @@ public class Server implements Runnable
 				connected = true;
 				
 				// send acceptation
-				System.out.println("Server.java: Sending handshake");
+				System.out.println("Server.java: Sending handshake, waiting response");
 				writer.write("handshake");
 				writer.newLine();
 				writer.flush();
