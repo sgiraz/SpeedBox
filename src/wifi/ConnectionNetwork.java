@@ -22,9 +22,9 @@ public class ConnectionNetwork extends JDialog implements ClosableWindow
 	public ConnectionNetwork()
 	{
 		setTitle("Waiting for connection...");
+		MainMenu.instance.setVisible(false);
 
 		client = new Client(this);
-
 		setBounds(100, 100, 330, 185);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -47,6 +47,7 @@ public class ConnectionNetwork extends JDialog implements ClosableWindow
 			JButton cancelButton = new JButton("Cancel");
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
+					MainMenu.instance.setVisible(true);
 					client.destroy();
 					destroy();
 				}

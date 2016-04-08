@@ -136,7 +136,7 @@ public class Client implements Runnable
 			Utils.showWarning("Connection closed");
 			System.out.println("Client.java: socket closed by host");
 		}
-		new MainMenu();
+		MainMenu.instance.setEnabled(true);
 	}
 
 	public void destroy()

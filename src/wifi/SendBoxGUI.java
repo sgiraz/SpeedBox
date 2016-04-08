@@ -67,8 +67,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	{
 		System.out.println("SendBoxGUI.java: Started!");
 		
-		if(MainMenu.instance != null)
-			MainMenu.instance.dispose();
+		MainMenu.instance.setEnabled(false);
 		
 		otherIP = ip;
 		

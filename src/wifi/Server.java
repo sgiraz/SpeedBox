@@ -124,7 +124,7 @@ public class Server implements Runnable
 		}
 
 		destroy();
-		new MainMenu();
+		MainMenu.instance.setEnabled(true);
 	}
 
 	public void destroy()

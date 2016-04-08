@@ -43,6 +43,7 @@ public class NetworkConfig extends JDialog implements ClosableWindow
 	{
 
 		setTitle("Network configuration");
+		MainMenu.instance.setVisible(false);
 		setBounds(100, 100, 301, 211);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -143,8 +144,11 @@ public class NetworkConfig extends JDialog implements ClosableWindow
 			});
 		}
 		JButton cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		cancelButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				MainMenu.instance.setVisible(true);
 
 				System.out.println("Cancel clicked");
 				if(server != null)
