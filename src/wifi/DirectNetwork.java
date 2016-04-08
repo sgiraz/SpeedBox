@@ -24,7 +24,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class NetworkConfig extends JDialog implements ClosableWindow
+public class DirectNetwork extends JDialog implements ClosableWindow
 {
 	private static final long serialVersionUID = -2008573826970412684L;
 
@@ -40,7 +40,7 @@ public class NetworkConfig extends JDialog implements ClosableWindow
 	private JButton btnCreate;
 	private JButton cancelButton;
 
-	public NetworkConfig() 
+	public DirectNetwork() 
 	{
 		
 		setTitle("Network configuration");

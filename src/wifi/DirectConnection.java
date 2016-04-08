@@ -12,19 +12,20 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class ConnectionNetwork extends JDialog implements ClosableWindow
+public class DirectConnection extends JDialog implements ClosableWindow
 {
 	private static final long serialVersionUID = -7111909162789102303L;
 	private final JPanel contentPanel = new JPanel();
 
 	private static Client client;
 
-	public ConnectionNetwork()
+	public DirectConnection()
 	{
 		setTitle("Waiting for connection...");
 		MainMenu.instance.setVisible(false);
 
-		client = new Client(this);
+		client = new Client(this, false);
+		
 		setBounds(100, 100, 330, 185);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

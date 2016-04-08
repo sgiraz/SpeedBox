@@ -137,7 +137,7 @@ public class MainMenu extends JFrame
 						
 						break;
 					case "DIRECT WIFI":
-						new NetworkConfig();
+						new DirectNetwork();
 						break;
 					default:
 						break;
@@ -157,7 +157,7 @@ public class MainMenu extends JFrame
 			panelButtons.add(connectButton);
 			connectButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new ConnectionNetwork();
+					new DirectConnection();
 				}
 			});
 			connectButton.setActionCommand("Connect");

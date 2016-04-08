@@ -22,14 +22,25 @@ public class Client implements Runnable
 	private ClosableWindow window;
 	private BufferedWriter writer;
 	private BufferedReader reader;
+	private boolean isLAN;
 
-	public Client(ClosableWindow ownerWindow)
+	public Client(ClosableWindow ownerWindow, boolean isLAN)
 	{
 		window = ownerWindow;
 		connecting = true;
 		new Thread(this).start();
+		this.isLAN = isLAN;
 	}
 
+
+	String getIP()
+	{ 
+		if(isLAN)
+			return Utils.getLocalIP();
+		else
+			return Utils.getGatewayIP();
+	}
+	
 	@Override
 	public void run()
 	{
@@ -38,7 +49,7 @@ public class Client implements Runnable
 			try
 			{
 				clientSocket = new Socket();
-				clientSocket.connect(new InetSocketAddress(Utils.getGatewayIP(), portNumber), 1000);
+				clientSocket.connect(new InetSocketAddress(getIP(), portNumber), 1000);
 				reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
