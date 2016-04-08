@@ -61,6 +61,7 @@ public class LanConnection extends JDialog implements ClosableWindow
 			okButton = new JButton("OK");
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					System.out.println("textfiel of ip: " + textField.getText());
 					startClient(textField.getText());
 
 					//created, wait
