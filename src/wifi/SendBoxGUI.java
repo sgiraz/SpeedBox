@@ -139,14 +139,13 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		setVisible(true);	
 	}
 
+	// TODO: Preferences of application
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		MenuItem mi = (MenuItem) e.getSource();
 		System.out.println("In menu', you have clicked " + mi.getLabel());
 
-		// USANDO I THREAD VOLEVO METTERE IN WAIT SANDBOX FINO A QUANDO L'UTENTE
-		// NON CLICCA SUL BOTTONE SAVE IN PREFERENCES MA NON RIESCO
 		switch(mi.getLabel()){
 		case "Preferences":										
 			new Thread(new Preferences(), "Preferences thread").start();
@@ -158,7 +157,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 			System.out.println("Pressed: " + mi.getLabel());
 			break;
 		}
-
 	}
 
 	public void drop(File file) 

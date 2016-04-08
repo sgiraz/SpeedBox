@@ -137,6 +137,7 @@ public class Server implements Runnable
 			timer.cancel();
 
 		SendBoxGUI.instance.free();
+		SendBoxGUI.instance.destroy();
 	}
 
 	private void closeStreams()
@@ -144,27 +145,18 @@ public class Server implements Runnable
 		System.out.println("Server.java: closeStreams()");
 		try {
 			if(serverSocket != null && !serverSocket.isClosed())
-				serverSocket.close(); 
-		}
-		catch (IOException e) {}
-
-		try {
+				serverSocket.close();
 			if(clientSocket != null && !clientSocket.isClosed())
 				clientSocket.close();
-		}
-		catch (IOException e) {}
-
-		try {
 			if(reader != null)
 				reader.close();
-		}
-		catch (IOException e) {}
-
-		try {
 			if(writer != null)
 				writer.close();
 		}
-		catch (IOException e) {}
+		catch (IOException e) {
+			System.out.println("Server.java: some socket can't be closed!!!");
+		}
+
 	}
 
 }
