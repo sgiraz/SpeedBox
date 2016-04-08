@@ -147,8 +147,8 @@ public class Client implements Runnable
 		if(timer != null)
 			timer.cancel();
 
-		if(SendBoxGUI.instance != null)
-			SendBoxGUI.instance.dispose();
+		SendBoxGUI.instance.free();
+		
 	}
 
 	private void closeStreams()

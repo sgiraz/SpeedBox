@@ -62,12 +62,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		setup();
 	}
 	
-	public void destroy()
-	{
-		clientData.destroy();
-		serverData.destroy();
-		dispose();
-	}
 
 	public void start(String ip)
 	{
@@ -82,6 +76,18 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		new DropTarget(this, listener);		
 
 		this.setEnabled(true);
+	}
+	
+	public void free()
+	{
+		clientData.destroy();
+		serverData.destroy(); 
+	}
+
+	public void destroy()
+	{
+		free();
+		dispose();
 	}
 	
 	private void setup() 
