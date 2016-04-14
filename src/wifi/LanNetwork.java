@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -91,18 +89,12 @@ public class LanNetwork extends JDialog implements ClosableWindow {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 
-				setLocationRelativeTo(null);
-				addWindowListener(new WindowAdapter()
-		        {
-		            public void windowClosing(WindowEvent e)
-		            {
-		                System.out.println("NetworkConfig.java: Closed");
-		                cancelButton.doClick();
-		            }
-		        });
+
 			}
 		}
 		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
+		setUndecorated(true);
 		setVisible(true);
 	}
 	@Override

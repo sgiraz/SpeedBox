@@ -49,7 +49,6 @@ public class MainMenu extends JFrame
 
 		JLabel lblMainMenu = new JLabel();
 		lblMainMenu.setIcon(new ImageIcon(MainMenu.class.getResource("/img/speedbox.png")));
-		//lblMainMenu.setIcon(new ImageIcon(this.getClass().getResource("/img/speedbox.png")));
 		panelMenuITitle.add(lblMainMenu);
 		lblMainMenu.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);
@@ -93,7 +92,6 @@ public class MainMenu extends JFrame
 			}
 		});
 		lblHelplabel.setToolTipText("click for information about ...");
-		//lblHelplabel.setIcon(new ImageIcon(this.getClass().getResource("/help_icon.png")));
 		panelCentral.add(lblHelplabel);
 
 		JPanel panelSouth = new JPanel();
@@ -150,11 +148,11 @@ public class MainMenu extends JFrame
 				else{
 					new DirectConnection();
 				}
-
 			}
 		});
 		connectButton.setActionCommand("Connect");
 
+		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		setResizable(false);

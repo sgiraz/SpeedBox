@@ -6,24 +6,26 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class LanConnection extends JDialog implements ClosableWindow
 {
 	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
+	private final JPanel panelNorth = new JPanel();
 	private JTextField textField;
 	private Client client;
 	private JButton cancelButton;
 	private JButton okButton;
+	private JPanel panel;
+	private JPanel panelCenter;
 
 	private void startClient(String ip)
 	{
@@ -32,26 +34,36 @@ public class LanConnection extends JDialog implements ClosableWindow
 
 	public LanConnection() 
 	{
+		MainMenu.instance.setVisible(false);
 		setTitle("Connect");
-		setBounds(100, 100, 313, 167);
+		setBounds(100, 100, 288, 140);
 		getContentPane().setLayout(new BorderLayout());
+		panelNorth.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(panelNorth, BorderLayout.NORTH);
+		panelNorth.setLayout(new BorderLayout(0, 0));
 		{
-			JPanel panel = new JPanel();
-			getContentPane().add(panel, BorderLayout.NORTH);
-			panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			JLabel lblText = new JLabel("Insert the server IP ");
+			panelNorth.add(lblText, BorderLayout.NORTH);
+			lblText.setHorizontalAlignment(SwingConstants.CENTER);
+			lblText.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		}
+		{
+			panel = new JPanel();
+			panelNorth.add(panel, BorderLayout.CENTER);
+			panel.setLayout(new BorderLayout(0, 0));
 			{
-				JLabel lblText = new JLabel("Insert the server IP ");
-				panel.add(lblText);
-				lblText.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				JSeparator separator = new JSeparator();
+				panel.add(separator, BorderLayout.NORTH);
 			}
 		}
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		{
-			textField = new JTextField();
-			contentPanel.add(textField);
-			textField.setColumns(20);
+			panelCenter = new JPanel();
+			getContentPane().add(panelCenter, BorderLayout.CENTER);
+			{
+				textField = new JTextField();
+				panelCenter.add(textField);
+				textField.setColumns(20);
+			}
 		}
 
 		JPanel buttonPane = new JPanel();
@@ -92,16 +104,8 @@ public class LanConnection extends JDialog implements ClosableWindow
 		buttonPane.add(cancelButton);
 
 		setLocationRelativeTo(null);
-		addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent e)
-			{
-				System.out.println("NetworkConfig.java: Closed");
-				cancelButton.doClick();
-			}
-		});
-
-
+		setAlwaysOnTop(true);
+		setUndecorated(true);
 		setVisible(true);
 	}
 

@@ -136,7 +136,7 @@ public class Server implements Runnable
 			timer.cancel();
 
 		SendBoxGUI.instance.free();
-		MainMenu.instance.setEnabled(true);
+		MainMenu.instance.setVisible(true);
 	}
 
 	private void closeStreams()

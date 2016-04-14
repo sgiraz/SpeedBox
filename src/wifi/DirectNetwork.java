@@ -172,6 +172,7 @@ public class DirectNetwork extends JDialog implements ClosableWindow
                 cancelButton.doClick();
             }
         });
+		setAlwaysOnTop(true);
 		setVisible(true);
 	}
 

@@ -56,8 +56,8 @@ public class DirectConnection extends JDialog implements ClosableWindow
 			cancelButton.setActionCommand("Cancel");
 			buttonPane.add(cancelButton);
 		}
-
 		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
 		setVisible(true);
 	}
 

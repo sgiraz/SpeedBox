@@ -41,6 +41,7 @@ public class Utils {
 	public static void showWarning(String message)
 	{
 		//custom title, warning icon
+		
 		JOptionPane.showMessageDialog(new JDialog(),
 				message,
 				"Inane warning",
@@ -50,7 +51,9 @@ public class Utils {
 	public static void showInfo(String message)
 	{
 		//default title and icon
-		JOptionPane.showMessageDialog(new JDialog(),message);
+		JDialog dialog = new JDialog();
+		dialog.setAlwaysOnTop(true);
+		JOptionPane.showMessageDialog(dialog,message);
 	}
 	
 	public static void showError(String message)

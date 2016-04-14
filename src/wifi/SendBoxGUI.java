@@ -134,6 +134,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		progressBarDown.setBounds(77, 170, 146, 20); 
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);	
 	}
