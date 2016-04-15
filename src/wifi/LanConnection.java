@@ -32,7 +32,7 @@ public class LanConnection extends JDialog implements ClosableWindow
 		client = new Client(this, ip);
 	}
 
-	public LanConnection() 
+	public LanConnection()
 	{
 		MainMenu.instance.setVisible(false);
 		setTitle("Connect");

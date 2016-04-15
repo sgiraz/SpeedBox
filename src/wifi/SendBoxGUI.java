@@ -90,7 +90,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	
 	private void setup() 
 	{
-
 		mi4.addActionListener(this);
 		mi5.addActionListener(this);
 		mb.add(m1);

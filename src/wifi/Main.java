@@ -17,9 +17,9 @@ public class Main
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
 					catch (Exception e) { e.printStackTrace(); }
-					
 					
 					for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 					    if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {   
@@ -27,6 +27,7 @@ public class Main
 					       break;
 					     } 
 					}
+					
 					new SendBoxGUI();
 					new MainMenu();
 				}
@@ -34,8 +35,6 @@ public class Main
 					e.printStackTrace();
 				}
 			}
-		});
-		
-		
+		});	
 	}	
 }
