@@ -19,11 +19,14 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 
 public class SendBoxGUI extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 7014623789915977930L;
+	
 	public static String otherIP;
 	public int myPort = 16000;
 	public int otherPort = 16000;
@@ -40,6 +43,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private JLabel lblDropFileHere;
 
 	public static SendBoxGUI instance;
+	private JPanel panel;
 
 	public SendBoxGUI()
 	{
@@ -126,16 +130,24 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 		lblDropFileHere.setBounds(145, 185, 163, 65);
 		panelDrop.add(lblDropFileHere);
+		
+		panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
 		progressBarDown = new JProgressBar();
+		panel.add(progressBarDown);
 		progressBarDown.setStringPainted(true);
 		progressBarDown.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		progressBarDown.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		progressBarDown.setBounds(77, 170, 146, 20); 
-
+		progressBarDown.setBounds(77, 170, 146, 20);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);	
+	}
+	
+	/* IS TEMPORARY */
+	public JProgressBar getProgressBar(){
+		return this.progressBarDown;
 	}
 
 	// TODO: Preferences of application
@@ -169,5 +181,4 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	{
 		return panelDrop;
 	}
-
 }

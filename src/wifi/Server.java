@@ -74,7 +74,7 @@ public class Server implements Runnable
 					public void run() {
 						long diff = System.currentTimeMillis() - keepAliveTime;
 						System.out.println("Server.java: timer: " + diff);
-						if(diff > keepAliveMax)
+						if(diff > keepAliveMax && Utils.data_transfering == false) // PROBLEMA KEEPALIVE TROPPO BREVE DURANTE IL TRASFERIMENTO
 						{
 							System.out.println("Server.java: Closing reader");
 							try { reader.close(); }

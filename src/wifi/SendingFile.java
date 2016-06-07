@@ -23,14 +23,15 @@ public class SendingFile extends JButton{
 	// - bottone con icona cancella download (ti chiedone conferma)
 	
 	private final File file;
-	private int totalBytesSent;
+	private float totalBytesSent;
 	private int percent;
 	private JProgressBar pb;
 	
 	public SendingFile(File file)
 	{
 		this.file = file;
-		pb = new JProgressBar(0, 100);
+		//pb = new JProgressBar(0, 100);
+		pb = SendBoxGUI.instance.getProgressBar();	/* IS TEMPORARY */
 		pb.setValue(0);
 		pb.setStringPainted(true);
 		
@@ -50,10 +51,9 @@ public class SendingFile extends JButton{
 	public void update(float sent)
 	{
 		this.totalBytesSent += sent;
-		percent = (int)(totalBytesSent / file.length()*100);
+		percent = (int)((totalBytesSent / file.length()*100));
 		pb.setString("Processing " + percent + "%");
 		pb.setValue(percent);
-		
 	}
 	
 	

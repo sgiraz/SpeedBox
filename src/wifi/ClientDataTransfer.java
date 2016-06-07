@@ -18,9 +18,9 @@ public class ClientDataTransfer implements Runnable {
 	private int port;
 	boolean sending = false;
 	byte bytes[] = new byte[1024*10];
-	
+
 	private final int ERROR = -1;
-	
+
 	public boolean SendFile(String path, String ip, int port)
 	{
 		if(sending)
@@ -30,10 +30,10 @@ public class ClientDataTransfer implements Runnable {
 		this.path = path;
 		sending = true;
 		new Thread(this, "CLIENT: send file thread").start();
-		
+
 		return true;
 	}
-	
+
 	public void destroy(){
 		if(clientSocket != null && !clientSocket.isClosed())
 			try {
@@ -42,18 +42,18 @@ public class ClientDataTransfer implements Runnable {
 				e.printStackTrace();
 			}
 	}
-	
+
 	public void run() {
-		 
+
 		try(Socket clientSocket = new Socket(ip, port);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-			DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())){
-			
+				BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+				DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream())){
+
 			this.clientSocket = clientSocket;
-			
+
 			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
-			
+
 			// send first message message
 			System.out.println("CLIENT: Socket created: " + clientSocket + "\nSending data: " + path +"...");
 			writer.write("send_request");
@@ -69,27 +69,30 @@ public class ClientDataTransfer implements Runnable {
 			if(command.equals("accept_request"))
 			{
 				System.out.println("CLIENT: Accepted... sending file");
-				 
+
 				// send file
 				File file = new File(path);
 				if(file.exists()){
-					
+
 					SendingFile sendingFile = new SendingFile(file);
 					// TODO: ADD sendingFile TO THE SENDING FILES LIST
-					
+
 					System.out.println("CLIENT: file exists, sending..");
+					Utils.data_transfering = true;
+
 					try(FileInputStream fs = new FileInputStream(file)){
 						// send file dimension
 						output.writeLong(file.length());
 						System.out.println("CLIENT: file length: " + file.length());
-						
+
 						int sent;
 						while((sent = fs.read(bytes)) > 0 ){
 							output.write(bytes,0,sent); 
 							sendingFile.update(sent);
 						}
+						Utils.data_transfering = false;
 					}
-					
+
 				}
 				else
 					output.writeLong(ERROR);
@@ -97,7 +100,7 @@ public class ClientDataTransfer implements Runnable {
 			else if (command.equals("refused_request"))
 			{
 				System.out.println("CLIENT: File Refused");
-				
+
 			}
 			else
 			{
@@ -111,11 +114,10 @@ public class ClientDataTransfer implements Runnable {
 		System.out.println("CLIENT: finish");
 		sending=false;
 	}
-	 
+
 }
 
 
-		
-	
 
-			
+
+

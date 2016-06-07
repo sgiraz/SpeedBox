@@ -20,6 +20,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class Utils {
+	
+	public static boolean data_transfering = false;
 
 	/**
 	 * 
