@@ -19,8 +19,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
 
 
 public class SendBoxGUI extends JFrame implements ActionListener

@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -29,12 +31,13 @@ public class MainMenu extends JFrame
 
 	private static final long serialVersionUID = -3088890058631223710L;
 	private JComboBox<String> comboBox;
-	private final String infoNetworkType = "LAN NETWORK:choose this if you are connected on internet or local network yet.\n"
-			+ "DIRECT WIFI:choose this if you can't connect on internet or local network.\n";
+	private final String infoNetworkType = "LAN NETWORK: choose this if you are connected on internet or local network yet.\n"
+			+ "DIRECT WIFI: choose this if you can't connect on internet or local network.\n";
 
 	public static MainMenu instance;
 	public MainMenu() 
 	{
+		setUndecorated(true);
 		setTitle("Configuration..");
 		instance = this;
 		setBounds(100, 100, 462, 288);
@@ -45,6 +48,8 @@ public class MainMenu extends JFrame
 		panelNorth.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelMenuITitle = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelMenuITitle.getLayout();
+		flowLayout.setVgap(10);
 		panelNorth.add(panelMenuITitle, BorderLayout.NORTH);
 
 		JLabel lblMainMenu = new JLabel();
@@ -65,7 +70,7 @@ public class MainMenu extends JFrame
 		panelCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		panelCentral.setMinimumSize(new Dimension(5, 5));
 		getContentPane().add(panelCentral, BorderLayout.CENTER);
-		panelCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelCentral.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 
 		JLabel lblChooseNetworkType = new JLabel("Choose network type:");
 		lblChooseNetworkType.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -94,25 +99,14 @@ public class MainMenu extends JFrame
 		lblHelplabel.setToolTipText("click for information about ...");
 		panelCentral.add(lblHelplabel);
 
-		JPanel panelSouth = new JPanel();
-		getContentPane().add(panelSouth, BorderLayout.SOUTH);
-		panelSouth.setLayout(new BorderLayout(0, 0));
-
-		JPanel panelButtonSeparator = new JPanel();
-		panelSouth.add(panelButtonSeparator, BorderLayout.NORTH);
-
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setPreferredSize(new Dimension(350, 12));
-		panelButtonSeparator.add(separator_1);
-
 		JPanel panelButtons = new JPanel();
-		panelSouth.add(panelButtons, BorderLayout.SOUTH);
+		panelCentral.add(panelButtons);
 		panelButtons.setSize(new Dimension(0, 2));
 		FlowLayout fl_panelButtons = new FlowLayout(FlowLayout.CENTER);
-		fl_panelButtons.setVgap(20);
-		fl_panelButtons.setHgap(71);
+		fl_panelButtons.setVgap(10);
+		fl_panelButtons.setHgap(10);
 		panelButtons.setLayout(fl_panelButtons);
-		
+
 		JButton startServerButton = new JButton("Start Server");
 		startServerButton.setPreferredSize(new Dimension(100, 27));
 		startServerButton.setMargin(new Insets(2, 14, 4, 14));
@@ -131,7 +125,7 @@ public class MainMenu extends JFrame
 			}
 		});
 		startServerButton.setActionCommand("create");
-		
+
 		JButton connectButton = new JButton("Connect");
 		connectButton.setPreferredSize(new Dimension(100, 27));
 		connectButton.setMinimumSize(new Dimension(91, 23));
@@ -152,7 +146,41 @@ public class MainMenu extends JFrame
 		});
 		connectButton.setActionCommand("Connect");
 
-		setAlwaysOnTop(true);
+		JSeparator separator_1 = new JSeparator();
+		panelCentral.add(separator_1);
+		separator_1.setPreferredSize(new Dimension(350, 12));
+
+		JPanel panelSouth = new JPanel();
+		getContentPane().add(panelSouth, BorderLayout.SOUTH);
+		panelSouth.setLayout(new BorderLayout(0, 0));
+
+		JPanel panelButtonSeparator = new JPanel();
+		panelSouth.add(panelButtonSeparator, BorderLayout.NORTH);
+		panelButtonSeparator.setLayout(new BorderLayout(0, 0));
+
+		JButton btnQuit = new JButton("Quit");
+		btnQuit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		panelButtonSeparator.add(btnQuit, BorderLayout.EAST);
+
+		this.addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				System.out.println("MainMenu Window Activated Event");
+				setAlwaysOnTop(true);
+			}
+
+			public void windowDeactivated(WindowEvent e) {
+				System.out.println("MainMenu Window Deactivated Event");
+				setAlwaysOnTop(false);
+			}
+		});
+
+
+
+
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		setResizable(false);
