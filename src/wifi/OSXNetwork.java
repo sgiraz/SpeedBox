@@ -1,7 +1,7 @@
 package wifi;
 public class OSXNetwork {
 	
-	// networksetup -setairportnetwork [interface] [router SSID] [password] create to wi-fi
+	// networksetup -set airport network [interface] [router SSID] [password] create to wi-fi
 
 	public static String startHostednetwork(String name, String password)
 	{

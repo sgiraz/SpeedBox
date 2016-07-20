@@ -26,8 +26,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private static final long serialVersionUID = 7014623789915977930L;
 	
 	public static String otherIP;
-	public int myPort = 16000;
-	public int otherPort = 16000;
+	public int port = 16000;
 	private MenuBar mb;
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
@@ -71,7 +70,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		
 		otherIP = ip;
 		clientData = new ClientDataTransfer();
-		serverData = new ServerDataTransfer(myPort);
+		serverData = new ServerDataTransfer(port);
 		// Connect the label with a drag and drop listener
 		new DropTarget(this, listener);		
 
@@ -171,7 +170,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	public void drop(File file) 
 	{
 		System.out.println("Drop: " + file.getPath() + " to " + otherIP);
-		clientData.SendFile(file.getPath(), otherIP, otherPort);
+		clientData.SendFile(file.getPath(), otherIP, port);
 	}
 
 	// this is for backgroud color during the drag and drop
