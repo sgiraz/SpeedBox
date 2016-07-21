@@ -14,7 +14,8 @@ public class WindowsNetwork {
 
 	public static String stopHostednetwork()
 	{
-		return executeCommand("netsh wlan stop hostednetwork");
+		executeCommand("netsh wlan stop hostednetwork");
+		return executeCommand("netsh wlan set hostednetwork mode=disallow ");
 	}
 
 	public static boolean checkHostednetwork()

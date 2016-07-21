@@ -49,7 +49,7 @@ public class Client implements Runnable
 			try
 			{
 				clientSocket = new Socket();
-				clientSocket.connect(new InetSocketAddress(getIP(), portNumber), 1000);
+				clientSocket.connect(new InetSocketAddress(getIP(), portNumber), 0);
 				reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
@@ -136,6 +136,8 @@ public class Client implements Runnable
 				closeStreams();
 
 				System.out.println("Client.java: Connection refused from IP: " + getIP());
+				e.printStackTrace();
+				
 				try{ Thread.sleep(3000);}
 				catch (InterruptedException excetption) { excetption.printStackTrace(); }
 			}

@@ -151,6 +151,10 @@ public class DirectNetwork extends JDialog implements ClosableWindow
 			public void actionPerformed(ActionEvent e) 
 			{
 				System.out.println("DirectNetwork: \"Cancel\" clicked");
+				if(!btnCreate.isEnabled()){
+					HostedNetwork.stopHostednetwork();
+				}
+				
 				if(server != null)
 				{
 					System.out.println("Destroying server");
