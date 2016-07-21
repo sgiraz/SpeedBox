@@ -74,7 +74,7 @@ public class ClientDataTransfer implements Runnable {
 				File file = new File(path);
 				if(file.exists()){
 
-					SendingFile sendingFile = new SendingFile(file);
+					SendingFile sendingFile = new SendingFile(file.length());
 					// TODO: ADD sendingFile TO THE SENDING FILES LIST
 
 					System.out.println("CLIENT: file exists, sending..");

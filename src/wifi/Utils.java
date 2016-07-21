@@ -46,7 +46,7 @@ public class Utils {
 		
 		JOptionPane.showMessageDialog(new JDialog(),
 				message,
-				"Inane warning",
+				"Warning",
 				JOptionPane.WARNING_MESSAGE);
 	}
 	
@@ -63,7 +63,7 @@ public class Utils {
 		//custom title, error icon
 		JOptionPane.showMessageDialog(new JDialog(),
 		    message,
-		    "Inane error",
+		    "Error",
 		    JOptionPane.ERROR_MESSAGE);
 	}
 	

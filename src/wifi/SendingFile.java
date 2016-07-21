@@ -1,7 +1,6 @@
 package wifi;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
@@ -22,17 +21,20 @@ public class SendingFile extends JButton{
 	// - bottone con icona pausa download
 	// - bottone con icona cancella download (ti chiedone conferma)
 	
-	private final File file;
+	private final long fileLength;
 	private float totalBytesSent;
-	private int percent;
+	private int counter;
 	private JProgressBar pb;
+	private final int minValue = 0;
+	private final int maxValue = 100;
 	
-	public SendingFile(File file)
-	{
-		this.file = file;
+	public SendingFile(long file)
+	{   
+		this.fileLength = file;
 		//pb = new JProgressBar(0, 100);
 		pb = SendBoxGUI.instance.getProgressBar();	/* IS TEMPORARY */
-		pb.setValue(0);
+		pb.setMinimum(minValue);
+		pb.setMaximum(maxValue);
 		pb.setStringPainted(true);
 		
 		this.addActionListener(new ActionListener()
@@ -51,9 +53,13 @@ public class SendingFile extends JButton{
 	public void update(float sent)
 	{
 		this.totalBytesSent += sent;
-		percent = (int)((totalBytesSent / file.length()*100));
-		pb.setString("Processing " + percent + "%");
-		pb.setValue(percent);
+		counter = (int)((totalBytesSent / fileLength*100));
+		pb.setString("Processing " + counter + "%");
+		pb.setValue(counter);
+		
+		if(counter == 100){
+			pb.setString("complete");
+		}
 	}
 	
 	

@@ -60,15 +60,15 @@ public class ServerDataTransfer implements Runnable
 	{
 		Path path = Paths.get(System.getProperty("user.home") + "/Desktop/" + fileName);
 		int count;
-		byte[] bytes = new byte[10240*2]; // my personal buffer (20KB)
+		byte[] bytes = new byte[1024*20]; // my personal buffer (20KB)
 		long size = reader.readLong();
-		int received = 0;
 		if(size >= 0){
+			SendingFile sendingFile = new SendingFile(size);
+			
 			try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path, CREATE, APPEND))) {
 				while((count = reader.read(bytes)) > 0 ){
-					received += count;
 					out.write(bytes, 0 , count);
-					System.out.format("Dowload: %.1f %% %n", received/(float)size * 100);
+					sendingFile.update(count);
 				}  
 				System.out.println("Data saved in: " + path);
 			} catch (IOException x) {
