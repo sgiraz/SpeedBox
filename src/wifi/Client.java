@@ -16,7 +16,7 @@ public class Client implements Runnable
 	private Socket clientSocket;
 	private long keepAliveTime;
 	private int keepAliveMax = 5000;
-	private boolean connected;
+	private boolean connected = false;
 	private boolean connecting;
 	private Timer timer;
 	private ClosableWindow window;
@@ -92,7 +92,7 @@ public class Client implements Runnable
 						{
 							long diff = System.currentTimeMillis() - keepAliveTime;
 							System.out.println("Client.java: timer: " + diff);
-							if(diff > keepAliveMax)
+							if(diff > keepAliveMax && Utils.data_transfering == false)
 							{
 								System.out.println("Client.java: Closing Reader");
 								try { reader.close(); }
@@ -159,7 +159,7 @@ public class Client implements Runnable
 			timer.cancel();
 
 		SendBoxGUI.instance.free();
-		MainMenu.instance.setEnabled(true);
+		MainMenu.instance.setVisible(true);
 	}
 
 	private void closeStreams()

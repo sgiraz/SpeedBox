@@ -1,10 +1,13 @@
 package wifi;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -23,6 +26,7 @@ public class LanNetwork extends JDialog implements ClosableWindow {
 	public LanNetwork()
 	{
 		MainMenu.instance.setVisible(false);
+		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		
 		server = new Server(this);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -60,40 +64,27 @@ public class LanNetwork extends JDialog implements ClosableWindow {
 				{
 					public void actionPerformed(ActionEvent e) 
 					{
-						MainMenu.instance.setVisible(true);
-
-						System.out.println("Cancel clicked");
+						System.out.println("LanNetwork: \"Cancel\" clicked");
 						if(server != null)
 						{
 							System.out.println("Destroying server");
+							destroy();
 							server.destroy();
 						}
-						destroy();
-					}
-				});
-				cancelButton.addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent e) 
-					{
-						MainMenu.instance.setVisible(true);
-
-						System.out.println("Cancel clicked");
-						if(server != null)
-						{
-							System.out.println("Destroying server");
-							server.destroy();
+						else{
+							destroy();
+							MainMenu.instance.setVisible(true);
 						}
-						destroy();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 
-
 			}
 		}
-		setLocationRelativeTo(null);
-		setAlwaysOnTop(true);
+		
+		setLocationRelativeTo(SendBoxGUI.instance);
+		getRootPane().setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
 		setUndecorated(true);
 		setVisible(true);
 	}

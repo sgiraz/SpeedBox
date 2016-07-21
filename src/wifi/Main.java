@@ -2,6 +2,14 @@ package wifi;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
 
+/**
+ * NOTA DI PROMEMORIA PER RICORDARE LA NECESSITÀ DI AVERE 2 SOCKET E MANTENERE UN MECCANISMO DI KEEPALIVE:
+ * Questo tipo di implementazione è necessaria per rilevare una chiusura inaspettata dell'applicazione 
+ * quando non vi è alcun traferimento di file in corso.
+ * @author simonegirardi
+ *
+ */
+
 public class Main
 {
 	public static void main(String[] args) {

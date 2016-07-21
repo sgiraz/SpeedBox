@@ -1,15 +1,15 @@
 package wifi;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -42,6 +42,7 @@ public class DirectNetwork extends JDialog implements ClosableWindow
 
 	public DirectNetwork() 
 	{
+		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		
 		setTitle("Network configuration");
 		MainMenu.instance.setVisible(false);
@@ -149,30 +150,26 @@ public class DirectNetwork extends JDialog implements ClosableWindow
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				MainMenu.instance.setVisible(true);
-
-				System.out.println("Cancel clicked");
+				System.out.println("DirectNetwork: \"Cancel\" clicked");
 				if(server != null)
 				{
 					System.out.println("Destroying server");
+					destroy();
 					server.destroy();
 				}
-				destroy();
+				else{
+					destroy();
+					MainMenu.instance.setVisible(true);
+				}
 			}
 		});
+		
 		cancelButton.setActionCommand("Cancel");
 		buttonPane.add(cancelButton);
-
-		setLocationRelativeTo(null);
-		addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent e)
-            {
-                System.out.println("NetworkConfig.java: Closed");
-                cancelButton.doClick();
-            }
-        });
-		setAlwaysOnTop(true);
+		
+		setLocationRelativeTo(SendBoxGUI.instance);
+		getRootPane().setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
+		setUndecorated(true);
 		setVisible(true);
 	}
 

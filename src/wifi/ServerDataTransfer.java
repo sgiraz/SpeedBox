@@ -60,7 +60,7 @@ public class ServerDataTransfer implements Runnable
 	{
 		Path path = Paths.get(System.getProperty("user.home") + "/Desktop/" + fileName);
 		int count;
-		byte[] bytes = new byte[10240]; // my personal buffer (10KB)
+		byte[] bytes = new byte[10240*2]; // my personal buffer (20KB)
 		long size = reader.readLong();
 		int received = 0;
 		if(size >= 0){

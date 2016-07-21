@@ -2,11 +2,14 @@ package wifi;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -34,6 +37,7 @@ public class LanConnection extends JDialog implements ClosableWindow
 
 	public LanConnection()
 	{
+		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		MainMenu.instance.setVisible(false);
 		setTitle("Connect");
 		setBounds(100, 100, 288, 140);
@@ -73,7 +77,8 @@ public class LanConnection extends JDialog implements ClosableWindow
 			okButton = new JButton("OK");
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("textfiel of ip: " + textField.getText());
+					System.out.println("LanConnection: button \"ok\" clicked");
+					System.out.println("textfield of ip: " + textField.getText());
 					startClient(textField.getText());
 
 					//created, wait
@@ -89,22 +94,24 @@ public class LanConnection extends JDialog implements ClosableWindow
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MainMenu.instance.setVisible(true);
-
-				System.out.println("Cancel clicked");
+				System.out.println("LanConnection: button \"Cancel\" clicked");
 				if(client != null)
 				{
 					System.out.println("Destroying client");
+					destroy();
 					client.destroy();
 				}
-				destroy();
+				else{
+					destroy();
+					MainMenu.instance.setVisible(true);
+				}
 			}
 		});
 		cancelButton.setActionCommand("Cancel");
 		buttonPane.add(cancelButton);
 
-		setLocationRelativeTo(null);
-		setAlwaysOnTop(true);
+		setLocationRelativeTo(SendBoxGUI.instance);
+		getRootPane().setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
 		setUndecorated(true);
 		setVisible(true);
 	}

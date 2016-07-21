@@ -44,7 +44,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 	public SendBoxGUI()
 	{
-		this.setEnabled(false);
 		instance = this;
 		
 		mb = new MenuBar();
@@ -72,9 +71,9 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		clientData = new ClientDataTransfer();
 		serverData = new ServerDataTransfer(port);
 		// Connect the label with a drag and drop listener
-		new DropTarget(this, listener);		
-
+		
 		setEnabled(true);
+		new DropTarget(this, listener);		
 	}
 	
 	public void free()
@@ -84,8 +83,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 
 		if(serverData != null)
 			serverData.destroy(); 
-
-		setEnabled(false);
 	}
  
 	

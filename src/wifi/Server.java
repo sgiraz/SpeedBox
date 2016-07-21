@@ -122,7 +122,6 @@ public class Server implements Runnable
 			Utils.showWarning("Connection closed");
 			System.out.println("Server.java: socket closed by host");
 		}
-
 		destroy();
 	}
 
@@ -135,6 +134,7 @@ public class Server implements Runnable
 		if(timer != null)
 			timer.cancel();
 
+		// destroy eventually clientData and serverData
 		SendBoxGUI.instance.free();
 		MainMenu.instance.setVisible(true);
 	}
