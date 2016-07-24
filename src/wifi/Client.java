@@ -143,12 +143,12 @@ public class Client implements Runnable
 			}
 		}
 
-		destroy();
 		if(connected)
 		{
 			Utils.showWarning("Connection closed");
 			System.out.println("Client.java: socket closed by host");
 		}
+		destroy();
 	}
 
 	public void destroy()

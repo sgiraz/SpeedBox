@@ -24,6 +24,7 @@ public class DirectConnection extends JDialog implements ClosableWindow
 
 	public DirectConnection()
 	{
+		System.out.println("Direct connection called");
 		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		setTitle("Waiting for connection...");
 		MainMenu.instance.setVisible(false);

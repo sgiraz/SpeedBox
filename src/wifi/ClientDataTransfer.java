@@ -52,7 +52,7 @@ public class ClientDataTransfer implements Runnable {
 
 			this.clientSocket = clientSocket;
 
-			System.out.println("CLIENT: connected to " + clientSocket.getInetAddress());
+			System.out.println("ClientDataTransfer: connected to " + clientSocket.getInetAddress());
 
 			// send first message message
 			System.out.println("CLIENT: Socket created: " + clientSocket + "\nSending data: " + path +"...");
@@ -62,13 +62,13 @@ public class ClientDataTransfer implements Runnable {
 			writer.newLine();
 			writer.flush();
 
-			System.out.println("CLIENT: Waiting for response..");
+			System.out.println("ClientDataTransfer: Waiting for response..");
 			String command = reader.readLine();
 
-			System.out.println("CLIENT: command: " + command);
+			System.out.println("ClientDataTransfer: command: " + command);
 			if(command.equals("accept_request"))
 			{
-				System.out.println("CLIENT: Accepted... sending file");
+				System.out.println("ClientDataTransfer: Accepted... sending file");
 
 				// send file
 				File file = new File(path);
@@ -77,13 +77,13 @@ public class ClientDataTransfer implements Runnable {
 					SendingFile sendingFile = new SendingFile(file.length());
 					// TODO: ADD sendingFile TO THE SENDING FILES LIST
 
-					System.out.println("CLIENT: file exists, sending..");
+					System.out.println("ClientDataTransfer: file exists, sending..");
 					Utils.data_transfering = true;
 
 					try(FileInputStream fs = new FileInputStream(file)){
 						// send file dimension
 						output.writeLong(file.length());
-						System.out.println("CLIENT: file length: " + file.length());
+						System.out.println("ClientDataTransfer: file length: " + file.length());
 
 						int sent;
 						while((sent = fs.read(bytes)) > 0 ){
@@ -99,19 +99,19 @@ public class ClientDataTransfer implements Runnable {
 			}
 			else if (command.equals("refused_request"))
 			{
-				System.out.println("CLIENT: File Refused");
+				System.out.println("ClientDataTransfer: File Refused");
 
 			}
 			else
 			{
-				System.out.println("CLIENT: other command " + command);
+				System.out.println("ClientDataTransfer: other command " + command);
 			}			
 		} catch (IOException e) {
-			System.out.println("CLIENT: Impossible to connect");			
+			System.out.println("ClientDataTransfer: Impossible to connect");			
 			e.printStackTrace();
 		}
 
-		System.out.println("CLIENT: finish");
+		System.out.println("ClientDataTransfer: finish");
 		sending=false;
 	}
 
