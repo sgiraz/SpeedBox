@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -19,6 +20,21 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
+import java.awt.Toolkit;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JEditorPane;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 
 public class SendBoxGUI extends JFrame implements ActionListener
@@ -33,17 +49,21 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private DropListener listener;
 	private ClientDataTransfer clientData;
 	private ServerDataTransfer serverData;
-	private JProgressBar progressBarDown;
+	private JProgressBar progressBarItem;
 	private JSplitPane splitPane;
-	private JScrollPane scrollPane;
 	private JPanel panelDrop;
 	private JLabel lblDropFileHere;
 
 	public static SendBoxGUI instance;
-	private JPanel panel;
+	private JEditorPane chatArea;
+	private JPanel itemsPanel;
+	private JTable table;
+
 
 	public SendBoxGUI()
 	{
+		setFont(new Font("CMU Classical Serif", Font.PLAIN, 12));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(SendBoxGUI.class.getResource("/img/icons/16x16.png")));
 		instance = this;
 		
 		mb = new MenuBar();
@@ -103,45 +123,94 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		setMenuBar(mb);
 		setSize(640, 480);
 		setTitle("SpeedBox");
+		progressBarItem = new JProgressBar();
+		getContentPane().add(progressBarItem, BorderLayout.SOUTH);
+		progressBarItem.setBackground(new Color(255, 255, 255));
+		progressBarItem.setForeground(new Color(51, 204, 0));
+		progressBarItem.setStringPainted(true);
+		progressBarItem.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		progressBarItem.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		progressBarItem.setBounds(77, 170, 146, 20);
 
 		splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.7);
+		splitPane.setContinuousLayout(true);
+		splitPane.setResizeWeight(1.0);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
-		{
-			scrollPane = new JScrollPane();
-			splitPane.setRightComponent(scrollPane);
-		}
 
 		panelDrop = new JPanel();
 		panelDrop.setForeground(Color.GRAY);
 		splitPane.setLeftComponent(panelDrop);
-		panelDrop.setLayout(null);
+		panelDrop.setLayout(new BorderLayout(5, 5));
 
 		lblDropFileHere = new JLabel("Drop file here");
 		lblDropFileHere.setForeground(Color.GRAY);
 		lblDropFileHere.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDropFileHere.setFont(new Font("Calibri Light", Font.PLAIN, 24));
-
-		lblDropFileHere.setBounds(145, 185, 163, 65);
 		panelDrop.add(lblDropFileHere);
 		
-		panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.SOUTH);
-		progressBarDown = new JProgressBar();
-		panel.add(progressBarDown);
-		progressBarDown.setStringPainted(true);
-		progressBarDown.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		progressBarDown.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		progressBarDown.setBounds(77, 170, 146, 20);
+		JPanel rightPanel = new JPanel();
+		splitPane.setRightComponent(rightPanel);
+		rightPanel.setLayout(new BorderLayout(5, 5));
+		
+		itemsPanel = new JPanel();
+		rightPanel.add(itemsPanel, BorderLayout.NORTH);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_itemsPanel = new GroupLayout(itemsPanel);
+		gl_itemsPanel.setHorizontalGroup(
+			gl_itemsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_itemsPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(18, Short.MAX_VALUE))
+		);
+		gl_itemsPanel.setVerticalGroup(
+			gl_itemsPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_itemsPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(12, Short.MAX_VALUE))
+		);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Name","Size","Progress"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Object.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		scrollPane.setViewportView(table);
+		itemsPanel.setLayout(gl_itemsPanel);
+		
+		chatArea = new JEditorPane();
+		chatArea.setText("write a message and click on Send");
+		rightPanel.add(chatArea, BorderLayout.CENTER);
+		
+		JButton btnSend = new JButton("Send");
+		btnSend.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// SEND THE TEXT STRING THROUGH THE SOCKET
+			}
+		});
+		btnSend.setToolTipText("");
+		rightPanel.add(btnSend, BorderLayout.SOUTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);	
 	}
 	
 	/* IS TEMPORARY */
 	public JProgressBar getProgressBar(){
-		return this.progressBarDown;
+		return this.progressBarItem;
 	}
 
 	// TODO: Preferences of application
