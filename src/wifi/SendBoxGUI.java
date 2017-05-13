@@ -56,12 +56,11 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private JSplitPane splitPane;
 	private JPanel panelDrop;
 	private JLabel lblDropFileHere;
-
+	
 	public static SendBoxGUI instance;
 	public JEditorPane chatArea;
 	private JPanel itemsPanel;
 	private JTable ItemTable;
-
 
 	public SendBoxGUI()
 	{
@@ -116,7 +115,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 			chatServerData.destroy(); 
 	}
  
-	
 	private void setup() 
 	{
 		mi4.addActionListener(this);
@@ -204,7 +202,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String chatText = chatArea.getText();
-				System.out.println("Sending: " + chatText + " to " + otherIP + " on port" + chatPort);
+				System.out.println("Sending: " + chatText + " to " + otherIP + " on port " + chatPort);
 				chatClientData.SendText(chatText);
 			}
 		});
