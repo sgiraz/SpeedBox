@@ -7,7 +7,7 @@ import javax.swing.JProgressBar;
 
 /**
  * @author adriano
- *	This class is used to encapsulate the file in the sending queue
+ *	This class is used to encapsulate the file in the sendingFile queue
  *	it contains all the informations about the file and the percentage
  */
 public class SendingFile extends JButton{

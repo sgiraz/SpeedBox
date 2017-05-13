@@ -30,13 +30,13 @@ public class ServerDataTransfer implements Runnable
 	private int portNumber;
 	public ServerSocket serverSocket;
 	public Socket clientSocket;
-	
+
 	public ServerDataTransfer(int portNumber)
 	{
 		this.portNumber = portNumber;
-		new Thread(this, "Server receive file Thread").start();
+		new Thread(this, "Server receive data Thread").start();
 	}
- 
+
 	public void destroy()
 	{
 		try {
@@ -49,7 +49,7 @@ public class ServerDataTransfer implements Runnable
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Receive data from client ad save it on a file in local machine
 	 * @param reader : a DataImputStream reader
@@ -64,7 +64,7 @@ public class ServerDataTransfer implements Runnable
 		long size = reader.readLong();
 		if(size >= 0){
 			SendingFile sendingFile = new SendingFile(size);
-			
+
 			try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path, CREATE, APPEND))) {
 				while((count = reader.read(bytes)) > 0 ){
 					out.write(bytes, 0 , count);
@@ -105,42 +105,48 @@ public class ServerDataTransfer implements Runnable
 					BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 					DataInputStream input = new DataInputStream(clientSocket.getInputStream())){
-				
+
 				this.serverSocket = serverSocket;
 				this.clientSocket = clientSocket;
-				
-				System.out.println("SERVER: create" + clientSocket);
 
-				// check for input request type
-				String typeOfInputClient = reader.readLine();
-				System.out.println("TYPE OF INPUT: "+ typeOfInputClient);
+				System.out.println("SERVER: socket create" + clientSocket);
 
-				if(typeOfInputClient.equals("send_request"))
-				{
-					// send acceptation
-					System.out.println("SERVER: Sending confirm...");
-					String fileName = reader.readLine();
-					if(checkResponse(fileName))
+				// chat
+				if(portNumber == 17000 ){
+					SendBoxGUI.instance.chatArea.setText(reader.readLine());
+				}
+				else{
+
+					// check for input request type
+					String typeOfInputClient = reader.readLine();
+					System.out.println("TYPE OF INPUT: "+ typeOfInputClient);
+
+					if(typeOfInputClient.equals("send_request"))
 					{
-						System.out.println("check response successed!");
-						writer.write("accept_request");
-						writer.newLine();
-						writer.flush();
+						// send acceptation
+						System.out.println("SERVER: Sending confirm...");
+						String fileName = reader.readLine();
+						if(checkResponse(fileName))
+						{
+							System.out.println("check response successed!");
+							writer.write("accept_request");
+							writer.newLine();
+							writer.flush();
 
-						// receiving data
-						receiveData(input, fileName);
+							// receiving data
+							receiveData(input, fileName);
+						}
+						else
+						{
+							writer.write("refused_request");
+							writer.newLine();
+							writer.flush();
+						}
+
 					}
 					else
-					{
-						writer.write("refused_request");
-						writer.newLine();
-						writer.flush();
-					}
-
+						System.out.println("faiulure...");
 				}
-				else
-					System.out.println("faiulure...");
-
 			}
 			catch(IOException e)
 			{

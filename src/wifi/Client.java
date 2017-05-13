@@ -61,7 +61,7 @@ public class Client implements Runnable
 				writer.newLine();
 				writer.flush();
 
-				// receive acceptation
+				// receive the accept
 				String line = reader.readLine();
 
 				if((line.equals("handshake")))
@@ -69,11 +69,11 @@ public class Client implements Runnable
 					connected = true;
 					System.out.println("Client.java: connection estabilished correctly");
 
-					// close the previous window and start the sending box
+					// close the previous window and start the sendingFile box
 					if(window != null)
 						window.destroy();
 
-					// create sendbox GUI
+					// create SendBox GUI
 					String otherIP = getIP();
 					SendBoxGUI.instance.start(otherIP);
 

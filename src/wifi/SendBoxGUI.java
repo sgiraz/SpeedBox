@@ -42,22 +42,25 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	private static final long serialVersionUID = 7014623789915977930L;
 	
 	public static String otherIP;
-	public int port = 16000;
+	public int filePort = 16000;
+	public int chatPort = 17000;
 	private MenuBar mb;
 	private Menu m1,m2, m3;
 	private MenuItem mi1, mi2, mi3, mi4, mi5;
 	private DropListener listener;
-	private ClientDataTransfer clientData;
-	private ServerDataTransfer serverData;
+	private ClientDataTransfer fileClientData;
+	private ClientDataTransfer chatClientData;
+	private ServerDataTransfer fileServerData;
+	private ServerDataTransfer chatServerData;
 	private JProgressBar progressBarItem;
 	private JSplitPane splitPane;
 	private JPanel panelDrop;
 	private JLabel lblDropFileHere;
 
 	public static SendBoxGUI instance;
-	private JEditorPane chatArea;
+	public JEditorPane chatArea;
 	private JPanel itemsPanel;
-	private JTable table;
+	private JTable ItemTable;
 
 
 	public SendBoxGUI()
@@ -88,8 +91,10 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		MainMenu.instance.setVisible(false);
 		
 		otherIP = ip;
-		clientData = new ClientDataTransfer();
-		serverData = new ServerDataTransfer(port);
+		fileClientData = new ClientDataTransfer(otherIP, filePort);
+		chatClientData = new ClientDataTransfer(otherIP, chatPort);
+		fileServerData = new ServerDataTransfer(filePort);
+		chatServerData = new ServerDataTransfer(chatPort);
 		// Connect the label with a drag and drop listener
 		
 		setEnabled(true);
@@ -98,11 +103,17 @@ public class SendBoxGUI extends JFrame implements ActionListener
 	
 	public void free()
 	{
-		if(clientData != null)
-			clientData.destroy();
+		if(fileClientData != null)
+			fileClientData.destroy();
 
-		if(serverData != null)
-			serverData.destroy(); 
+		if(fileServerData != null)
+			fileServerData.destroy();
+		
+		if(chatClientData != null)
+			chatClientData.destroy();
+
+		if(chatServerData != null)
+			chatServerData.destroy(); 
 	}
  
 	
@@ -158,22 +169,16 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_itemsPanel = new GroupLayout(itemsPanel);
 		gl_itemsPanel.setHorizontalGroup(
-			gl_itemsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_itemsPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(18, Short.MAX_VALUE))
+			gl_itemsPanel.createParallelGroup(Alignment.TRAILING)
+				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
 		);
 		gl_itemsPanel.setVerticalGroup(
 			gl_itemsPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_itemsPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(12, Short.MAX_VALUE))
+				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
 		);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		ItemTable = new JTable();
+		ItemTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -187,7 +192,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 				return columnTypes[columnIndex];
 			}
 		});
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(ItemTable);
 		itemsPanel.setLayout(gl_itemsPanel);
 		
 		chatArea = new JEditorPane();
@@ -198,7 +203,9 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		btnSend.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				// SEND THE TEXT STRING THROUGH THE SOCKET
+				String chatText = chatArea.getText();
+				System.out.println("Sending: " + chatText + " to " + otherIP + " on port" + chatPort);
+				chatClientData.SendText(chatText);
 			}
 		});
 		btnSend.setToolTipText("");
@@ -233,13 +240,14 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		}
 	}
 
+	// Drag and drop section
 	public void drop(File file) 
 	{
 		System.out.println("Drop: " + file.getPath() + " to " + otherIP);
-		clientData.SendFile(file.getPath(), otherIP, port);
+		fileClientData.SendFile(file.getPath());
 	}
 
-	// this is for backgroud color during the drag and drop
+	// This is for background color during drag and drop
 	public JPanel getPane()
 	{
 		return panelDrop;
