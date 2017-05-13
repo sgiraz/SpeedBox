@@ -111,7 +111,8 @@ public class ServerDataTransfer implements Runnable
 
 				System.out.println("SERVER: socket create" + clientSocket);
 
-				// chat
+				// chat --> DA SISTEMARE, FORSE CAMBIANDI ANCHE IL TIPO DI PANNELLO USATO,
+				// IL PROBLEMA E' LEGGERE TUTTA LA STRINGA CHE VIENE RICEVUTA E PRINTARLA NELLO SPAZIO APPOSITO DELLA CHAT NELLA GUI
 				if(portNumber == 17000 ){
 					String inputText;
 					while((inputText = reader.readLine() ) != null){
