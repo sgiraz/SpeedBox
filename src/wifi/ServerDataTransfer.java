@@ -116,7 +116,7 @@ public class ServerDataTransfer implements Runnable
 					String inputText;
 					System.out.println("+++++++++++++ PORT 17000 CHAT RECEIVING +++++++++++++");
 					while((inputText = reader.readLine()) != null){
-						SendBoxGUI.instance.chatArea.setText(SendBoxGUI.instance.chatArea.getText() + inputText + "\n");
+						SendBoxGUI.instance.chatArea.setText(inputText + "\n");
 					}
 				}
 				else{
