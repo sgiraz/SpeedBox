@@ -193,6 +193,7 @@ public class SendBoxGUI extends JFrame implements ActionListener
 		scrollPane.setViewportView(ItemTable);
 		itemsPanel.setLayout(gl_itemsPanel);
 		
+		// chat
 		chatArea = new JEditorPane();
 		chatArea.setText("write a message and click on Send");
 		rightPanel.add(chatArea, BorderLayout.CENTER);
@@ -202,7 +203,6 @@ public class SendBoxGUI extends JFrame implements ActionListener
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String chatText = chatArea.getText();
-				System.out.println("Sending: " + chatText + " to " + otherIP + " on port " + chatPort);
 				chatClientData.SendText(chatText);
 			}
 		});
