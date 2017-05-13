@@ -75,7 +75,7 @@ public class ClientDataTransfer implements Runnable {
 			// chat
 			if(port == 17000){
 				System.out.println("Sending: " + chatText + " to: " + ip + " on port: " + port);
-				chatOutputStream.println(chatText);
+				chatOutputStream.print(chatText);
 			}
 			// file
 			else{
