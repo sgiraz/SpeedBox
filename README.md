@@ -7,7 +7,7 @@ SpeedBox is a Wi-Fi Transfer application that enable 2 differents devices to exh
 ## Supported OS
 - [x] Linux
 - [x] Windows
-- [x] MacOS (Direct Connection works only as a Client)
+- [x] MacOS (Direct Connection works only if it acts as a Client)
 - [ ] iOS
 - [ ] iPadOS
 
